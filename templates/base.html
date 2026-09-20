@@ -96,23 +96,38 @@
         <div class="sidebar__card">
           <div class="sidebar__heading">Main Menu</div>
 
-          <a href="{% url 'dashboard' %}" class="sidebar__link is-active">
+
+          <a href="{% url 'home' %}" class="sidebar__link 
+          {% if request.path == '/' %}
+            is-active
+          {% endif %} ">
+            <i data-lucide="compass" class="sidebar__link-icon
+            "></i>
+            <span>Discover Feed</span>
+          </a>
+          
+          <a href="{% url 'dashboard' %}" class="sidebar__link 
+          {% if request.path == '/dashboard/' %}
+            is-active
+          {% endif %} ">
             <i data-lucide="layout-dashboard" class="sidebar__link-icon"></i>
             <span>Dashboard</span>
           </a>
 
-          <a href="{% url 'home' %}" class="sidebar__link">
-            <i data-lucide="compass" class="sidebar__link-icon"></i>
-            <span>Discover Feed</span>
-          </a>
-
-          <a href="{% url 'my-projects' %}" class="sidebar__link">
+          <a href="{% url 'my-projects' %}" class="sidebar__link
+          
+          {% if request.path == '/my-projects/' %}
+            is-active
+          {% endif %} ">
             <i data-lucide="folder-kanban" class="sidebar__link-icon"></i>
             <span>My Projects</span>
             <span class="sidebar__count">3</span>
           </a>
 
-          <a href="{% url 'requests' %}" class="sidebar__link">
+          <a href="{% url 'requests' %}" class="sidebar__link
+          {% if request.path == '/requests/' %}
+            is-active
+          {% endif %} ">
             <i data-lucide="git-pull-request" class="sidebar__link-icon"></i>
             <span>Join Requests</span>
             <span class="sidebar__count sidebar__count--alert">2</span>
@@ -120,19 +135,28 @@
 
           <div class="sidebar__heading sidebar__heading--spaced">Collaboration</div>
 
-          <a href="{% url 'messages' %}" class="sidebar__link">
+          <a href="{% url 'messages' %}" class="sidebar__link 
+          {% if request.path == '/messages' %}
+            is-active
+          {% endif %} ">
             <i data-lucide="message-square" class="sidebar__link-icon"></i>
             <span>Messages</span>
             <span class="sidebar__dot"></span>
           </a>
 
-          <a href="{% url 'notifications' %}" class="sidebar__link">
+          <a href="{% url 'notifications' %}" class="sidebar__link 
+          {% if request.path == '/notifications/' %}
+            is-active
+          {% endif %} ">
             <i data-lucide="bell" class="sidebar__link-icon"></i>
             <span>Notifications</span>
             <span class="sidebar__count sidebar__count--alert">5</span>
           </a>
 
-          <a href="{% url 'profile' %}" class="sidebar__link">
+          <a href="{% url 'profile' %}" class="sidebar__link 
+          {% if request.path == '/profile/' %}
+            is-active
+          {% endif %} ">
             <i data-lucide="user-circle" class="sidebar__link-icon"></i>
             <span>My Profile</span>
           </a>
