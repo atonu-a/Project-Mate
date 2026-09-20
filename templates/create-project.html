@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectPartner — Create Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <div class="brand" onclick="window.location.href='index.html'">
+                <div class="brand__logo">
+                    <i data-lucide="layers" class="brand__logo-icon"></i>
+                </div>
+                <span class="brand__name">ProjectPartner</span>
+            </div>
+            <div class="header-actions">
+                <button onclick="toggleTheme()" class="icon-button" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon-sun"></i>
+                    <i data-lucide="moon" class="theme-icon-moon"></i>
+                </button>
+                <button onclick="window.location.href='discover.html'" class="header-link">Discover Feed</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-main page-main--narrow">
+        <div class="form-panel">
+            <header>
+                <div class="eyebrow">
+                    <i data-lucide="plus-circle" class="eyebrow__icon"></i>
+                    <span>Project Studio</span>
+                </div>
+                <h1 class="page-title">Create a New Project</h1>
+                <p class="page-subtitle">Pitch your idea, specify required tech stacks, and start building your dream team.</p>
+            </header>
+
+            <form onsubmit="event.preventDefault(); showToast('Project published successfully!'); setTimeout(()=>window.location.href='discover.html', 1500);" class="form">
+                <div class="form-field">
+                    <label for="projectTitle" class="form-label">Project Title</label>
+                    <input id="projectTitle" type="text" required placeholder="e.g., Quantum Compiler for Neural Networks" class="form-input">
+                </div>
+
+                <div class="form-field">
+                    <label for="projectTagline" class="form-label">Short Tagline</label>
+                    <input id="projectTagline" type="text" required placeholder="One sentence description of what your project achieves..." class="form-input">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="projectCategory" class="form-label">Category</label>
+                        <select id="projectCategory" class="form-input">
+                            <option>AI &amp; Machine Learning</option>
+                            <option>Web3 &amp; FinTech</option>
+                            <option>CleanTech &amp; Mobile</option>
+                            <option>Healthcare &amp; IoT</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="projectTeamSize" class="form-label">Max Team Size</label>
+                        <input id="projectTeamSize" type="number" min="2" max="10" value="4" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="projectSkills" class="form-label">Required Skills (Comma separated)</label>
+                    <input id="projectSkills" type="text" placeholder="Python, React, PyTorch, Tailwind..." class="form-input">
+                </div>
+
+                <div class="form-field">
+                    <label for="projectDescription" class="form-label">Full Description</label>
+                    <textarea id="projectDescription" rows="5" placeholder="Detail your architecture, milestones, and what kind of teammates you are looking for..." class="form-input"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='index.html'" class="form-cancel">Cancel</button>
+                    <button type="submit" class="form-submit">Publish Project</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/app.js"></script>
+</body>
+</html>

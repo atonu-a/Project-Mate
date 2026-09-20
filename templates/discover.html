@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectPartner — Discover Feed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- Top navigation -->
+    <header class="site-header">
+        <div class="site-header__inner">
+            <div class="brand" onclick="window.location.href='index.html'">
+                <div class="brand__logo">
+                    <i data-lucide="layers" class="brand__logo-icon"></i>
+                </div>
+                <div class="brand__text">
+                    <span class="brand__name">ProjectPartner</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon-sun"></i>
+                    <i data-lucide="moon" class="theme-icon-moon"></i>
+                </button>
+                <button onclick="window.location.href='create-project.html'" class="header-cta">
+                    <i data-lucide="plus" class="header-cta__icon"></i>
+                    <span>New Project</span>
+                </button>
+                <button onclick="window.location.href='notifications.html'" class="icon-button icon-button--optional" aria-label="Notifications">
+                    <i data-lucide="bell" class="icon-button__icon"></i>
+                </button>
+                <button onclick="window.location.href='messages.html'" class="icon-button icon-button--optional" aria-label="Messages">
+                    <i data-lucide="message-square" class="icon-button__icon"></i>
+                </button>
+                <div class="user-menu">
+                    <button onclick="toggleUserMenu()" class="user-menu__trigger" aria-label="Account menu">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Alex Rivera" class="user-menu__avatar">
+                    </button>
+                    <div id="userDropdown" class="user-menu__dropdown">
+                        <a href="profile.html" class="user-menu__link">My Profile</a>
+                        <a href="my-projects.html" class="user-menu__link">My Projects</a>
+                        <a href="requests.html" class="user-menu__link">Join Requests</a>
+                    </div>
+                </div>
+                <button onclick="toggleMobileMenu()" class="menu-toggle" aria-label="Open menu">
+                    <i data-lucide="menu" class="menu-toggle__icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Left column · feed · right column -->
+    <div class="app-layout">
+
+        <!-- Left column: quick navigation / trending tags (desktop) -->
+        <aside class="feed-sidebar">
+            <div class="sidebar__card">
+                <div class="sidebar__heading">Navigation</div>
+                <a href="index.html" class="sidebar__link">
+                    <i data-lucide="layout-dashboard" class="sidebar__link-icon"></i><span>Dashboard</span>
+                </a>
+                <a href="discover.html" class="sidebar__link is-active">
+                    <i data-lucide="compass" class="sidebar__link-icon"></i><span>Discover Feed</span>
+                </a>
+                <a href="my-projects.html" class="sidebar__link">
+                    <i data-lucide="folder-kanban" class="sidebar__link-icon"></i><span>My Projects</span>
+                </a>
+                <a href="requests.html" class="sidebar__link">
+                    <i data-lucide="git-pull-request" class="sidebar__link-icon"></i><span>Join Requests</span>
+                </a>
+            </div>
+
+            <div class="trend-card">
+                <h4 class="trend-card__title">Trending Tags</h4>
+                <div class="tag-cloud">
+                    <span class="hashtag">#AI</span>
+                    <span class="hashtag hashtag--secondary">#Web3</span>
+                    <span class="hashtag hashtag--accent">#React</span>
+                    <span class="hashtag hashtag--success">#Rust</span>
+                    <span class="hashtag hashtag--warning">#CleanTech</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Centre column: one post per row -->
+        <main class="feed" id="socialFeedContainer">
+
+            <!-- Filter bar -->
+            <div class="feed-toolbar">
+                <div class="feed-tabs">
+                    <button class="feed-tab is-active">All Projects</button>
+                    <button class="feed-tab">Following</button>
+                    <button class="feed-tab">AI Matched</button>
+                </div>
+                <button onclick="window.location.href='create-project.html'" class="feed-post-btn">
+                    <i data-lucide="plus" class="feed-post-btn__icon"></i><span>Post</span>
+                </button>
+            </div>
+
+            <!-- Post 1 -->
+            <article class="post">
+                <div class="post__head">
+                    <div class="post__author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena Rostova" class="post__avatar">
+                        <div>
+                            <div class="post__author-row">
+                                <h3 class="post__author-name">Elena Rostova</h3>
+                                <span class="role-badge">Owner</span>
+                            </div>
+                            <p class="post__meta">AI Researcher • 2 hours ago</p>
+                        </div>
+                    </div>
+                    <button class="post__more" aria-label="More options"><i data-lucide="more-horizontal" class="post__more-icon"></i></button>
+                </div>
+
+                <div class="post__body">
+                    <div>
+                        <span class="category-badge">AI &amp; Machine Learning</span>
+                        <h2 onclick="window.location.href='project-detail.html?id=p1'" class="post__title">NeuralSync - AI Brainstorming Canvas</h2>
+                        <p class="post__text">Real-time collaborative mind mapping powered by local LLMs and vector embeddings. We are looking for 2 frontend developers to build out the node graph interface in React &amp; Tailwind!</p>
+                    </div>
+
+                    <div onclick="window.location.href='project-detail.html?id=p1'" class="post__media">
+                        <div class="post__media-grid"></div>
+                        <div class="post__media-content">
+                            <div class="post__media-icon">
+                                <i data-lucide="network" class="post__media-glyph"></i>
+                            </div>
+                            <h4 class="post__media-title">Interactive Dependency Graph</h4>
+                            <p class="post__media-text">Click to inspect architecture, join requirements, and live code repositories.</p>
+                        </div>
+                    </div>
+
+                    <div class="post__tags-row">
+                        <div class="post__tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">LangChain</span>
+                        </div>
+                        <span class="status-badge">3 / 5 Members Joined</span>
+                    </div>
+                </div>
+
+                <div class="post__actions">
+                    <div class="post__reactions">
+                        <button onclick="toggleLike(this)" class="reaction">
+                            <i data-lucide="heart" class="reaction__icon"></i><span>24 Likes</span>
+                        </button>
+                        <button onclick="toggleComments(this)" class="reaction reaction--comment">
+                            <i data-lucide="message-circle" class="reaction__icon"></i><span>7 Comments</span>
+                        </button>
+                    </div>
+                    <button onclick="showToast('Join request sent successfully!')" class="post__join">Request to Join</button>
+                </div>
+            </article>
+
+            <!-- Post 2 -->
+            <article class="post">
+                <div class="post__head">
+                    <div class="post__author">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="Julian Vance" class="post__avatar post__avatar--secondary">
+                        <div>
+                            <div class="post__author-row">
+                                <h3 class="post__author-name">Julian Vance</h3>
+                                <span class="role-badge role-badge--secondary">Lead</span>
+                            </div>
+                            <p class="post__meta">Sustainability Tech • 5 hours ago</p>
+                        </div>
+                    </div>
+                    <button class="post__more" aria-label="More options"><i data-lucide="more-horizontal" class="post__more-icon"></i></button>
+                </div>
+
+                <div class="post__body">
+                    <div>
+                        <span class="category-badge category-badge--secondary">CleanTech &amp; Mobile</span>
+                        <h2 onclick="window.location.href='project-detail.html?id=p2'" class="post__title">EcoRoute - Carbon Footprint Optimizer</h2>
+                        <p class="post__text">Smart transit routing application calculating real-time carbon offsets for urban commuters. Seeking a PostGIS database expert to optimize routing queries.</p>
+                    </div>
+
+                    <div onclick="window.location.href='project-detail.html?id=p2'" class="post__media">
+                        <div class="post__media-grid"></div>
+                        <div class="post__media-content">
+                            <div class="post__media-icon post__media-icon--secondary">
+                                <i data-lucide="map-pin" class="post__media-glyph"></i>
+                            </div>
+                            <h4 class="post__media-title">Live Urban Transit Routing</h4>
+                            <p class="post__media-text">Click to view project specs, open positions, and team milestones.</p>
+                        </div>
+                    </div>
+
+                    <div class="post__tags-row">
+                        <div class="post__tags">
+                            <span class="tech-tag tech-tag--secondary">React Native</span>
+                            <span class="tech-tag tech-tag--secondary">PostGIS</span>
+                            <span class="tech-tag tech-tag--secondary">Mapbox</span>
+                        </div>
+                        <span class="status-badge">2 / 4 Members Joined</span>
+                    </div>
+                </div>
+
+                <div class="post__actions">
+                    <div class="post__reactions">
+                        <button onclick="toggleLike(this)" class="reaction">
+                            <i data-lucide="heart" class="reaction__icon"></i><span>42 Likes</span>
+                        </button>
+                        <button onclick="toggleComments(this)" class="reaction reaction--comment">
+                            <i data-lucide="message-circle" class="reaction__icon"></i><span>12 Comments</span>
+                        </button>
+                    </div>
+                    <button onclick="showToast('Join request sent successfully!')" class="post__join">Request to Join</button>
+                </div>
+            </article>
+
+            <!-- Infinite-scroll indicator -->
+            <div id="infiniteLoader" class="feed-loader">
+                <div class="feed-loader__spinner"></div>
+                <p class="feed-loader__text">Loading more project opportunities...</p>
+            </div>
+        </main>
+
+        <!-- Right column: suggested teammates (wide desktop) -->
+        <aside class="feed-aside">
+            <div class="suggest-panel">
+                <h3 class="suggest-panel__title">Suggested Teammates</h3>
+                <div class="suggest-panel__list">
+                    <div class="suggest-row">
+                        <div class="suggest-row__person">
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" alt="Kaito Tanaka" class="suggest-row__avatar">
+                            <div>
+                                <h4 class="suggest-row__name">Kaito Tanaka</h4>
+                                <p class="suggest-row__role">Rust Engineer</p>
+                            </div>
+                        </div>
+                        <button onclick="showToast('Connection request sent!')" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
+                    </div>
+                    <div class="suggest-row">
+                        <div class="suggest-row__person">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Sophia Sterling" class="suggest-row__avatar">
+                            <div>
+                                <h4 class="suggest-row__name">Sophia Sterling</h4>
+                                <p class="suggest-row__role">Product Designer</p>
+                            </div>
+                        </div>
+                        <button onclick="showToast('Connection request sent!')" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Mobile drawer navigation -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="mobile-menu__head">
+            <div class="mobile-menu__brand">
+                <div class="brand__logo">
+                    <i data-lucide="layers" class="brand__logo-icon"></i>
+                </div>
+                <span class="mobile-menu__name">ProjectPartner</span>
+            </div>
+            <button onclick="toggleMobileMenu()" class="mobile-menu__close" aria-label="Close menu">
+                <i data-lucide="x" class="mobile-menu__close-icon"></i>
+            </button>
+        </div>
+        <nav class="mobile-menu__list">
+            <a href="index.html" class="mobile-menu__link">
+                <i data-lucide="layout-dashboard" class="mobile-menu__link-icon"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="discover.html" class="mobile-menu__link">
+                <i data-lucide="compass" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
+                <span>Discover Feed</span>
+            </a>
+            <a href="create-project.html" class="mobile-menu__link">
+                <i data-lucide="plus-circle" class="mobile-menu__link-icon mobile-menu__link-icon--accent"></i>
+                <span>Create New Project</span>
+            </a>
+            <a href="my-projects.html" class="mobile-menu__link">
+                <i data-lucide="folder-kanban" class="mobile-menu__link-icon mobile-menu__link-icon--success"></i>
+                <span>My Projects</span>
+            </a>
+            <a href="requests.html" class="mobile-menu__link">
+                <i data-lucide="git-pull-request" class="mobile-menu__link-icon mobile-menu__link-icon--warning"></i>
+                <span>Join Requests</span>
+            </a>
+            <a href="messages.html" class="mobile-menu__link">
+                <i data-lucide="message-square" class="mobile-menu__link-icon mobile-menu__link-icon--accent"></i>
+                <span>Messages</span>
+            </a>
+            <a href="notifications.html" class="mobile-menu__link">
+                <i data-lucide="bell" class="mobile-menu__link-icon"></i>
+                <span>Notifications</span>
+            </a>
+            <a href="profile.html" class="mobile-menu__link">
+                <i data-lucide="user-circle" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
+                <span>My Profile</span>
+            </a>
+        </nav>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

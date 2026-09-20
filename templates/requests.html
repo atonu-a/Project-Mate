@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectPartner — Join Requests</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <div class="brand" onclick="window.location.href='index.html'">
+                <div class="brand__logo">
+                    <i data-lucide="layers" class="brand__logo-icon"></i>
+                </div>
+                <span class="brand__name">ProjectPartner</span>
+            </div>
+            <div class="header-actions">
+                <button onclick="toggleTheme()" class="icon-button" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon-sun"></i>
+                    <i data-lucide="moon" class="theme-icon-moon"></i>
+                </button>
+                <button onclick="window.location.href='index.html'" class="header-link">Dashboard</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-main page-main--medium">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Join Requests</h1>
+                <p class="page-subtitle">Review incoming developer applications or track your outgoing project requests.</p>
+            </div>
+        </div>
+
+        <div class="request-list">
+            <article class="request" data-applicant="Devon Miles">
+                <div class="request__main">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80" alt="Devon Miles" class="request__avatar">
+                    <div class="request__info">
+                        <div class="request__name-row">
+                            <h3 class="request__name">Devon Miles</h3>
+                            <span class="request__skill">(Frontend Specialist)</span>
+                        </div>
+                        <p class="request__project">Requested to join <span class="request__project-name">NeuralSync - AI Brainstorming Canvas</span></p>
+                        <p class="request__message">"Hey Elena! I have 3 years of React/Tailwind experience and built a similar node graph editor last semester."</p>
+                    </div>
+                </div>
+                <div class="request__actions">
+                    <button onclick="respondToRequest(this, 'accept')" class="btn-accept">Accept</button>
+                    <button onclick="respondToRequest(this, 'reject')" class="btn-reject">Reject</button>
+                </div>
+            </article>
+
+            <article class="request" data-applicant="Samantha Wu">
+                <div class="request__main">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Samantha Wu" class="request__avatar">
+                    <div class="request__info">
+                        <div class="request__name-row">
+                            <h3 class="request__name">Samantha Wu</h3>
+                            <span class="request__skill request__skill--secondary">(UI Designer)</span>
+                        </div>
+                        <p class="request__project">Requested to join <span class="request__project-name">EcoRoute - Carbon Footprint Optimizer</span></p>
+                        <p class="request__message">"Impressed by your mapbox integration concept. Ready to overhaul the mobile design system!"</p>
+                    </div>
+                </div>
+                <div class="request__actions">
+                    <button onclick="respondToRequest(this, 'accept')" class="btn-accept">Accept</button>
+                    <button onclick="respondToRequest(this, 'reject')" class="btn-reject">Reject</button>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/app.js"></script>
+</body>
+</html>

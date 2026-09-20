@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectPartner — Messages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <div class="brand" onclick="window.location.href='index.html'">
+                <div class="brand__logo">
+                    <i data-lucide="layers" class="brand__logo-icon"></i>
+                </div>
+                <span class="brand__name">ProjectPartner</span>
+            </div>
+            <div class="header-actions">
+                <button onclick="toggleTheme()" class="icon-button" aria-label="Toggle theme">
+                    <i data-lucide="sun" class="theme-icon-sun"></i>
+                    <i data-lucide="moon" class="theme-icon-moon"></i>
+                </button>
+                <button onclick="window.location.href='index.html'" class="header-link">Dashboard</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-main page-main--xwide">
+        <div class="chat">
+
+            <!-- Conversation list -->
+            <aside class="chat__sidebar">
+                <div class="chat__sidebar-head">
+                    <h2 class="chat__sidebar-title">Messages</h2>
+                </div>
+                <div class="chat__list">
+                    <div class="chat__item is-active">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena" class="chat__item-avatar">
+                        <div class="chat__item-body">
+                            <div class="chat__item-top">
+                                <h4 class="chat__item-name">Elena Rostova</h4>
+                                <span class="chat__item-time">10m ago</span>
+                            </div>
+                            <p class="chat__item-preview">Let us sync on the vector embedding pipeline tomorrow.</p>
+                        </div>
+                    </div>
+                    <div class="chat__item">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="Julian" class="chat__item-avatar">
+                        <div class="chat__item-body">
+                            <div class="chat__item-top">
+                                <h4 class="chat__item-name">Julian Vance</h4>
+                                <span class="chat__item-time">2h ago</span>
+                            </div>
+                            <p class="chat__item-preview">The PostGIS migration looks super clean!</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Open conversation -->
+            <section class="chat__main">
+                <div class="chat__header">
+                    <div class="chat__peer">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena" class="chat__peer-avatar">
+                        <div>
+                            <h3 class="chat__peer-name">Elena Rostova</h3>
+                            <p class="chat__peer-status"><span class="chat__peer-dot"></span>Active on NeuralSync</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat__messages">
+                    <div class="message">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena" class="message__avatar">
+                        <div class="message__bubble">Hey Alex! Excited to have you review our vector embedding pipeline architecture.</div>
+                    </div>
+                    <div class="message message--own">
+                        <div class="message__bubble">Happy to help! I just cloned the repository and ran the test suite. Everything compiled smoothly.</div>
+                    </div>
+                </div>
+
+                <div class="chat__composer">
+                    <form onsubmit="event.preventDefault(); showToast('Message sent');" class="chat__form">
+                        <input type="text" placeholder="Type a message to your teammate..." class="chat__input" aria-label="Message">
+                        <button type="submit" class="chat__send">Send</button>
+                    </form>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/app.js"></script>
+</body>
+</html>
