@@ -1,117 +1,99 @@
-<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProjectPartner — Project Detail</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
+{% extends "base.html" %}
+{% block main %}
 
-    <header class="site-header">
-        <div class="site-header__inner">
-            <div class="brand" onclick="window.location.href='index.html'">
-                <div class="brand__logo">
-                    <i data-lucide="layers" class="brand__logo-icon"></i>
+<main class="page-main page-main--wide">
+    <button onclick="window.history.back()" class="back-link">
+        <i data-lucide="arrow-left" class="back-link__icon"></i><span>Back</span>
+    </button>
+
+    <section class="detail-hero">
+        <div class="detail-hero__glow"></div>
+        <div class="detail-hero__row">
+            <div class="detail-hero__info">
+                <div class="detail-hero__badges">
+                    <span class="category-badge">AI &amp; Machine Learning</span>
+                    <span class="status-badge">Recruiting</span>
+                    <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Deadline: Oct 15,
+                        2026</span>
                 </div>
-                <span class="brand__name">ProjectPartner</span>
+                <h1 class="detail-hero__title">NeuralSync - AI Brainstorming Canvas</h1>
+                <p class="detail-hero__tagline">Real-time collaborative mind mapping powered by local LLMs and vector
+                    embeddings.</p>
             </div>
-            <div class="header-actions">
-                <button onclick="toggleTheme()" class="icon-button" aria-label="Toggle theme">
-                    <i data-lucide="sun" class="theme-icon-sun"></i>
-                    <i data-lucide="moon" class="theme-icon-moon"></i>
+            <div class="detail-hero__actions">
+                <button onclick="showToast('Join request submitted successfully!')" class="btn-primary">Request to
+                    Join</button>
+                <button onclick="window.location.href='{% url 'messages' %}'" class="btn-secondary">
+                    <i data-lucide="message-square" class="btn-icon btn-icon--accent"></i>
+                    <span>Message Owner</span>
                 </button>
-                <button onclick="window.location.href='discover.html'" class="header-link">Back to Feed</button>
             </div>
         </div>
-    </header>
+    </section>
 
-    <main class="page-main page-main--wide">
-        <button onclick="window.history.back()" class="back-link">
-            <i data-lucide="arrow-left" class="back-link__icon"></i><span>Back</span>
-        </button>
+    <div class="detail-layout">
+        <div class="detail-main">
+            <section class="detail-card detail-card--main">
+                <h2 class="detail-card__title">
+                    <i data-lucide="file-text" class="detail-card__title-icon"></i>
+                    <span>Project Overview</span>
+                </h2>
+                <p class="detail-card__text">NeuralSync bridges the gap between raw thought and structured code
+                    architecture. We are building an interactive canvas where multi-modal inputs automatically generate
+                    architectural dependency graphs using quantized local models.</p>
+            </section>
 
-        <section class="detail-hero">
-            <div class="detail-hero__glow"></div>
-            <div class="detail-hero__row">
-                <div class="detail-hero__info">
-                    <div class="detail-hero__badges">
-                        <span class="category-badge">AI &amp; Machine Learning</span>
-                        <span class="status-badge">Recruiting</span>
-                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Deadline: Oct 15, 2026</span>
-                    </div>
-                    <h1 class="detail-hero__title">NeuralSync - AI Brainstorming Canvas</h1>
-                    <p class="detail-hero__tagline">Real-time collaborative mind mapping powered by local LLMs and vector embeddings.</p>
+            <section class="detail-card detail-card--main">
+                <h2 class="detail-card__title">
+                    <i data-lucide="cpu" class="detail-card__title-icon detail-card__title-icon--secondary"></i>
+                    <span>Required Tech Stack</span>
+                </h2>
+                <div class="skill-list">
+                    <span class="skill-pill">Python</span>
+                    <span class="skill-pill">React</span>
+                    <span class="skill-pill">LangChain</span>
+                    <span class="skill-pill">WebSockets</span>
+                    <span class="skill-pill">Tailwind</span>
                 </div>
-                <div class="detail-hero__actions">
-                    <button onclick="showToast('Join request submitted successfully!')" class="btn-primary">Request to Join</button>
-                    <button onclick="window.location.href='messages.html'" class="btn-secondary">
-                        <i data-lucide="message-square" class="btn-icon btn-icon--accent"></i>
-                        <span>Message Owner</span>
-                    </button>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <div class="detail-layout">
-            <div class="detail-main">
-                <section class="detail-card detail-card--main">
-                    <h2 class="detail-card__title">
-                        <i data-lucide="file-text" class="detail-card__title-icon"></i>
-                        <span>Project Overview</span>
-                    </h2>
-                    <p class="detail-card__text">NeuralSync bridges the gap between raw thought and structured code architecture. We are building an interactive canvas where multi-modal inputs automatically generate architectural dependency graphs using quantized local models.</p>
-                </section>
-
-                <section class="detail-card detail-card--main">
-                    <h2 class="detail-card__title">
-                        <i data-lucide="cpu" class="detail-card__title-icon detail-card__title-icon--secondary"></i>
-                        <span>Required Tech Stack</span>
-                    </h2>
-                    <div class="skill-list">
-                        <span class="skill-pill">Python</span>
-                        <span class="skill-pill">React</span>
-                        <span class="skill-pill">LangChain</span>
-                        <span class="skill-pill">WebSockets</span>
-                        <span class="skill-pill">Tailwind</span>
+        <aside class="detail-side">
+            <section class="detail-card">
+                <h3 class="detail-card__side-title">Project Owner</h3>
+                <div class="owner-card">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                        alt="Elena Rostova" class="owner-card__avatar">
+                    <div>
+                        <h4 class="owner-card__name">Elena Rostova</h4>
+                        <p class="owner-card__role">AI Researcher</p>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
 
-            <aside class="detail-side">
-                <section class="detail-card">
-                    <h3 class="detail-card__side-title">Project Owner</h3>
-                    <div class="owner-card">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena Rostova" class="owner-card__avatar">
+            <section class="detail-card">
+                <h3 class="detail-card__side-title">Current Team (3/5)</h3>
+                <div class="team-list">
+                    <div class="member">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                            alt="Elena" class="member__avatar">
                         <div>
-                            <h4 class="owner-card__name">Elena Rostova</h4>
-                            <p class="owner-card__role">AI Researcher</p>
+                            <h4 class="member__name">Elena Rostova</h4>
+                            <p class="member__role">Lead AI Engineer</p>
                         </div>
                     </div>
-                </section>
-
-                <section class="detail-card">
-                    <h3 class="detail-card__side-title">Current Team (3/5)</h3>
-                    <div class="team-list">
-                        <div class="member">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena" class="member__avatar">
-                            <div><h4 class="member__name">Elena Rostova</h4><p class="member__role">Lead AI Engineer</p></div>
-                        </div>
-                        <div class="member">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Marcus" class="member__avatar">
-                            <div><h4 class="member__name">Marcus Chen</h4><p class="member__role">Fullstack Dev</p></div>
+                    <div class="member">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
+                            alt="Marcus" class="member__avatar">
+                        <div>
+                            <h4 class="member__name">Marcus Chen</h4>
+                            <p class="member__role">Fullstack Dev</p>
                         </div>
                     </div>
-                </section>
-            </aside>
-        </div>
-    </main>
+                </div>
+            </section>
+        </aside>
+    </div>
+</main>
 
-    <div id="toastContainer" class="toast-container"></div>
-    <script src="js/app.js"></script>
-</body>
-</html>
+{% endblock main %}

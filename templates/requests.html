@@ -1,35 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProjectPartner — Join Requests</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
-
-    <header class="site-header">
-        <div class="site-header__inner">
-            <div class="brand" onclick="window.location.href='index.html'">
-                <div class="brand__logo">
-                    <i data-lucide="layers" class="brand__logo-icon"></i>
-                </div>
-                <span class="brand__name">ProjectPartner</span>
-            </div>
-            <div class="header-actions">
-                <button onclick="toggleTheme()" class="icon-button" aria-label="Toggle theme">
-                    <i data-lucide="sun" class="theme-icon-sun"></i>
-                    <i data-lucide="moon" class="theme-icon-moon"></i>
-                </button>
-                <button onclick="window.location.href='index.html'" class="header-link">Dashboard</button>
-            </div>
-        </div>
-    </header>
-
+{% extends "base.html" %}
+{% block main %}
     <main class="page-main page-main--medium">
         <div class="page-header">
             <div>
@@ -76,8 +46,4 @@
             </article>
         </div>
     </main>
-
-    <div id="toastContainer" class="toast-container"></div>
-    <script src="js/app.js"></script>
-</body>
-</html>
+{% endblock main %}

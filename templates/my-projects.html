@@ -1,87 +1,61 @@
-<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProjectPartner — My Projects</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
+{% extends "base.html" %}
+{% block main %}
+<main class="page-main page-main--wide">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">My Projects &amp; Collaborations</h1>
+            <p class="page-subtitle">Manage projects you own and team contributions you are actively participating in.
+            </p>
+        </div>
+        <button onclick="window.location.href='{% url 'create' %}'" class="page-header__action">
+            <i data-lucide="plus" class="btn-icon"></i>
+            <span>New Project</span>
+        </button>
+    </div>
 
-    <header class="site-header">
-        <div class="site-header__inner">
-            <div class="brand" onclick="window.location.href='index.html'">
-                <div class="brand__logo">
-                    <i data-lucide="layers" class="brand__logo-icon"></i>
+    <div class="project-grid">
+        <article class="project-card">
+            <div class="project-card__body">
+                <div class="project-card__meta">
+                    <span class="role-tag">Owner</span>
+                    <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>Sprint 2
+                        Active</span>
                 </div>
-                <span class="brand__name">ProjectPartner</span>
+                <h3 onclick="window.location.href='{% url 'project_detail' 'p1' %}'" class="project-card__title">
+                    NeuralSync -
+                    AI Brainstorming Canvas</h3>
+                <p class="project-card__text">Real-time collaborative mind mapping powered by local LLMs and vector
+                    embeddings.</p>
             </div>
-            <div class="header-actions">
-                <button onclick="toggleTheme()" class="icon-button" aria-label="Toggle theme">
-                    <i data-lucide="sun" class="theme-icon-sun"></i>
-                    <i data-lucide="moon" class="theme-icon-moon"></i>
+            <div class="project-card__footer">
+                <span class="project-card__team">3 Members in Team</span>
+                <button onclick="window.location.href='{% url 'messages' %}'" class="btn-tonal">
+                    <i data-lucide="message-square" class="btn-tonal__icon"></i>
+                    <span>Team Chat</span>
                 </button>
-                <button onclick="window.location.href='index.html'" class="header-link">Dashboard</button>
             </div>
-        </div>
-    </header>
+        </article>
 
-    <main class="page-main page-main--wide">
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">My Projects &amp; Collaborations</h1>
-                <p class="page-subtitle">Manage projects you own and team contributions you are actively participating in.</p>
+        <article class="project-card">
+            <div class="project-card__body">
+                <div class="project-card__meta">
+                    <span class="role-tag role-tag--secondary">Contributor</span>
+                    <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>Active
+                        Sprint</span>
+                </div>
+                <h3 class="project-card__title">EcoRoute - Carbon Footprint Optimizer</h3>
+                <p class="project-card__text">Smart transit routing application calculating real-time carbon offsets for
+                    urban commuters.</p>
             </div>
-            <button onclick="window.location.href='create-project.html'" class="page-header__action">
-                <i data-lucide="plus" class="btn-icon"></i>
-                <span>New Project</span>
-            </button>
-        </div>
+            <div class="project-card__footer">
+                <span class="project-card__team">2 Members in Team</span>
+                <button onclick="window.location.href='{% url 'messages' %}'" class="btn-tonal">
+                    <i data-lucide="message-square" class="btn-tonal__icon"></i>
+                    <span>Team Chat</span>
+                </button>
+            </div>
+        </article>
+    </div>
+</main>
 
-        <div class="project-grid">
-            <article class="project-card">
-                <div class="project-card__body">
-                    <div class="project-card__meta">
-                        <span class="role-tag">Owner</span>
-                        <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>Sprint 2 Active</span>
-                    </div>
-                    <h3 onclick="window.location.href='project-detail.html?id=p1'" class="project-card__title">NeuralSync - AI Brainstorming Canvas</h3>
-                    <p class="project-card__text">Real-time collaborative mind mapping powered by local LLMs and vector embeddings.</p>
-                </div>
-                <div class="project-card__footer">
-                    <span class="project-card__team">3 Members in Team</span>
-                    <button onclick="window.location.href='messages.html'" class="btn-tonal">
-                        <i data-lucide="message-square" class="btn-tonal__icon"></i>
-                        <span>Team Chat</span>
-                    </button>
-                </div>
-            </article>
-
-            <article class="project-card">
-                <div class="project-card__body">
-                    <div class="project-card__meta">
-                        <span class="role-tag role-tag--secondary">Contributor</span>
-                        <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>Active Sprint</span>
-                    </div>
-                    <h3 class="project-card__title">EcoRoute - Carbon Footprint Optimizer</h3>
-                    <p class="project-card__text">Smart transit routing application calculating real-time carbon offsets for urban commuters.</p>
-                </div>
-                <div class="project-card__footer">
-                    <span class="project-card__team">2 Members in Team</span>
-                    <button onclick="window.location.href='messages.html'" class="btn-tonal">
-                        <i data-lucide="message-square" class="btn-tonal__icon"></i>
-                        <span>Team Chat</span>
-                    </button>
-                </div>
-            </article>
-        </div>
-    </main>
-
-    <div id="toastContainer" class="toast-container"></div>
-    <script src="js/app.js"></script>
-</body>
-</html>
+{% endblock main %}
