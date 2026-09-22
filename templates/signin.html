@@ -1,58 +1,83 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 
 {% block header %}
-{% endblock header %}
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div class="brand" onclick="window.location.href='{% url 'home' %}'">
+        <div class="brand__logo">
+          <i data-lucide="layers" class="brand__logo-icon"></i>
+        </div>
+        <div class="brand__text">
+          <span class="brand__name">TeamNest</span>
+          <span class="brand__version">v2.5 Pro</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button" title="Toggle Theme" aria-label="Toggle theme">
+          <i data-lucide="sun" class="theme-icon-sun"></i>
+          <i data-lucide="moon" class="theme-icon-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+{% endblock %}
 {% block sidebar %}
-{% endblock sidebar %}
+
+{% endblock %}
 
 {% block main %}
-    <main class="auth-main">
-        <div class="auth-wrap">
-            <div class="auth-card">
-                <div class="auth-card__head">
-                    <h1 class="auth-title">Welcome back</h1>
-                    <p class="auth-subtitle">Sign in to find your next collaborator or project.</p>
-                </div>
-
-                <form onsubmit="event.preventDefault(); showToast('Signed in successfully!'); setTimeout(()=>window.location.href='index.html', 1200);" class="form">
-                    <div class="form-field">
-                        <label for="signinEmail" class="form-label">Email</label>
-                        <input id="signinEmail" type="email" required autocomplete="email" placeholder="you@example.com" class="form-input">
-                    </div>
-
-                    <div class="form-field">
-                        <label for="signinPassword" class="form-label">Password</label>
-                        <div class="form-input-group">
-                            <input id="signinPassword" type="password" required autocomplete="current-password" placeholder="Enter your password" class="form-input">
-                            <button type="button" onclick="togglePasswordVisibility(this)" class="form-input-group__toggle" aria-label="Show password">
-                                <i data-lucide="eye" class="form-input-group__toggle-icon"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-check-row">
-                        <label class="form-check">
-                            <input type="checkbox" class="form-check__input">
-                            <span>Remember me</span>
-                        </label>
-                        <a href="#" onclick="showToast('Password reset link sent!', 'info'); return false;" class="auth-forgot">Forgot password?</a>
-                    </div>
-
-                    <button type="submit" class="btn-primary btn-loading">Sign In</button>
-                </form>
-
-                <div class="auth-divider">or</div>
-
-                <button type="button" onclick="showToast('Google sign-in coming soon', 'info')" class="btn-secondary">
-                    <i data-lucide="chrome" class="btn-icon"></i>
-                    <span><i class="fa-brands fa-google"></i> Continue with Google</span>
-                </button>
-            </div>
-
-            <p class="auth-footer">Don't have an account? <a href="{% url 'signup' %}" class="auth-footer__link">Sign up</a></p>
+  <main class="auth-main">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-card__head">
+          <h1 class="auth-title">Welcome back</h1>
+          <p class="auth-subtitle">Sign in to find your next collaborator or project.</p>
         </div>
-    </main>
 
-{% endblock main %}
+        {% if messages %}
+          {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
 
+        <form method="post" class="form">
+          {% csrf_token %}
+          <div class="form-field">
+            <label for="signinusername" class="form-label">Username or Email</label>
+            <input id="signinusername" type="text" name="username" value="{{ user_form.username.value|default:'' }}" required autocomplete="username" placeholder="Username" class="form-input" />
+          </div>
+
+          <div class="form-field">
+            <label for="signinPassword" class="form-label">Password</label>
+            <div class="form-input-group">
+              <input id="signinPassword" type="password" name="password" value="{{ user_form.password.value|default:'' }}" required autocomplete="current-password" placeholder="Enter your password" class="form-input" />
+              <button type="button" onclick="togglePasswordVisibility(this)" class="form-input-group__toggle" aria-label="Show password"><i data-lucide="eye" class="form-input-group__toggle-icon"></i></button>
+            </div>
+          </div>
+
+          {% comment %} <div class="form-check-row">
+            <label class="form-check">
+              <input type="checkbox" class="form-check__input" />
+              <span>Remember me</span>
+            </label>
+            <a href="#" onclick="showToast('Password reset link sent!', 'info'); return false;" class="auth-forgot">Forgot password?</a>
+          </div> {% endcomment %}
+
+          <button type="submit" class="btn-primary btn-loading" data-text="Signning In...">Sign In</button>
+        </form>
+
+        <div class="auth-divider">or</div>
+
+        <button type="button" onclick="showToast('Google sign-in coming soon', 'info')" class="btn-secondary">
+          <i data-lucide="chrome" class="btn-icon"></i>
+          <span><i class="fa-brands fa-google"></i> Continue with Google</span>
+        </button>
+      </div>
+
+      <p class="auth-footer">
+        Don't have an account? <a href="{% url 'signup' %}" class="auth-footer__link">Sign up</a>
+      </p>
+    </div>
+  </main>
+{% endblock %}

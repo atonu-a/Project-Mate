@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.dataset.originalHtml = btn.innerHTML;
 
         btn.innerHTML = `
-                   <span class="loading loading-spinner loading-xs" role="status" aria-hidden="true"></span>
+                   <span class="spinner spinner-sm spinner--on-primary" role="status" aria-hidden="true"></span>
                     ${btnText} 
                 `;
         btn.disabled = true;
