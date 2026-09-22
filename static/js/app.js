@@ -170,18 +170,20 @@ window.onload = function () {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  loadingBtns = document.querySelectorAll(".btn-loading");
+  const loadingBtns = document.querySelectorAll(".btn-loading");
   loadingBtns.forEach((btn) => {
     const parentForm = btn.closest("form");
 
+
     if (parentForm) {
       parentForm.addEventListener("submit", function (e) {
+
         const btnTxt = btn.dataset.text;
         btn.dataset.originalHtml = btn.innerHTML;
 
         btn.innerHTML = `
                    <span class="spinner spinner-sm spinner--on-primary" role="status" aria-hidden="true"></span>
-                    ${btnText} 
+                    ${btnTxt} 
                 `;
         btn.disabled = true;
       });
@@ -192,12 +194,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.addEventListener("pageshow", function (event) {
     if (event.persisted) {
-      loadingButtons.forEach((button) => {
+      loadingBtns.forEach((button) => {
         if (button.dataset.originalHtml) {
           button.innerHTML = button.dataset.originalHtml;
         }
         button.disabled = false;
       });
     }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const messageElements = document.querySelectorAll("#django-messages div");
+
+  messageElements.forEach((el) => {
+    const message = el.getAttribute("data-message");
+    let type = el.getAttribute("data-type");
+
+    if (type === "error") {
+      type = "info";
+    }
+
+    showToast(message, type);
   });
 });

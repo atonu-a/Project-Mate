@@ -36,29 +36,28 @@
           </div>
 
           <div class="header-actions">
-            <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button" title="Toggle Theme" aria-label="Toggle theme">
+            <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button icon-button--optional" title="Toggle Theme" aria-label="Toggle theme">
               <i data-lucide="sun" class="theme-icon-sun"></i>
               <i data-lucide="moon" class="theme-icon-moon"></i>
             </button>
-
-            <button onclick="window.location.href='{% url 'signout' %}'">Logout</button>
 
             <button onclick="window.location.href='{% url 'create' %}'" class="header-cta">
               <i data-lucide="plus" class="header-cta__icon"></i>
               <span>New Project</span>
             </button>
 
+            
+            {% if request.user.is_authenticated %}
             <button onclick="window.location.href='{% url 'notifications' %}'" class="icon-button icon-button--optional" aria-label="Notifications">
               <i data-lucide="bell" class="icon-button__icon"></i>
               <span class="icon-button__ping"></span>
               <span class="icon-button__dot"></span>
             </button>
 
-            <button onclick="window.location.href='{% url 'messages' %}'" class="icon-button icon-button--optional" aria-label="Messages">
+            <button onclick="window.location.href='{% url 'messages' %}'" class="icon-button " aria-label="Messages">
               <i data-lucide="message-square" class="icon-button__icon"></i>
               <span class="icon-button__dot icon-button__dot--accent"></span>
             </button>
-
             <div class="user-menu">
               <button onclick="toggleUserMenu()" class="user-menu__trigger" aria-label="Account menu">
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Alex Rivera" class="user-menu__avatar" />
@@ -83,12 +82,15 @@
                   <span>Join Requests</span>
                 </a>
                 <div class="user-menu__divider"></div>
-                <a href="#" onclick="showToast('Signed out successfully'); return false;" class="user-menu__link user-menu__link--danger">
+                <a href="{% url 'signout' %}"  return false; class="user-menu__link user-menu__link--danger">
                   <i data-lucide="log-out" class="user-menu__link-icon"></i>
                   <span>Sign Out</span>
                 </a>
               </div>
             </div>
+            {% else %}
+            <button class="btn-tonal" onclick="window.location.href='{% url 'signin' %}'">Sign In</button>
+            {% endif %}
 
             <button onclick="toggleMobileMenu()" class="menu-toggle" aria-label="Open menu"><i data-lucide="menu" class="menu-toggle__icon"></i></button>
           </div>
@@ -138,6 +140,7 @@
             <span class="sidebar__count sidebar__count--alert">2</span>
           </a>
 
+          {% if request.user.is_authenticated %}
           <div class="sidebar__heading sidebar__heading--spaced">Collaboration</div>
 
           <a href="{% url 'messages' %}" class="sidebar__link 
@@ -165,6 +168,9 @@
             <i data-lucide="user-circle" class="sidebar__link-icon"></i>
             <span>My Profile</span>
           </a>
+          
+          {% endif %}
+          
         </div>
       </aside>
       {% endblock sidebar %}
@@ -219,10 +225,24 @@
           <i data-lucide="user-circle" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
           <span>My Profile</span>
         </a>
+        <button onclick="toggleTheme()" id="themeToggleBtn" class="mobile-menu__link" title="Toggle Theme" aria-label="Toggle theme">
+          <i data-lucide="sun-moon" class="mobile-menu__link-icon mobile-menu__link-icon--success"></i>
+              Change Theme
+            </button>
       </nav>
     </div>
 
+
     <div id="toastContainer" class="toast-container"></div>
+    
+
+    {% if messages %}
+    <div id="django-messages" class="toast-container" style="display: none;">
+      {% for message in messages %}
+      <div data-message="{{ message|escapejs }}" data-type="{{ message.tags }}"></div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
     <script src="{% static 'js/app.js' %}"></script>
   </body>
