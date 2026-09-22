@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+{% block sidebar %}
+
+{% endblock %}
+{% block main %}
+  <main class="auth-main">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-card__head">
+          <h1 class="auth-title">Create your account</h1>
+          <p class="auth-subtitle">Whatever field you work in, find people to build with.</p>
+        </div>
+
+        <form class="form" method="post">
+          {% csrf_token %}
+
+          <!-- First Name -->
+          <div class="form-field">
+            <label for="{{ user_form.first_name.id_for_label }}" class="form-label">First Name</label>
+            {{ user_form.first_name }}
+            {% if user_form.first_name.errors %}
+              <span class="text-danger">{{ user_form.first_name.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-field">
+            <label for="{{ user_form.last_name.id_for_label }}" class="form-label">Last Name</label>
+            {{ user_form.last_name }}
+            {% if user_form.last_name.errors %}
+              <span class="text-danger">{{ user_form.last_name.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Username -->
+          <div class="form-field">
+            <label for="{{ user_form.username.id_for_label }}" class="form-label">Username</label>
+            {{ user_form.username }}
+            {% if user_form.username.errors %}
+              <span class="text-danger">{{ user_form.username.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Email -->
+          <div class="form-field">
+            <label for="{{ user_form.email.id_for_label }}" class="form-label">Email</label>
+            {{ user_form.email }}
+            {% if user_form.email.errors %}
+              <span class="text-danger">{{ user_form.email.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Password 1 -->
+          <div class="form-field">
+            <label for="{{ user_form.password1.id_for_label }}" class="form-label">Password</label>
+            <div class="form-input-group">
+              {{ user_form.password1 }}
+              <button type="button" onclick="togglePasswordVisibility(this)" class="form-input-group__toggle" aria-label="Show password"><i data-lucide="eye" class="form-input-group__toggle-icon"></i></button>
+            </div>
+            {% if user_form.password1.errors %}
+              <span class="text-danger">{{ user_form.password1.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Password 2 -->
+          <div class="form-field">
+            <label for="{{ user_form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+            <div class="form-input-group">
+              {{ user_form.password2 }}
+              <button type="button" onclick="togglePasswordVisibility(this)" class="form-input-group__toggle" aria-label="Show password"><i data-lucide="eye" class="form-input-group__toggle-icon"></i></button>
+            </div>
+            {% if user_form.password2.errors %}
+              <span class="text-danger">{{ user_form.password2.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn-primary btn-loading" data-text="Creating...">Create Account</button>
+        </form>
+
+        <div class="auth-divider">or</div>
+
+        <button type="button" onclick="showToast('Google sign-up coming soon', 'info')" class="btn-secondary">
+          <i data-lucide="chrome" class="btn-icon"></i>
+          <span><i class="fa-brands fa-google"></i> Continue with Google</span>
+        </button>
+      </div>
+
+      <p class="auth-footer">
+        Already have an account? <a href="{% url 'signin' %}" class="auth-footer__link">Sign in</a>
+      </p>
+    </div>
+  </main>
+{% endblock %}

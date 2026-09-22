@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ProjectPartner — style.css
+   TeamNest — style.css
    --------------------------------------------------------------------------
    Mobile-first. Base rules = phones; larger screens are added with
    min-width media queries:
@@ -23,6 +23,8 @@
      8  Sidebars                 17  Join requests
      9  Shared bits              18  Messages
                                  19  Toasts · 20  Motion
+                                 21  Auth (sign in / sign up)
+                                 22  Onboarding / edit profile
    ========================================================================== */
 
 
@@ -3053,4 +3055,298 @@ textarea::placeholder {
         animation: none !important;
         transition: none !important;
     }
+}
+
+/* 21. Auth (sign in / sign up) -------------------------------------------- */
+.auth-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 32px 16px;
+}
+
+.auth-wrap {
+    width: 100%;
+    max-width: 26rem;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.auth-card {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 28px 24px;
+    border-radius: 24px;
+    border-color: var(--border-80);
+}
+
+.auth-card__head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+}
+
+.auth-title {
+    font-size: 1.375rem;
+    font-weight: 800;
+}
+
+.auth-subtitle {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+}
+
+.form-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-input-group .form-input {
+    padding-right: 44px;
+}
+
+.form-input-group__toggle {
+    position: absolute;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    color: var(--color-text-muted);
+    border-radius: 8px;
+}
+
+.form-input-group__toggle:hover { color: var(--color-text); }
+
+.form-input-group__toggle-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.form-check-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+}
+
+.form-check__input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.form-check__link {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.form-check__link:hover { text-decoration: underline; }
+
+.auth-forgot {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+.auth-forgot:hover { text-decoration: underline; }
+
+.auth-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+}
+
+.auth-footer {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+}
+
+.auth-footer__link {
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.auth-footer__link:hover { text-decoration: underline; }
+
+@media (min-width: 640px) {
+    .auth-card { padding: 40px; }
+    .auth-title { font-size: 1.5rem; }
+}
+
+
+/* 22. Onboarding / edit profile -------------------------------------------- */
+.onboarding-main {
+    flex: 1;
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.onboarding-head {
+    text-align: center;
+}
+
+.onboarding-head .eyebrow { justify-content: center; }
+
+.avatar-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-upload__frame {
+    position: relative;
+    width: 96px;
+    height: 96px;
+}
+
+.avatar-upload__preview {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--color-border);
+    background: var(--color-elevated);
+}
+
+.avatar-upload__edit {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: #fff;
+    background: var(--color-primary);
+    border: 3px solid var(--color-surface);
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.avatar-upload__edit:hover { background: var(--color-primary-hover); }
+
+.avatar-upload__edit-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.avatar-upload__input { display: none; }
+
+.avatar-upload__hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 4px;
+}
+
+.form-section__title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+}
+
+.form-section__hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.field-chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.field-chip {
+    padding: 8px 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    transition: all 0.15s;
+}
+
+.field-chip:hover { border-color: var(--color-primary); color: var(--color-text); }
+
+.field-chip.is-selected {
+    color: #fff;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.onboarding-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 8px;
+}
+
+.onboarding-actions .form-submit {
+    width: 100%;
+    padding: 14px 24px;
+}
+
+.onboarding-skip {
+    text-align: center;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+.onboarding-skip:hover { color: var(--color-text); }
+
+@media (min-width: 640px) {
+    .onboarding-main { padding: 32px 24px 64px; }
+    .avatar-upload__frame,
+    .avatar-upload__preview { width: 112px; height: 112px; }
 }

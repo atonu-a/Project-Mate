@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block main %}
-
     <main class="page-main page-main--medium">
         <section class="profile-hero">
             <div class="profile-hero__glow"></div>
@@ -12,7 +11,7 @@
                             <h1 class="profile-hero__name">Alex Rivera</h1>
                             <p class="profile-hero__role">Fullstack Architect &amp; AI Enthusiast</p>
                         </div>
-                        <button onclick="showToast('Profile settings saved!')" class="btn-outline">Edit Profile</button>
+                        <button onclick="window.location.href='{% url 'edit_profile' %}'" class="btn-outline">Edit Profile</button>
                     </div>
                     <p class="profile-hero__bio">Building reactive web applications and experimenting with local vector embeddings. Passionate about open-source collaboration and distributed systems.</p>
                 </div>
@@ -54,4 +53,6 @@
         </div>
     </main>
 
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/app.js"></script>
 {% endblock main %}

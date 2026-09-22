@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+{% endblock header %}
+{% block sidebar %}
+{% endblock sidebar %}
+{% block main %}
+    <main class="onboarding-main">
+        <div class="onboarding-head">
+            <div class="eyebrow">
+                <i data-lucide="user-check" class="eyebrow__icon"></i>
+                <span>One last step</span>
+            </div>
+            <h1 class="page-title">Tell us about you</h1>
+            <p class="page-subtitle">TeamNest is for every field, not just coders — this helps people understand what you bring to a team.</p>
+        </div>
+
+        <form onsubmit="event.preventDefault(); showToast('Profile complete — welcome to TeamNest!'); setTimeout(()=>window.location.href='index.html', 1200);" class="form-panel">
+
+            <div class="avatar-upload">
+                <div class="avatar-upload__frame">
+                    <img id="setupAvatarPreview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' rx='48' fill='%231D2A44'/><circle cx='48' cy='38' r='18' fill='%2364748B'/><path d='M16 90c4-20 22-32 32-32s28 12 32 32' fill='%2364748B'/></svg>" alt="Profile photo preview" class="avatar-upload__preview">
+                    <label for="setupAvatarInput" class="avatar-upload__edit" aria-label="Upload profile photo">
+                        <i data-lucide="camera" class="avatar-upload__edit-icon"></i>
+                    </label>
+                    <input id="setupAvatarInput" type="file" accept="image/*" onchange="previewAvatar(this, 'setupAvatarPreview')" class="avatar-upload__input">
+                </div>
+                <p class="avatar-upload__hint">Add a profile photo (optional)</p>
+            </div>
+
+            <div class="form-field">
+                <label for="setupName" class="form-label">Full Name</label>
+                <input id="setupName" type="text" required placeholder="Jordan Lee" class="form-input">
+            </div>
+
+            <div class="form-field">
+                <label for="setupHeadline" class="form-label">Headline</label>
+                <input id="setupHeadline" type="text" required placeholder="e.g., Marketing Strategist, Product Designer, Backend Developer, Student" class="form-input">
+                <p class="form-hint">One line describing what you do — technical or not.</p>
+            </div>
+
+            <div class="form-section">
+                <span class="form-section__title">What field are you in?</span>
+                <span class="form-section__hint">Select all that apply.</span>
+                <div class="field-chip-group">
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Technology &amp; Development</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Design &amp; Creative</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Marketing &amp; Sales</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Business &amp; Operations</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Writing &amp; Content</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Education &amp; Training</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Healthcare</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Finance</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Student</button>
+                    <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Other</button>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="setupSkills" class="form-label">Skills &amp; Interests (comma separated)</label>
+                <input id="setupSkills" type="text" placeholder="e.g., Copywriting, Excel Modeling, React, Public Speaking, Illustration..." class="form-input">
+            </div>
+
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="setupLocation" class="form-label">Location</label>
+                    <input id="setupLocation" type="text" placeholder="City, Country (or Remote)" class="form-input">
+                </div>
+                <div class="form-field">
+                    <label for="setupLink" class="form-label">Portfolio / Profile Link</label>
+                    <input id="setupLink" type="url" placeholder="https://..." class="form-input">
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="setupBio" class="form-label">Short Bio</label>
+                <textarea id="setupBio" rows="4" placeholder="Tell teammates what you're looking for and what you can offer, in plain language." class="form-input"></textarea>
+            </div>
+
+            <div class="onboarding-actions">
+                <button type="submit" class="btn-primary form-submit">Complete Profile</button>
+                <a href="index.html" class="onboarding-skip">Skip for now</a>
+            </div>
+        </form>
+    </main>
+
+{% endblock main %}

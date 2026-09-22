@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block main %}
+
+    <main class="page-main page-main--narrow">
+        <div class="form-panel">
+            <header>
+                <div class="eyebrow">
+                    <i data-lucide="pencil" class="eyebrow__icon"></i>
+                    <span>Edit Profile</span>
+                </div>
+                <h1 class="page-title">Update your details</h1>
+                <p class="page-subtitle">Keep your profile current so the right people can find you.</p>
+            </header>
+
+            <form onsubmit="event.preventDefault(); showToast('Profile updated!'); setTimeout(()=>window.location.href='{% url 'profile' %}', 1200);" class="form">
+
+                <div class="avatar-upload">
+                    <div class="avatar-upload__frame">
+                        <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" alt="Profile photo preview" class="avatar-upload__preview">
+                        <label for="editAvatarInput" class="avatar-upload__edit" aria-label="Change profile photo">
+                            <i data-lucide="camera" class="avatar-upload__edit-icon"></i>
+                        </label>
+                        <input id="editAvatarInput" type="file" accept="image/*" onchange="previewAvatar(this, 'editAvatarPreview')" class="avatar-upload__input">
+                    </div>
+                    <p class="avatar-upload__hint">Click the camera icon to change your photo</p>
+                </div>
+
+                <div class="form-field">
+                    <label for="editName" class="form-label">Full Name</label>
+                    <input id="editName" type="text" required value="Alex Rivera" class="form-input">
+                </div>
+
+                <div class="form-field">
+                    <label for="editHeadline" class="form-label">Headline</label>
+                    <input id="editHeadline" type="text" required value="Fullstack Architect &amp; AI Enthusiast" class="form-input">
+                    <p class="form-hint">One line describing what you do — technical or not.</p>
+                </div>
+
+                <div class="form-section">
+                    <span class="form-section__title">What field are you in?</span>
+                    <span class="form-section__hint">Select all that apply.</span>
+                    <div class="field-chip-group">
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip is-selected">Technology &amp; Development</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Design &amp; Creative</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Marketing &amp; Sales</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Business &amp; Operations</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Writing &amp; Content</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Education &amp; Training</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Healthcare</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Finance</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Student</button>
+                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Other</button>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="editSkills" class="form-label">Skills &amp; Interests (comma separated)</label>
+                    <input id="editSkills" type="text" value="React, TypeScript, Node.js, Python, Tailwind CSS, PostgreSQL" class="form-input">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="editLocation" class="form-label">Location</label>
+                        <input id="editLocation" type="text" placeholder="City, Country (or Remote)" class="form-input">
+                    </div>
+                    <div class="form-field">
+                        <label for="editLink" class="form-label">Portfolio / Profile Link</label>
+                        <input id="editLink" type="url" placeholder="https://..." class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="editBio" class="form-label">Short Bio</label>
+                    <textarea id="editBio" rows="4" class="form-input">Building reactive web applications and experimenting with local vector embeddings. Passionate about open-source collaboration and distributed systems.</textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='{% url 'profile' %}'" class="form-cancel">Cancel</button>
+                    <button type="submit" class="form-submit">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+{% endblock main %}
