@@ -178,41 +178,51 @@ window.onload = function () {
   if (typeof lucide !== "undefined") lucide.createIcons();
 };
 
-document.addEventListener("DOMContentLoaded", function () {
-  const loadingBtns = document.querySelectorAll(".btn-loading");
-  loadingBtns.forEach((btn) => {
-    const parentForm = btn.closest("form");
 
+window.addEventListener("load", () => {
+  const preloader = document.getElementById("preloader");
 
-    if (parentForm) {
-      parentForm.addEventListener("submit", function (e) {
+  // Add the hidden class to trigger the smooth CSS transition
+  preloader.classList.add("preloader-hidden");
 
-        const btnTxt = btn.dataset.text;
-        btn.dataset.originalHtml = btn.innerHTML;
-
-        btn.innerHTML = `
-                   <span class="spinner spinner-sm spinner--on-primary" role="status" aria-hidden="true"></span>
-                    ${btnTxt} 
-                `;
-        btn.disabled = true;
-      });
-    }
-  });
-
-  // --- Back Button Error Fixer ---
-
-  window.addEventListener("pageshow", function (event) {
-    if (event.persisted) {
-      loadingBtns.forEach((button) => {
-        if (button.dataset.originalHtml) {
-          button.innerHTML = button.dataset.originalHtml;
-        }
-        button.disabled = false;
-      });
-    }
-  });
+  // Optional: Completely remove the element from the DOM after the animation finishes
+  setTimeout(() => {
+    preloader.remove();
+  }, 500);
 });
 
+// document.addEventListener("DOMContentLoaded", function () {
+//   const loadingBtns = document.querySelectorAll(".btn-loading");
+//   loadingBtns.forEach((btn) => {
+//     const parentForm = btn.closest("form");
+
+//     if (parentForm) {
+//       parentForm.addEventListener("submit", function (e) {
+//         const btnTxt = btn.dataset.text || btn.textContent.trim() || "Loading";
+//         btn.dataset.originalHtml = btn.innerHTML;
+
+//         btn.innerHTML = `
+//                    <span class="spinner spinner--sm spinner--on-primary" role="status" aria-hidden="true"></span>
+//                     ${btnTxt}
+//                 `;
+//         btn.disabled = true;
+//       });
+//     }
+//   });
+
+//   // --- Back Button Error Fixer ---
+
+//   window.addEventListener("pageshow", function (event) {
+//     if (event.persisted) {
+//       loadingBtns.forEach((button) => {
+//         if (button.dataset.originalHtml) {
+//           button.innerHTML = button.dataset.originalHtml;
+//         }
+//         button.disabled = false;
+//       });
+//     }
+//   });
+// });
 
 document.addEventListener("DOMContentLoaded", () => {
   const messageElements = document.querySelectorAll("#django-messages div");
