@@ -2,7 +2,28 @@
 
 
 {% block header %}
-{% endblock header %}
+<header class="site-header">
+    <div class="site-header__inner">
+        <div class="brand" onclick="window.location.href='{% url 'home' %}'">
+            <div class="brand__logo">
+                <i data-lucide="layers" class="brand__logo-icon"></i>
+            </div>
+            <div class="brand__text">
+                <span class="brand__name">TeamNest</span>
+                <span class="brand__version">v2.5 Pro</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button" title="Toggle Theme"
+                aria-label="Toggle theme">
+                <i data-lucide="sun" class="theme-icon-sun"></i>
+                <i data-lucide="moon" class="theme-icon-moon"></i>
+            </button>
+        </div>
+    </div>
+</header>
+{% endblock %}
 {% block sidebar %}
 {% endblock sidebar %}
 {% block main %}

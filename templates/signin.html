@@ -35,11 +35,6 @@
           <p class="auth-subtitle">Sign in to find your next collaborator or project.</p>
         </div>
 
-        {% if messages %}
-          {% for message in messages %}
-            <p style="color: red;">{{ message }}</p>
-          {% endfor %}
-        {% endif %}
 
         <form method="post" class="form">
           {% csrf_token %}
