@@ -1,85 +1,269 @@
 {% extends "base.html" %}
+
 {% block main %}
 
-    <main class="page-main page-main--narrow">
-        <div class="form-panel">
-            <header>
-                <div class="eyebrow">
-                    <i data-lucide="pencil" class="eyebrow__icon"></i>
-                    <span>Edit Profile</span>
-                </div>
-                <h1 class="page-title">Update your details</h1>
-                <p class="page-subtitle">Keep your profile current so the right people can find you.</p>
-            </header>
+<main class="page-main page-main--narrow">
 
-            <form onsubmit="event.preventDefault(); showToast('Profile updated!'); setTimeout(()=>window.location.href='{% url 'profile' %}', 1200);" class="form">
+    <div class="form-panel">
 
-                <div class="avatar-upload">
-                    <div class="avatar-upload__frame">
-                        <img id="editAvatarPreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80" alt="Profile photo preview" class="avatar-upload__preview">
-                        <label for="editAvatarInput" class="avatar-upload__edit" aria-label="Change profile photo">
-                            <i data-lucide="camera" class="avatar-upload__edit-icon"></i>
-                        </label>
-                        <input id="editAvatarInput" type="file" accept="image/*" onchange="previewAvatar(this, 'editAvatarPreview')" class="avatar-upload__input">
-                    </div>
-                    <p class="avatar-upload__hint">Click the camera icon to change your photo</p>
+        <header>
+            <div class="eyebrow">
+                <i data-lucide="pencil" class="eyebrow__icon"></i>
+                <span>Edit Profile</span>
+            </div>
+
+            <h1 class="page-title">Update your details</h1>
+
+            <p class="page-subtitle">
+                Keep your profile current so the right people can find you.
+            </p>
+        </header>
+
+
+        <form method="post" class="form" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+
+            <!-- Profile Picture -->
+            <div class="avatar-upload">
+
+                <div class="avatar-upload__frame">
+
+                    {% if profile.profile_pic %}
+                    <img id="editAvatarPreview" src="{{ profile.profile_pic.url }}" alt="Profile photo preview"
+                        class="avatar-upload__preview">
+                    {% else %}
+                    <img id="editAvatarPreview" src="/static/images/default.svg" alt="Profile photo preview"
+                        class="avatar-upload__preview">
+                    {% endif %}
+
+                    <label for="editAvatarInput" class="avatar-upload__edit" aria-label="Change profile photo">
+                        <i data-lucide="camera" class="avatar-upload__edit-icon"></i>
+                    </label>
+
+                    <input id="editAvatarInput" type="file" accept="image/*"
+                        onchange="previewAvatar(this, 'editAvatarPreview')" class="avatar-upload__input"
+                        name="profile_pic">
+
                 </div>
+
+                <p class="avatar-upload__hint">
+                    Click the camera icon to change your photo
+                </p>
+
+            </div>
+
+
+            <!-- Full Name -->
+            <div class="form-field">
+
+                <label for="editName" class="form-label">
+                    Full Name
+                </label>
+
+                <input id="editName" type="text" required class="form-input" name="full_name"
+                    value="{{ request.user.first_name }} {{ request.user.last_name }}">
+
+            </div>
+
+
+            <!-- Headline -->
+            <div class="form-field">
+
+                <label for="editHeadline" class="form-label">
+                    Headline
+                </label>
+
+                <input id="editHeadline" type="text" required name="headline" value="{{ profile.headline }}"
+                    class="form-input">
+
+                <p class="form-hint">
+                    One line describing what you do — technical or not.
+                </p>
+
+            </div>
+
+
+            <!-- Fields -->
+            <div class="form-section">
+
+                <span class="form-section__title">
+                    What field are you in?
+                </span>
+
+                <span class="form-section__hint">
+                    Select all that apply.
+                </span>
+
+
+                <div class="field-chip-group">
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Technology & Development"
+                        class="field-chip {% if 'Technology & Development' in selected_fields %}is-selected{% endif %}">
+                        Technology &amp; Development
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Design & Creative"
+                        class="field-chip {% if 'Design & Creative' in selected_fields %}is-selected{% endif %}">
+                        Design &amp; Creative
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Marketing & Sales"
+                        class="field-chip {% if 'Marketing & Sales' in selected_fields %}is-selected{% endif %}">
+                        Marketing &amp; Sales
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Business & Operations"
+                        class="field-chip {% if 'Business & Operations' in selected_fields %}is-selected{% endif %}">
+                        Business &amp; Operations
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Writing & Content"
+                        class="field-chip {% if 'Writing & Content' in selected_fields %}is-selected{% endif %}">
+                        Writing &amp; Content
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Education & Training"
+                        class="field-chip {% if 'Education & Training' in selected_fields %}is-selected{% endif %}">
+                        Education &amp; Training
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Healthcare"
+                        class="field-chip {% if 'Healthcare' in selected_fields %}is-selected{% endif %}">
+                        Healthcare
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Finance"
+                        class="field-chip {% if 'Finance' in selected_fields %}is-selected{% endif %}">
+                        Finance
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Student"
+                        class="field-chip {% if 'Student' in selected_fields %}is-selected{% endif %}">
+                        Student
+                    </button>
+
+                    <button type="button" onclick="toggleFieldChip(this)" data-value="Other"
+                        class="field-chip {% if 'Other' in selected_fields %}is-selected{% endif %}">
+                        Other
+                    </button>
+
+                </div>
+
+                <input type="hidden" name="fields" id="selectedFields">
+
+
+                <input type="hidden" name="fields" id="selectedFields">
+
+            </div>
+
+
+            <!-- Skills -->
+            <div class="form-field">
+
+                <label for="editSkills" class="form-label">
+                    Skills &amp; Interests (comma separated)
+                </label>
+
+                <input id="editSkills" type="text" name="skills"
+                    value="{% for skill in profile.skills.all %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+                    class="form-input" placeholder="e.g., Python, Django, React, Git...">
+
+            </div>
+
+
+            <!-- Location & URL -->
+            <div class="form-row">
 
                 <div class="form-field">
-                    <label for="editName" class="form-label">Full Name</label>
-                    <input id="editName" type="text" required value="Alex Rivera" class="form-input">
+
+                    <label for="editLocation" class="form-label">
+                        Location
+                    </label>
+
+                    <input id="editLocation" type="text" name="location" value="{{ profile.location|default:'' }}"
+                        placeholder="City, Country (or Remote)" class="form-input">
+
                 </div>
+
 
                 <div class="form-field">
-                    <label for="editHeadline" class="form-label">Headline</label>
-                    <input id="editHeadline" type="text" required value="Fullstack Architect &amp; AI Enthusiast" class="form-input">
-                    <p class="form-hint">One line describing what you do — technical or not.</p>
+
+                    <label for="editLink" class="form-label">
+                        Portfolio / Profile Link
+                    </label>
+
+                    <input id="editLink" type="url" name="url" value="{{ profile.url|default:'' }}"
+                        placeholder="https://..." class="form-input">
+
                 </div>
 
-                <div class="form-section">
-                    <span class="form-section__title">What field are you in?</span>
-                    <span class="form-section__hint">Select all that apply.</span>
-                    <div class="field-chip-group">
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip is-selected">Technology &amp; Development</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Design &amp; Creative</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Marketing &amp; Sales</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Business &amp; Operations</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Writing &amp; Content</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Education &amp; Training</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Healthcare</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Finance</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Student</button>
-                        <button type="button" onclick="toggleFieldChip(this)" class="field-chip">Other</button>
-                    </div>
-                </div>
+            </div>
 
-                <div class="form-field">
-                    <label for="editSkills" class="form-label">Skills &amp; Interests (comma separated)</label>
-                    <input id="editSkills" type="text" value="React, TypeScript, Node.js, Python, Tailwind CSS, PostgreSQL" class="form-input">
-                </div>
 
-                <div class="form-row">
-                    <div class="form-field">
-                        <label for="editLocation" class="form-label">Location</label>
-                        <input id="editLocation" type="text" placeholder="City, Country (or Remote)" class="form-input">
-                    </div>
-                    <div class="form-field">
-                        <label for="editLink" class="form-label">Portfolio / Profile Link</label>
-                        <input id="editLink" type="url" placeholder="https://..." class="form-input">
-                    </div>
-                </div>
+            <!-- Bio -->
+            <div class="form-field">
 
-                <div class="form-field">
-                    <label for="editBio" class="form-label">Short Bio</label>
-                    <textarea id="editBio" rows="4" class="form-input">Building reactive web applications and experimenting with local vector embeddings. Passionate about open-source collaboration and distributed systems.</textarea>
-                </div>
+                <label for="editBio" class="form-label">
+                    Short Bio
+                </label>
 
-                <div class="form-actions">
-                    <button type="button" onclick="window.location.href='{% url 'profile' %}'" class="form-cancel">Cancel</button>
-                    <button type="submit" class="form-submit">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </main>
+                <textarea id="editBio" name="bio" rows="4" class="form-input"
+                    placeholder="Tell teammates what you're looking for and what you can offer, in plain language.">{{ profile.bio }}</textarea>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="form-actions">
+
+                <button type="button" onclick="window.location.href='{% url 'profile' %}'" class="form-cancel">
+                    Cancel
+                </button>
+
+                <button type="submit" class="form-submit">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+</main>
+
+<script>
+
+    function updateSelectedFields() {
+
+        const selectedFields = [];
+
+        document.querySelectorAll(".field-chip.is-selected").forEach(chip => {
+            selectedFields.push(chip.dataset.value);
+        });
+
+        document.getElementById("selectedFields").value =
+            selectedFields.join(",");
+    }
+
+
+    function toggleFieldChip(button) {
+
+        button.classList.toggle("is-selected");
+
+        updateSelectedFields();
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        updateSelectedFields();
+
+    });
+
+</script>
 
 {% endblock main %}

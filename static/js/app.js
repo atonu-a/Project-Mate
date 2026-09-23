@@ -147,8 +147,17 @@ function togglePasswordVisibility(btn) {
 }
 
 // Selectable "field / industry" chips on the profile form (multi-select)
-function toggleFieldChip(chip) {
-  chip.classList.toggle("is-selected");
+
+function toggleFieldChip(button) {
+  button.classList.toggle("is-selected");
+
+  const selectedFields = [];
+
+  document.querySelectorAll(".field-chip.is-selected").forEach((chip) => {
+    selectedFields.push(chip.textContent.trim());
+  });
+
+  document.getElementById("selectedFields").value = selectedFields.join(",");
 }
 
 // Live preview for the avatar file picker on the profile form
