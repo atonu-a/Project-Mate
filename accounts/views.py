@@ -53,6 +53,8 @@ def complete_profile(request):
         profile.headline = request.POST.get("headline", "")
         profile.location = request.POST.get("location","")
         profile.url = request.POST.get("url","")
+        profile.institute = request.POST.get("institute", "")
+        profile.github = request.POST.get("github", "")
         profile.bio = request.POST.get("bio", "")
 
         
@@ -139,12 +141,17 @@ def signin(request):
 #       Profile
 # ======================
 def profile(request):
-    return render(request, "profile.html")
+    profile = Profile.objects.get(user = request.user)
+    context = {
+        "profile":profile
+    }
+    return render(request, "profile.html", context)
 
 
 # ======================
 #    Profile Edit
 # ======================
+@login_required(login_url="signin")
 def edit_profile(request):
     profile = Profile.objects.get(user=request.user)
 
@@ -166,6 +173,8 @@ def edit_profile(request):
         profile.headline = request.POST.get("headline", "")
         profile.location = request.POST.get("location", "")
         profile.url = request.POST.get("url", "")
+        profile.institute = request.POST.get("institute", "")
+        profile.github = request.POST.get("github", "")
         profile.bio = request.POST.get("bio", "")
 
         # Profile picture

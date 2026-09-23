@@ -173,7 +173,7 @@
             </div>
 
 
-            <!-- Location & URL -->
+            <!-- Location & Institute -->
             <div class="form-row">
 
                 <div class="form-field">
@@ -187,16 +187,45 @@
 
                 </div>
 
-
                 <div class="form-field">
 
+                    <label for="editLocation" class="form-label">
+                        Organization / Institute
+                    </label>
+
+                    <input id="editLocation" type="text" name="institute" value="{{ profile.institute|default:'' }}"
+                        placeholder="e.g. ABC Company Ltd." class="form-input">
+
+                </div>
+
+
+                
+
+            </div>
+            <!-- URL & Github -->
+            <div class="form-row">
+
+                <div class="form-field">
+                
                     <label for="editLink" class="form-label">
                         Portfolio / Profile Link
                     </label>
+                
+                    <input id="editLink" type="url" name="url" value="{{ profile.url|default:'' }}" placeholder="https://..."
+                        class="form-input">
+                
+                </div>
 
-                    <input id="editLink" type="url" name="url" value="{{ profile.url|default:'' }}"
-                        placeholder="https://..." class="form-input">
 
+                <div class="form-field">
+                
+                    <label for="editLink" class="form-label">
+                        GitHub Link
+                    </label>
+                
+                    <input id="editLink" type="url" name="github" value="{{ profile.github|default:'' }}" placeholder="https://..."
+                        class="form-input">
+                
                 </div>
 
             </div>
@@ -222,7 +251,7 @@
                     Cancel
                 </button>
 
-                <button type="submit" class="form-submit">
+                <button type="submit" class="form-submit btn-loading" data-text="Saving...">
                     Save Changes
                 </button>
 

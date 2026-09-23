@@ -8,15 +8,40 @@
                 <div class="profile-hero__info">
                     <div class="profile-hero__top">
                         <div>
-                            <h1 class="profile-hero__name">Alex Rivera</h1>
-                            <p class="profile-hero__role">Fullstack Architect &amp; AI Enthusiast</p>
+                            <h1 class="profile-hero__name">{{request.user.first_name}} {{request.user.last_name}}</h1>
+                            <p class="profile-hero__role">{{profile.headline}}</p>
                         </div>
                         <button onclick="window.location.href='{% url 'edit_profile' %}'" class="btn-outline">Edit Profile</button>
                     </div>
-                    <p class="profile-hero__bio">Building reactive web applications and experimenting with local vector embeddings. Passionate about open-source collaboration and distributed systems.</p>
+
+                    <p class="profile-hero__bio">{{profile.bio}}</p>
                 </div>
             </div>
         </section>
+        <div>
+            <section class="profile-card profile-card--wide">
+                <h1 class="profile-card__title">More Details :</h1>
+                <div class="grid lg:grid-cols-2">
+                    <div>
+                        <p><i class="fa-solid fa-location-dot"></i> {{profile.location}}</p>
+                        <p><i class="fa-solid fa-building"></i> {{profile.institute}}</p>
+                    </div>
+                    {% if profile.url or profile.github %}
+                    <div>
+                        {% if profile.url %}
+                        <p><a href="{{profile.url}}"><i class="fa-solid fa-link"></i> Website</a></p>
+                        {% endif %}
+
+                        {% if profile.url %}
+                        <p><a href="{{profile.github}}"><i class="fa-brands fa-github"></i> Github</a></p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+            
+                    
+                </div>
+            </section>
+        </div>
 
         <div class="profile-grid">
             <section class="profile-card profile-card--wide">
@@ -25,12 +50,9 @@
                     <span>Skills &amp; Expertise</span>
                 </h2>
                 <div class="skill-list">
-                    <span class="skill-pill">React</span>
-                    <span class="skill-pill">TypeScript</span>
-                    <span class="skill-pill">Node.js</span>
-                    <span class="skill-pill">Python</span>
-                    <span class="skill-pill">Tailwind CSS</span>
-                    <span class="skill-pill">PostgreSQL</span>
+                    {% for skill in profile.skills.all %}
+                        <span class="skill-pill">{{skill.name}}</span>
+                    {% endfor %}
                 </div>
             </section>
 

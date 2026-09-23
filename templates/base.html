@@ -8,12 +8,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-
+    <div id="preloader">
+      <div class="spinner"></div>
+    </div>
     
 
     <!-- Top navigation -->
@@ -60,14 +63,14 @@
             </button>
             <div class="user-menu">
               <button onclick="toggleUserMenu()" class="user-menu__trigger" aria-label="Account menu">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Alex Rivera" class="user-menu__avatar" />
-                <span class="user-menu__name">Alex Rivera</span>
+                <img src="{{ profile.profile_pic.url }}" alt="Alex Rivera" class="user-menu__avatar" />
+                <span class="user-menu__name">{{ request.user.username }}</span>
                 <i data-lucide="chevron-down" class="user-menu__chevron"></i>
               </button>
               <div id="userDropdown" class="user-menu__dropdown">
                 <div class="user-menu__info">
                   <p class="user-menu__info-label">Signed in as</p>
-                  <p class="user-menu__info-email">alex.rivera@dev.io</p>
+                  <p class="user-menu__info-email">{{request.user.email}}</p>
                 </div>
                 <a href="{% url 'profile' %}" class="user-menu__link">
                   <i data-lucide="user" class="user-menu__link-icon"></i>
