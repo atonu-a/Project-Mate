@@ -39,7 +39,7 @@ def signup(request):
 # ======================
 #  Profile Completeion
 # ======================
-@login_required
+@login_required(login_url="signin")
 def complete_profile(request):
     profile, created = Profile.objects.get_or_create(
         user = request.user
@@ -107,7 +107,7 @@ def complete_profile(request):
 # ======================
 #       Signout
 # ======================
-@login_required
+@login_required(login_url="signin")
 def signout(request):
     logout(request)
     messages.success(request, "Logged out successfully!")
@@ -140,6 +140,7 @@ def signin(request):
 # ======================
 #       Profile
 # ======================
+@login_required(login_url="signin")
 def profile(request):
     profile = Profile.objects.get(user = request.user)
     context = {
