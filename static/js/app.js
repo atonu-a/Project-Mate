@@ -178,51 +178,55 @@ window.onload = function () {
   if (typeof lucide !== "undefined") lucide.createIcons();
 };
 
-
+// Preloader
 window.addEventListener("load", () => {
-  const preloader = document.getElementById("preloader");
+  try {
+    const preloader = document.getElementById("preloader");
 
-  // Add the hidden class to trigger the smooth CSS transition
-  preloader.classList.add("preloader-hidden");
+    // Add the hidden class to trigger the smooth CSS transition
+    preloader.classList.add("preloader-hidden");
 
-  // Optional: Completely remove the element from the DOM after the animation finishes
-  setTimeout(() => {
-    preloader.remove();
-  }, 500);
+    // Optional: Completely remove the element from the DOM after the animation finishes
+    setTimeout(() => {
+      preloader.remove();
+    }, 500);
+  } catch {}
 });
 
-// document.addEventListener("DOMContentLoaded", function () {
-//   const loadingBtns = document.querySelectorAll(".btn-loading");
-//   loadingBtns.forEach((btn) => {
-//     const parentForm = btn.closest("form");
 
-//     if (parentForm) {
-//       parentForm.addEventListener("submit", function (e) {
-//         const btnTxt = btn.dataset.text || btn.textContent.trim() || "Loading";
-//         btn.dataset.originalHtml = btn.innerHTML;
+// Loading buttons
+document.addEventListener("DOMContentLoaded", function () {
+  const loadingBtns = document.querySelectorAll(".btn-loading");
+  loadingBtns.forEach((btn) => {
+    const parentForm = btn.closest("form");
 
-//         btn.innerHTML = `
-//                    <span class="spinner spinner--sm spinner--on-primary" role="status" aria-hidden="true"></span>
-//                     ${btnTxt}
-//                 `;
-//         btn.disabled = true;
-//       });
-//     }
-//   });
+    if (parentForm) {
+      parentForm.addEventListener("submit", function (e) {
+        const btnTxt = btn.dataset.text || btn.textContent.trim() || "Loading";
+        btn.dataset.originalHtml = btn.innerHTML;
 
-//   // --- Back Button Error Fixer ---
+        btn.innerHTML = `
+                   <span class="spinner spinner--sm spinner--on-primary" role="status" aria-hidden="true"></span>
+                    ${btnTxt}
+                `;
+        btn.disabled = true;
+      });
+    }
+  });
 
-//   window.addEventListener("pageshow", function (event) {
-//     if (event.persisted) {
-//       loadingBtns.forEach((button) => {
-//         if (button.dataset.originalHtml) {
-//           button.innerHTML = button.dataset.originalHtml;
-//         }
-//         button.disabled = false;
-//       });
-//     }
-//   });
-// });
+  // --- Back Button Error Fixer ---
+
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      loadingBtns.forEach((button) => {
+        if (button.dataset.originalHtml) {
+          button.innerHTML = button.dataset.originalHtml;
+        }
+        button.disabled = false;
+      });
+    }
+  });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const messageElements = document.querySelectorAll("#django-messages div");
@@ -238,3 +242,56 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(message, type);
   });
 });
+
+
+/* ---------- Messages (mobile list / conversation toggle) ---------- */
+// Tapping a conversation in the list: mark it active, reflect the person in
+// the open conversation's header, and (on phones) swap from the list view
+// to the conversation view.
+function openConversation(item) {
+    const chat = item.closest('.chat');
+    if (!chat) return;
+ 
+    chat.querySelectorAll('.chat__item').forEach((i) => i.classList.remove('is-active'));
+    item.classList.add('is-active');
+ 
+    const name = item.dataset.name;
+    const avatar = item.dataset.avatar;
+    const status = item.dataset.status;
+ 
+    if (name) {
+        const nameEl = chat.querySelector('.chat__peer-name');
+        if (nameEl) nameEl.textContent = name;
+    }
+    if (avatar) {
+        chat.querySelectorAll('.chat__peer-avatar').forEach((img) => { img.src = avatar; });
+    }
+    if (status) {
+        const statusEl = chat.querySelector('.chat__peer-status');
+        // Keep the little status dot; only replace the trailing text node.
+        if (statusEl && statusEl.lastChild) statusEl.lastChild.textContent = status;
+    }
+ 
+    chat.classList.add('is-chat-open');
+}
+// Message sending
+// try {
+//   const sendMsg = document.getElementById("send-msg");
+//   console.log("Clicked")
+//   sendMsg.addEventListener("click",() => {
+//     setTimeout(()=> {
+//       sendMsg.disabled = true;
+//       sendMsg.innerText = "sent";
+//     },10000)
+//   })
+// } catch (error) {
+//   console.log(error)
+// }
+ 
+// Back button in the conversation header: return to the list on phones.
+function closeConversation(btn) {
+    const chat = btn.closest('.chat');
+    if (chat) chat.classList.remove('is-chat-open');
+}
+ 
+

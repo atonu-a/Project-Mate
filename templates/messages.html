@@ -2,15 +2,18 @@
 {% block main %}
     <main class="page-main page-main--xwide">
         <div class="chat">
-
+    
             <!-- Conversation list -->
             <aside class="chat__sidebar">
                 <div class="chat__sidebar-head">
                     <h2 class="chat__sidebar-title">Messages</h2>
                 </div>
                 <div class="chat__list">
-                    <div class="chat__item is-active">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena" class="chat__item-avatar">
+                    <div onclick="openConversation(this)" data-name="Elena Rostova"
+                        data-avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                        data-status="Active on NeuralSync" class="chat__item is-active">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                            alt="Elena" class="chat__item-avatar">
                         <div class="chat__item-body">
                             <div class="chat__item-top">
                                 <h4 class="chat__item-name">Elena Rostova</h4>
@@ -19,8 +22,11 @@
                             <p class="chat__item-preview">Let us sync on the vector embedding pipeline tomorrow.</p>
                         </div>
                     </div>
-                    <div class="chat__item">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="Julian" class="chat__item-avatar">
+                    <div onclick="openConversation(this)" data-name="Julian Vance"
+                        data-avatar="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+                        data-status="Active on EcoRoute" class="chat__item">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+                            alt="Julian" class="chat__item-avatar">
                         <div class="chat__item-body">
                             <div class="chat__item-top">
                                 <h4 class="chat__item-name">Julian Vance</h4>
@@ -31,37 +37,47 @@
                     </div>
                 </div>
             </aside>
-
+    
             <!-- Open conversation -->
             <section class="chat__main">
                 <div class="chat__header">
-                    <div class="chat__peer">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena" class="chat__peer-avatar">
-                        <div>
-                            <h3 class="chat__peer-name">Elena Rostova</h3>
-                            <p class="chat__peer-status"><span class="chat__peer-dot"></span>Active on NeuralSync</p>
+                    <div class="chat__header-info">
+                        <button onclick="closeConversation(this)" class="chat__back" aria-label="Back to chat list">
+                            <i data-lucide="arrow-left" class="chat__back-icon"></i>
+                        </button>
+                        <div class="chat__peer">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                                alt="Elena" class="chat__peer-avatar">
+                            <div>
+                                <h3 class="chat__peer-name">Elena Rostova</h3>
+                                <p class="chat__peer-status"><span class="chat__peer-dot"></span>Active on NeuralSync</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
+    
                 <div class="chat__messages">
                     <div class="message">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena" class="message__avatar">
-                        <div class="message__bubble">Hey Alex! Excited to have you review our vector embedding pipeline architecture.</div>
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                            alt="Elena" class="message__avatar">
+                        <div class="message__bubble">Hey Alex! Excited to have you review our vector embedding pipeline
+                            architecture.</div>
                     </div>
                     <div class="message message--own">
-                        <div class="message__bubble">Happy to help! I just cloned the repository and ran the test suite. Everything compiled smoothly.</div>
+                        <div class="message__bubble">Happy to help! I just cloned the repository and ran the test suite.
+                            Everything compiled smoothly.</div>
                     </div>
                 </div>
-
+    
                 <div class="chat__composer">
                     <form onsubmit="event.preventDefault(); showToast('Message sent');" class="chat__form">
-                        <input type="text" placeholder="Type a message to your teammate..." class="chat__input" aria-label="Message">
-                        <button type="submit" class="chat__send">Send</button>
+                        <input required type="text" placeholder="Type a message to your teammate..." class="chat__input"
+                            aria-label="Message">
+                        <button type="submit" id="send-msg" class="mobile-menu__link-icon"><i data-lucide="send-horizontal" class=""></i></button>
                     </form>
                 </div>
             </section>
-
+    
         </div>
     </main>
 
