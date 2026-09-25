@@ -182,7 +182,7 @@
                         Location
                     </label>
 
-                    <input id="editLocation" type="text" name="location" value="{{ profile.location|default:'' }}"
+                    <input id="editLocation" type="text" name="location" value="{{ profile.location|default:'Remote' }}"
                         placeholder="City, Country (or Remote)" class="form-input">
 
                 </div>
@@ -193,7 +193,7 @@
                         Organization / Institute
                     </label>
 
-                    <input id="editLocation" type="text" name="institute" value="{{ profile.institute|default:'' }}"
+                    <input id="editLocation" type="text" name="institute" value="{{ profile.institute|default:'Independent' }}"
                         placeholder="e.g. ABC Company Ltd." class="form-input">
 
                 </div>
@@ -247,7 +247,7 @@
             <!-- Actions -->
             <div class="form-actions">
 
-                <button type="button" onclick="window.location.href='{% url 'profile' %}'" class="form-cancel">
+                <button type="button" onclick="window.location.href='{% url 'profile' request.user.username%}'" class="form-cancel">
                     Cancel
                 </button>
 

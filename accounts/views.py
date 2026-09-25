@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -94,7 +94,7 @@ def complete_profile(request):
                 profile.skills.add(skill)
                 
         messages.success(request, "Profile Edited Successfully.")
-        return redirect("profile")
+        return redirect("profile", request.user.username)
     
     context = {
         "profile":profile
@@ -141,8 +141,8 @@ def signin(request):
 #       Profile
 # ======================
 @login_required(login_url="signin")
-def profile(request):
-    profile = Profile.objects.get(user = request.user)
+def profile(request, username):
+    profile = get_object_or_404(Profile, user__username=username)
     context = {
         "profile":profile
     }
@@ -218,7 +218,7 @@ def edit_profile(request):
 
         messages.success(request, "Profile updated successfully.")
 
-        return redirect("profile")
+        return redirect("profile", request.user.username)
 
     return render(request, "edit-profile.html", {
         "profile": profile,

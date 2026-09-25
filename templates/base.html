@@ -81,7 +81,7 @@
               <p class="user-menu__info-label">Signed in as</p>
               <p class="user-menu__info-email">{{request.user.email}}</p>
             </div>
-            <a href="{% url 'profile' %}" class="user-menu__link">
+            <a href="{% url 'profile' request.user.username %}" class="user-menu__link">
               <i data-lucide="user" class="user-menu__link-icon"></i>
               <span>My Profile</span>
             </a>
@@ -174,7 +174,7 @@
           <span class="sidebar__count sidebar__count--alert">5</span>
         </a>
 
-        <a href="{% url 'profile' %}" class="sidebar__link 
+        <a href="{% url 'profile' request.user.username%}" class="sidebar__link 
           {% if request.path == '/profile/' %}
             is-active
           {% endif %} ">
@@ -201,19 +201,22 @@
         <div class="brand__logo">
           <i data-lucide="layers" class="brand__logo-icon"></i>
         </div>
-        <span class="mobile-menu__name">ProjectPartner</span>
+        <span class="mobile-menu__name">TeamNest</span>
       </div>
       <button onclick="toggleMobileMenu()" class="mobile-menu__close" aria-label="Close menu"><i data-lucide="x"
           class="mobile-menu__close-icon"></i></button>
     </div>
     <nav class="mobile-menu__list">
-      <a href="{% url 'dashboard' %}" class="mobile-menu__link">
-        <i data-lucide="layout-dashboard" class="mobile-menu__link-icon"></i>
-        <span>Dashboard</span>
-      </a>
       <a href="{% url 'home' %}" class="mobile-menu__link">
         <i data-lucide="compass" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
         <span>Discover Feed</span>
+      </a>
+      {% if request.user.is_authenticated %}
+      
+      
+      <a href="{% url 'dashboard' %}" class="mobile-menu__link">
+        <i data-lucide="layout-dashboard" class="mobile-menu__link-icon"></i>
+        <span>Dashboard</span>
       </a>
       <a href="{% url 'create' %}" class="mobile-menu__link">
         <i data-lucide="plus-circle" class="mobile-menu__link-icon mobile-menu__link-icon--accent"></i>
@@ -235,10 +238,16 @@
         <i data-lucide="bell" class="mobile-menu__link-icon"></i>
         <span>Notifications</span>
       </a>
-      <a href="{% url 'profile' %}" class="mobile-menu__link">
+      <a href="{% url 'profile' request.user.username %}" class="mobile-menu__link">
         <i data-lucide="user-circle" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
         <span>My Profile</span>
       </a>
+      {% else %}
+      <a href="{% url 'signin' %}" class="mobile-menu__link">
+        <i data-lucide="user-circle" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
+        <span>Sign In</span>
+      </a>
+      {% endif %}
       <button onclick="toggleTheme()" id="themeToggleBtn" class="mobile-menu__link" title="Toggle Theme"
         aria-label="Toggle theme">
         <i data-lucide="sun-moon" class="mobile-menu__link-icon mobile-menu__link-icon--success"></i>
