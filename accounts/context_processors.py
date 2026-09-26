@@ -4,6 +4,6 @@ def profile_context(request):
             "profile": request.user.profile
         }
 
-    # return {
-    #     "profile": None
-    # }
+    return {
+        "profile": None
+    }
