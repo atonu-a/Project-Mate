@@ -11,14 +11,12 @@
         <div class="detail-hero__row">
             <div class="detail-hero__info">
                 <div class="detail-hero__badges">
-                    <span class="category-badge">AI &amp; Machine Learning</span>
-                    <span class="status-badge">Recruiting</span>
-                    <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Deadline: Oct 15,
-                        2026</span>
+                    <span class="category-badge">{{project.category}}</span>
+                    <span class="status-badge">{{project.status}}</span>
+                    <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{project.deadline}}</span>
                 </div>
-                <h1 class="detail-hero__title">NeuralSync - AI Brainstorming Canvas</h1>
-                <p class="detail-hero__tagline">Real-time collaborative mind mapping powered by local LLMs and vector
-                    embeddings.</p>
+                <h1 class="detail-hero__title">{{project.title}}</h1>
+                <p class="detail-hero__tagline">{{project.desc}}</p>
             </div>
             <div class="detail-hero__actions">
                 <button onclick="showToast('Join request submitted successfully!')" class="btn-primary">Request to
@@ -38,9 +36,7 @@
                     <i data-lucide="file-text" class="detail-card__title-icon"></i>
                     <span>Project Overview</span>
                 </h2>
-                <p class="detail-card__text">NeuralSync bridges the gap between raw thought and structured code
-                    architecture. We are building an interactive canvas where multi-modal inputs automatically generate
-                    architectural dependency graphs using quantized local models.</p>
+            <p class="detail-card__text">{{project.overview}}</p>
             </section>
 
             <section class="detail-card detail-card--main">
@@ -49,11 +45,13 @@
                     <span>Required Tech Stack</span>
                 </h2>
                 <div class="skill-list">
+                    {% for skill in project.required_skills.all %}
                     <span class="skill-pill">Python</span>
                     <span class="skill-pill">React</span>
                     <span class="skill-pill">LangChain</span>
                     <span class="skill-pill">WebSockets</span>
                     <span class="skill-pill">Tailwind</span>
+                    {% endfor %}
                 </div>
             </section>
         </div>
@@ -62,17 +60,17 @@
             <section class="detail-card">
                 <h3 class="detail-card__side-title">Project Owner</h3>
                 <div class="owner-card">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
-                        alt="Elena Rostova" class="owner-card__avatar">
+                <img src="{{project.owner_name.profile.profile_pic.url}}"
+                        alt="{{project.owner_name.username}}" class="owner-card__avatar">
                     <div>
-                        <h4 class="owner-card__name">Elena Rostova</h4>
-                        <p class="owner-card__role">AI Researcher</p>
+                        <h4 class="owner-card__name">{{project.owner_name.first_name}} {{project.owner_name.last_name}}</h4>
+                        <p class="owner-card__role">Backend Developer</p>
                     </div>
                 </div>
             </section>
 
             <section class="detail-card">
-                <h3 class="detail-card__side-title">Current Team (3/5)</h3>
+                <h3 class="detail-card__side-title">Current Team ({{project.team_members}}/{{project.team_size}})</h3>
                 <div class="team-list">
                     <div class="member">
                         <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"

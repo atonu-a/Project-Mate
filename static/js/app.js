@@ -295,3 +295,24 @@ function closeConversation(btn) {
 }
  
 
+// User following
+try{
+  function toggleFollow(btn) {
+    const following = btn.classList.toggle('btn-secondary');
+    const icon = btn.querySelector('i');
+    const label = btn.querySelector('span');
+    if (icon) icon.setAttribute('data-lucide', following ? 'user-check' : 'user-plus');
+    if (label) label.textContent = following ? 'Following' : 'Follow';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    showToast(following ? 'You are now following this user' : 'Unfollowed');
+}
+
+function copyProfileLink(btn) {
+    navigator.clipboard.writeText(window.location.href)
+        .then(() => showToast('Profile link copied!'))
+        .catch(() => showToast('Could not copy link', 'info'));
+}
+}
+catch(error){
+  console.log(error)
+}

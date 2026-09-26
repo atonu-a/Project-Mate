@@ -25,6 +25,8 @@
                                  19  Toasts · 20  Motion
                                  21  Auth (sign in / sign up)
                                  22  Onboarding / edit profile
+                                 23  Spinner / loader
+                                 24 Public profiles
    ========================================================================== */
 
 /* 1. Design tokens ------------------------------------------------------- */
@@ -288,7 +290,7 @@ textarea::placeholder {
   width: 100%;
   max-width: 80rem;
   margin: 0 auto;
-  padding: 24px 16px;
+  /* padding: 24px 16px; */
 }
 
 .page-title {
@@ -854,15 +856,13 @@ textarea::placeholder {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 24px;
+  padding: 8px 16px;
   font-size: 0.875rem;
   font-weight: 700;
   border-radius: 12px;
 }
 
-.btn-primary {
-  box-shadow: var(--shadow-primary-xl);
-}
+
 
 .btn-secondary {
   background: var(--color-surface);
@@ -2043,7 +2043,6 @@ textarea::placeholder {
   inset: 0;
   background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
   background-size: 16px 16px;
-  opacity: 0.4;
 }
 
 .post__media-content {
@@ -2561,8 +2560,13 @@ textarea::placeholder {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   text-align: center;
+  min-width: 0;
+}
+
+.profile-hero__copy {
+  min-width: 0;
 }
 
 .profile-hero__top {
@@ -2570,12 +2574,14 @@ textarea::placeholder {
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  width: 100%;
 }
 
 .profile-hero__name {
   font-size: 1.5rem;
   line-height: 2rem;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .profile-hero__role {
@@ -2626,6 +2632,33 @@ textarea::placeholder {
   --tone: var(--color-secondary);
 }
 
+.profile-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.profile-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--color-text-muted);
+}
+
+.profile-detail-list p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  word-break: break-word;
+}
+
+.profile-detail-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text);
+}
+
 .stat-list {
   display: flex;
   flex-direction: column;
@@ -2658,6 +2691,9 @@ textarea::placeholder {
     width: 112px;
     height: 112px;
   }
+  .profile-detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 768px) {
@@ -2673,6 +2709,12 @@ textarea::placeholder {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+  }
+  .profile-actions {
+    justify-content: flex-end;
+  }
+  .profile-stats {
+    justify-content: flex-start;
   }
 }
 
@@ -3865,4 +3907,95 @@ textarea::placeholder {
 #preloader {
   background-color: rgb(from var(--color-bg) r g b / 0.3);
   color: rgb(154, 6, 212);
+}
+
+/* 23. PUblic Profiles --- */
+.profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+}
+
+/* .btn-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: 12px;
+  box-shadow: var(--shadow-primary-lg);
+  transition: all 0.2s;
+}
+
+.btn-follow:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn-follow.is-following {
+  color: var(--color-text);
+  background: var(--color-elevated);
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+}
+
+.btn-follow.is-following:hover {
+  color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+  border-color: color-mix(in srgb, var(--color-danger) 30%, transparent);
+}
+
+.btn-share {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.btn-share:hover {
+  color: var(--color-text);
+  background: var(--color-elevated);
+}
+
+.btn-share__icon {
+  width: 16px;
+  height: 16px;
+} */
+
+.profile-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.profile-stat__value {
+  font-size: 1.125rem;
+  font-weight: 800;
+}
+
+.profile-stat__label {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 768px) {
+  .profile-stats {
+    justify-content: flex-start;
+  }
 }

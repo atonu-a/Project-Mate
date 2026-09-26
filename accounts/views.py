@@ -224,3 +224,19 @@ def edit_profile(request):
         "profile": profile,
         "selected_fields": selected_fields,
     })       
+    
+    
+    
+    
+def public_profile(request, username):
+    public_profile = get_object_or_404(User, username=username)
+    is_following = False
+    context = {
+        "public_profile": public_profile,
+        "is_following": is_following,
+    }
+
+    if request.user == public_profile:
+        return render(request, "profile.html", context)
+    else:
+        return render(request, "public-profile.html", context)

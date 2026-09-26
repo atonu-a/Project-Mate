@@ -2200,7 +2200,6 @@ textarea::placeholder {
   inset: 0;
   background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
   background-size: 16px 16px;
-  opacity: 0.4;
 }
 
 .post__media-content {

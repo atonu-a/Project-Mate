@@ -9,11 +9,6 @@ def discover(request):
     context = {
         "projects": projects,
     }
-    if request.user.is_authenticated:
-        profile = Profile.objects.get(user = request.user)
-        context["profile"] = profile
-
-    
     
     return render(request, "discover.html", context)
         

@@ -16,10 +16,10 @@
       <article class="post">
         <div class="post__head">
           <div class="post__author">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="{{ project.owner_name.username }}" class="post__avatar" />
+            <img src="{{ project.owner_name.profile.profile_pic.url }}" alt="{{ project.owner_name.username }}" class="post__avatar" />
             <div>
               <div class="post__author-row">
-                <h3 class="post__author-name">{{ project.owner_name.username }}</h3>
+                <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">{{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>
                 <span class="role-badge">Owner</span>
               </div>
               <p class="post__meta">{{ project.category }} • {{ project.create_at }}</p>
@@ -36,14 +36,14 @@
           </div>
 
           <div onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__media">
-            <div class="post__media-grid"></div>
-            <div class="post__media-content">
+            <img src="{{ project.img.url }}" class="post__media-grid" />
+            {% comment %} <div class="post__media-content">
               <div class="post__media-icon">
                 <i data-lucide="network" class="post__media-glyph"></i>
               </div>
               <h4 class="post__media-title">{{ project.title }}</h4>
               <p class="post__media-text">Click to inspect project details and join the team.</p>
-            </div>
+            </div> {% endcomment %}
           </div>
 
           <div class="post__tags-row">
@@ -54,7 +54,7 @@
                 <span class="tech-tag">General</span>
               {% endfor %}
             </div>
-            <span class="status-badge">{{ project.team_size }} Members</span>
+            <span class="status-badge">{{ project.members.count }}/{{ project.team_size }} Members</span>
           </div>
         </div>
 

@@ -19,7 +19,7 @@ class Field(models.Model):
 class Profile(models.Model):
     
     
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profiles")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     headline = models.CharField(max_length=255, blank=True)
     fields = models.ManyToManyField(Field, related_name="profiles", blank=True)
     skills = models.ManyToManyField(Skill, related_name="profiles", blank=True, null=True)
