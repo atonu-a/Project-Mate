@@ -4,13 +4,18 @@ from projects.models import Project
 
 # Create your views here.
 # Home Page
-def discover(request, slug):
+def discover(request):
+    projects = Project.objects.all()
+    context = {
+        "projects": projects,
+    }
     if request.user.is_authenticated:
         profile = Profile.objects.get(user = request.user)
-        return render(request, "discover.html", {"profile":profile})
-    else:
-        projects = get_object_or_404(Project, slug=slug)
-        return render(request, "discover.html", {"projects":projects})
+        context["profile"] = profile
+
+    
+    
+    return render(request, "discover.html", context)
         
     
 
@@ -31,8 +36,6 @@ def messages(request):
     return render(request, "messages.html")
 
 
-def project_detail(request, project_id=None):
-    return render(request, "project-detail.html", {"project_id": project_id})
 
 
 def my_projects(request):

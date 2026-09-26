@@ -1,187 +1,106 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block main %}
-<!-- Centre column: one post per row -->
-<main class="feed" id="socialFeedContainer">
-
+  <!-- Centre column: one post per row -->
+  <main class="feed" id="socialFeedContainer">
     <!-- Filter bar -->
     <div class="feed-toolbar">
-        <div class="feed-tabs">
-            <button class="feed-tab is-active">All Projects</button>
-            <button class="feed-tab">Following</button>
-            <button class="feed-tab">AI Matched</button>
-        </div>
-        <button onclick="window.location.href='{% url 'create' %}'" class="feed-post-btn">
-            <i data-lucide="plus" class="feed-post-btn__icon"></i><span>Post</span>
-        </button>
+      <div class="feed-tabs">
+        <button class="feed-tab is-active">All Projects</button>
+        <button class="feed-tab">Following</button>
+        <button class="feed-tab">AI Matched</button>
+      </div>
+      <button onclick="window.location.href='{% url 'create' %}'" class="feed-post-btn"><i data-lucide="plus" class="feed-post-btn__icon"></i><span>Post</span></button>
     </div>
 
-    <!-- Post 1 -->
-    <article class="post">
+    {% for project in projects %}
+      <article class="post">
         <div class="post__head">
-            <div class="post__author">
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
-                    alt="Elena Rostova" class="post__avatar">
-                <div>
-                    <div class="post__author-row">
-                        <h3 class="post__author-name">Elena Rostova</h3>
-                        <span class="role-badge">Owner</span>
-                    </div>
-                    <p class="post__meta">AI Researcher • 2 hours ago</p>
-                </div>
+          <div class="post__author">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="{{ project.owner_name.username }}" class="post__avatar" />
+            <div>
+              <div class="post__author-row">
+                <h3 class="post__author-name">{{ project.owner_name.username }}</h3>
+                <span class="role-badge">Owner</span>
+              </div>
+              <p class="post__meta">{{ project.category }} • {{ project.create_at }}</p>
             </div>
-            <button class="post__more" aria-label="More options"><i data-lucide="more-horizontal"
-                    class="post__more-icon"></i></button>
+          </div>
+          <button class="post__more" aria-label="More options"><i data-lucide="more-horizontal" class="post__more-icon"></i></button>
         </div>
 
         <div class="post__body">
-            <div>
-                <span class="category-badge">AI &amp; Machine Learning</span>
-                <h2 onclick="window.location.href='{% url 'project_detail' 'p1' %}'" class="post__title">NeuralSync - AI
-                    Brainstorming Canvas</h2>
-                <p class="post__text">Real-time collaborative mind mapping powered by local LLMs and vector embeddings.
-                    We are looking for 2 frontend developers to build out the node graph interface in React &amp;
-                    Tailwind!</p>
-            </div>
+          <div>
+            <span class="category-badge">{{ project.category }}</span>
+            <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">{{ project.title }}</h2>
+            <p class="post__text">{{ project.desc }}</p>
+          </div>
 
-            <div onclick="window.location.href='{% url 'project_detail' 'p1' %}'" class="post__media">
-                <div class="post__media-grid"></div>
-                <div class="post__media-content">
-                    <div class="post__media-icon">
-                        <i data-lucide="network" class="post__media-glyph"></i>
-                    </div>
-                    <h4 class="post__media-title">Interactive Dependency Graph</h4>
-                    <p class="post__media-text">Click to inspect architecture, join requirements, and live code
-                        repositories.</p>
-                </div>
+          <div onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__media">
+            <div class="post__media-grid"></div>
+            <div class="post__media-content">
+              <div class="post__media-icon">
+                <i data-lucide="network" class="post__media-glyph"></i>
+              </div>
+              <h4 class="post__media-title">{{ project.title }}</h4>
+              <p class="post__media-text">Click to inspect project details and join the team.</p>
             </div>
+          </div>
 
-            <div class="post__tags-row">
-                <div class="post__tags">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">LangChain</span>
-                </div>
-                <span class="status-badge">3 / 5 Members Joined</span>
+          <div class="post__tags-row">
+            <div class="post__tags">
+              {% for skill in project.required_skills.all|slice:':3' %}
+                <span class="tech-tag">{{ skill.name }}</span>
+              {% empty %}
+                <span class="tech-tag">General</span>
+              {% endfor %}
             </div>
+            <span class="status-badge">{{ project.team_size }} Members</span>
+          </div>
         </div>
 
         <div class="post__actions">
-            <div class="post__reactions">
-                <button onclick="toggleLike(this)" class="reaction">
-                    <i data-lucide="heart" class="reaction__icon"></i><span>24 Likes</span>
-                </button>
-                <button onclick="toggleComments(this)" class="reaction reaction--comment">
-                    <i data-lucide="message-circle" class="reaction__icon"></i><span>7 Comments</span>
-                </button>
-            </div>
-            <button onclick="showToast('Join request sent successfully!')" class="post__join">Request to Join</button>
+          <div class="post__reactions">
+            <button onclick="toggleLike(this)" class="reaction"><i data-lucide="heart" class="reaction__icon"></i><span>24 Likes</span></button>
+            <button onclick="toggleComments(this)" class="reaction reaction--comment"><i data-lucide="message-circle" class="reaction__icon"></i><span>7 Comments</span></button>
+          </div>
+          <button onclick="showToast('Join request sent successfully!')" class="post__join">Request to Join</button>
         </div>
-    </article>
-
-    <!-- Post 2 -->
-    <article class="post">
-        <div class="post__head">
-            <div class="post__author">
-                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
-                    alt="Julian Vance" class="post__avatar post__avatar--secondary">
-                <div>
-                    <div class="post__author-row">
-                        <h3 class="post__author-name">Julian Vance</h3>
-                        <span class="role-badge role-badge--secondary">Lead</span>
-                    </div>
-                    <p class="post__meta">Sustainability Tech • 5 hours ago</p>
-                </div>
-            </div>
-            <button class="post__more" aria-label="More options"><i data-lucide="more-horizontal"
-                    class="post__more-icon"></i></button>
-        </div>
-
-        <div class="post__body">
-            <div>
-                <span class="category-badge category-badge--secondary">CleanTech &amp; Mobile</span>
-                <h2 onclick="window.location.href='{% url 'project_detail' 'p2' %}'" class="post__title">EcoRoute -
-                    Carbon
-                    Footprint Optimizer</h2>
-                <p class="post__text">Smart transit routing application calculating real-time carbon offsets for urban
-                    commuters. Seeking a PostGIS database expert to optimize routing queries.</p>
-            </div>
-
-            <div onclick="window.location.href='{% url 'project_detail' 'p2' %}'" class="post__media">
-                <div class="post__media-grid"></div>
-                <div class="post__media-content">
-                    <div class="post__media-icon post__media-icon--secondary">
-                        <i data-lucide="map-pin" class="post__media-glyph"></i>
-                    </div>
-                    <h4 class="post__media-title">Live Urban Transit Routing</h4>
-                    <p class="post__media-text">Click to view project specs, open positions, and team milestones.</p>
-                </div>
-            </div>
-
-            <div class="post__tags-row">
-                <div class="post__tags">
-                    <span class="tech-tag tech-tag--secondary">React Native</span>
-                    <span class="tech-tag tech-tag--secondary">PostGIS</span>
-                    <span class="tech-tag tech-tag--secondary">Mapbox</span>
-                </div>
-                <span class="status-badge">2 / 4 Members Joined</span>
-            </div>
-        </div>
-
-        <div class="post__actions">
-            <div class="post__reactions">
-                <button onclick="toggleLike(this)" class="reaction">
-                    <i data-lucide="heart" class="reaction__icon"></i><span>42 Likes</span>
-                </button>
-                <button onclick="toggleComments(this)" class="reaction reaction--comment">
-                    <i data-lucide="message-circle" class="reaction__icon"></i><span>12 Comments</span>
-                </button>
-            </div>
-            <button onclick="showToast('Join request sent successfully!')" class="post__join">Request to Join</button>
-        </div>
-    </article>
+      </article>
+    {% endfor %}
 
     <!-- Infinite-scroll indicator -->
     <div id="infiniteLoader" class="feed-loader">
-        <div class="feed-loader__spinner"></div>
-        <p class="feed-loader__text">Loading more project opportunities...</p>
+      <div class="feed-loader__spinner"></div>
+      <p class="feed-loader__text">Loading more project opportunities...</p>
     </div>
-</main>
+  </main>
 
-<!-- Right column: suggested teammates (wide desktop) -->
-<aside class="feed-aside">
+  <!-- Right column: suggested teammates (wide desktop) -->
+  <aside class="feed-aside">
     <div class="suggest-panel">
-        <h3 class="suggest-panel__title">Suggested Teammates</h3>
-        <div class="suggest-panel__list">
-            <div class="suggest-row">
-                <div class="suggest-row__person">
-                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
-                        alt="Kaito Tanaka" class="suggest-row__avatar">
-                    <div>
-                        <h4 class="suggest-row__name">Kaito Tanaka</h4>
-                        <p class="suggest-row__role">Rust Engineer</p>
-                    </div>
-                </div>
-                <button onclick="showToast('Connection request sent!')" class="suggest-row__add"
-                    aria-label="Send connection request"><i data-lucide="user-plus"
-                        class="suggest-row__add-icon"></i></button>
+      <h3 class="suggest-panel__title">Suggested Teammates</h3>
+      <div class="suggest-panel__list">
+        <div class="suggest-row">
+          <div class="suggest-row__person">
+            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" alt="Kaito Tanaka" class="suggest-row__avatar" />
+            <div>
+              <h4 class="suggest-row__name">Kaito Tanaka</h4>
+              <p class="suggest-row__role">Rust Engineer</p>
             </div>
-            <div class="suggest-row">
-                <div class="suggest-row__person">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
-                        alt="Sophia Sterling" class="suggest-row__avatar">
-                    <div>
-                        <h4 class="suggest-row__name">Sophia Sterling</h4>
-                        <p class="suggest-row__role">Product Designer</p>
-                    </div>
-                </div>
-                <button onclick="showToast('Connection request sent!')" class="suggest-row__add"
-                    aria-label="Send connection request"><i data-lucide="user-plus"
-                        class="suggest-row__add-icon"></i></button>
-            </div>
+          </div>
+          <button onclick="showToast('Connection request sent!')" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
         </div>
+        <div class="suggest-row">
+          <div class="suggest-row__person">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Sophia Sterling" class="suggest-row__avatar" />
+            <div>
+              <h4 class="suggest-row__name">Sophia Sterling</h4>
+              <p class="suggest-row__role">Product Designer</p>
+            </div>
+          </div>
+          <button onclick="showToast('Connection request sent!')" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
+        </div>
+      </div>
     </div>
-</aside>
-
-
-
-{% endblock main %}
+  </aside>
+{% endblock %}

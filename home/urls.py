@@ -10,5 +10,5 @@ urlpatterns = [
     path('messages/', views.messages, name="messages"),
     path('notifications/', views.notifications, name="notifications"),
     path('my-projects/', views.my_projects, name="my-projects"),
-    path('project/<str:project_id>/', views.project_detail, name='project_detail'),
+    
 ]

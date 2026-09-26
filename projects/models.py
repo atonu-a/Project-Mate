@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from autoslug import AutoSlugField
 from django.contrib.auth.models import User
 from django.urls import reverse
 from accounts.models import Skill
@@ -15,7 +16,7 @@ class Project(models.Model):
     
     owner_name = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = AutoSlugField(populate_from = "title", unique=True, max_length=255)
     desc = models.TextField()
     status = models.CharField(choices=STATUS, max_length=20, default="Open")
     required_skills = models.ManyToManyField(Skill, related_name="projects")
