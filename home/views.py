@@ -1,14 +1,16 @@
-from django.shortcuts import render
-from accounts.models import *
+from django.shortcuts import render, get_object_or_404
+from accounts.models import Profile
+from projects.models import Project
 
 # Create your views here.
 # Home Page
-def discover(request):
+def discover(request, slug):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user = request.user)
         return render(request, "discover.html", {"profile":profile})
     else:
-        return render(request, "discover.html")
+        projects = get_object_or_404(Project, slug=slug)
+        return render(request, "discover.html", {"projects":projects})
         
     
 
