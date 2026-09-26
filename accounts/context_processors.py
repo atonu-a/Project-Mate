@@ -1,13 +1,14 @@
 from .models import Profile
 
+
 def profile_context(request):
     if request.user.is_authenticated:
-        profile, created = Profile.objects.get_or_create(user=request.user)
-
-        return {
-            "profile": profile,
-        }
+        profile, _ = Profile.objects.get_or_create(
+            user=request.user
+        )
+    else:
+        profile = None
 
     return {
-        "profile": None,
+        "profile": profile,
     }
