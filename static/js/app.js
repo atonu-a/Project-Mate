@@ -193,7 +193,6 @@ window.addEventListener("load", () => {
   } catch {}
 });
 
-
 // Loading buttons
 document.addEventListener("DOMContentLoaded", function () {
   const loadingBtns = document.querySelectorAll(".btn-loading");
@@ -243,36 +242,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
 /* ---------- Messages (mobile list / conversation toggle) ---------- */
 // Tapping a conversation in the list: mark it active, reflect the person in
 // the open conversation's header, and (on phones) swap from the list view
 // to the conversation view.
 function openConversation(item) {
-    const chat = item.closest('.chat');
-    if (!chat) return;
- 
-    chat.querySelectorAll('.chat__item').forEach((i) => i.classList.remove('is-active'));
-    item.classList.add('is-active');
- 
-    const name = item.dataset.name;
-    const avatar = item.dataset.avatar;
-    const status = item.dataset.status;
- 
-    if (name) {
-        const nameEl = chat.querySelector('.chat__peer-name');
-        if (nameEl) nameEl.textContent = name;
-    }
-    if (avatar) {
-        chat.querySelectorAll('.chat__peer-avatar').forEach((img) => { img.src = avatar; });
-    }
-    if (status) {
-        const statusEl = chat.querySelector('.chat__peer-status');
-        // Keep the little status dot; only replace the trailing text node.
-        if (statusEl && statusEl.lastChild) statusEl.lastChild.textContent = status;
-    }
- 
-    chat.classList.add('is-chat-open');
+  const chat = item.closest(".chat");
+  if (!chat) return;
+
+  chat
+    .querySelectorAll(".chat__item")
+    .forEach((i) => i.classList.remove("is-active"));
+  item.classList.add("is-active");
+
+  const name = item.dataset.name;
+  const avatar = item.dataset.avatar;
+  const status = item.dataset.status;
+
+  if (name) {
+    const nameEl = chat.querySelector(".chat__peer-name");
+    if (nameEl) nameEl.textContent = name;
+  }
+  if (avatar) {
+    chat.querySelectorAll(".chat__peer-avatar").forEach((img) => {
+      img.src = avatar;
+    });
+  }
+  if (status) {
+    const statusEl = chat.querySelector(".chat__peer-status");
+    // Keep the little status dot; only replace the trailing text node.
+    if (statusEl && statusEl.lastChild) statusEl.lastChild.textContent = status;
+  }
+
+  chat.classList.add("is-chat-open");
 }
 // Message sending
 // try {
@@ -287,32 +289,57 @@ function openConversation(item) {
 // } catch (error) {
 //   console.log(error)
 // }
- 
+
 // Back button in the conversation header: return to the list on phones.
 function closeConversation(btn) {
-    const chat = btn.closest('.chat');
-    if (chat) chat.classList.remove('is-chat-open');
+  const chat = btn.closest(".chat");
+  if (chat) chat.classList.remove("is-chat-open");
 }
- 
 
 // User following
-try{
+try {
   function toggleFollow(btn) {
-    const following = btn.classList.toggle('btn-secondary');
-    const icon = btn.querySelector('i');
-    const label = btn.querySelector('span');
-    if (icon) icon.setAttribute('data-lucide', following ? 'user-check' : 'user-plus');
-    if (label) label.textContent = following ? 'Following' : 'Follow';
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-    showToast(following ? 'You are now following this user' : 'Unfollowed');
+    const following = btn.classList.toggle("btn-secondary");
+    const icon = btn.querySelector("i");
+    const label = btn.querySelector("span");
+    if (icon)
+      icon.setAttribute("data-lucide", following ? "user-check" : "user-plus");
+    if (label) label.textContent = following ? "Following" : "Follow";
+    if (typeof lucide !== "undefined") lucide.createIcons();
+    showToast(following ? "You are now following this user" : "Unfollowed");
+  }
+
+  function copyProfileLink(btn) {
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => showToast("Profile link copied!"))
+      .catch(() => showToast("Could not copy link", "info"));
+  }
+} catch (error) {
+  console.log(error);
 }
 
-function copyProfileLink(btn) {
-    navigator.clipboard.writeText(window.location.href)
-        .then(() => showToast('Profile link copied!'))
-        .catch(() => showToast('Could not copy link', 'info'));
-}
-}
-catch(error){
-  console.log(error)
+try {
+  const btnDone = document.querySelectorAll(".btn-check");
+  btnDone.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const btnTxt = btn.dataset.text || btn.textContent.trim() || "";
+      const btnTxtDefault = btn.innerText
+      btn.dataset.originalHtml = btn.innerHTML;
+
+      btn.innerHTML = `
+                   <i class="fa-solid fa-check"></i>
+                    ${btnTxt}
+                `;
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = btnTxtDefault;
+        btn.disabled = false;
+      }, 3000);
+    });
+  });
+} catch (error) {
+  console.log(error);
+  console.log("not clicked");
 }
