@@ -326,6 +326,8 @@ try {
       const btnTxt = btn.dataset.text || btn.textContent.trim() || "";
       const btnTxtDefault = btn.innerText
       btn.dataset.originalHtml = btn.innerHTML;
+      btn.classList.remove("btn-primary");
+      btn.classList.add("btn-secondary")
 
       btn.innerHTML = `
                    <i class="fa-solid fa-check"></i>
@@ -334,9 +336,11 @@ try {
       btn.disabled = true;
 
       setTimeout(() => {
+        btn.classList.remove("btn-secondary");
+        btn.classList.add("btn-primary");
         btn.innerHTML = btnTxtDefault;
         btn.disabled = false;
-      }, 3000);
+      }, 30000);
     });
   });
 } catch (error) {
