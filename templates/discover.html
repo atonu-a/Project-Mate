@@ -34,9 +34,13 @@
             <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">{{ project.title }}</h2>
             <p class="post__text">{{ project.desc }}</p>
           </div>
-
+          {% if project.img %}
           <div onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__media">
+            
+            
+            
             <img src="{{ project.img.url }}" class="post__media-grid" />
+            
             {% comment %} <div class="post__media-content">
               <div class="post__media-icon">
                 <i data-lucide="network" class="post__media-glyph"></i>
@@ -45,6 +49,9 @@
               <p class="post__media-text">Click to inspect project details and join the team.</p>
             </div> {% endcomment %}
           </div>
+          {% else %}
+          <a href="{% url 'project_detail' project.slug %}" class="btn-secondary">Check Details <i class="fa-solid fa-arrow-right"></i></a>
+            {% endif %}
 
           <div class="post__tags-row">
             <div class="post__tags">
