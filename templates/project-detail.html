@@ -46,11 +46,8 @@
                 </h2>
                 <div class="skill-list">
                     {% for skill in project.required_skills.all %}
-                    <span class="skill-pill">Python</span>
-                    <span class="skill-pill">React</span>
-                    <span class="skill-pill">LangChain</span>
-                    <span class="skill-pill">WebSockets</span>
-                    <span class="skill-pill">Tailwind</span>
+                    <span class="skill-pill">{{skill}}</span>
+
                     {% endfor %}
                 </div>
             </section>
