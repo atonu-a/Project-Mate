@@ -1,80 +1,182 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block main %}
-    <main class="page-main page-main--medium">
-        <section class="profile-hero">
-            <div class="profile-hero__glow"></div>
-            <div class="profile-hero__inner">
-                <img src="{{profile.profile_pic.url}}" alt="Alex Rivera" class="profile-hero__avatar">
-                <div class="profile-hero__info">
-                    <div class="profile-hero__top">
-                        <div>
-                            <h1 class="profile-hero__name">{{request.user.first_name}} {{request.user.last_name}}</h1>
-                            <p class="profile-hero__role">{{profile.headline}}</p>
-                        </div>
-                        <button onclick="window.location.href='{% url 'edit_profile' %}'" class="btn-outline">Edit Profile</button>
-                    </div>
-
-                    <p class="profile-hero__bio">{{profile.bio}}</p>
-                </div>
-            </div>
-        </section>
-        <div>
-            <section class="profile-card profile-card--wide">
-                <h1 class="profile-card__title">More Details :</h1>
-                <div class="grid lg:grid-cols-2">
-                    <div>
-                        <p><i class="fa-solid fa-location-dot"></i> {{profile.location}}</p>
-                        <p><i class="fa-solid fa-building"></i> {{profile.institute}}</p>
-                    </div>
-                    {% if profile.url or profile.github %}
-                    <div>
-                        {% if profile.url %}
-                        <p><a href="{{profile.url}}"><i class="fa-solid fa-link"></i> Website</a></p>
-                        {% endif %}
-
-                        {% if profile.url %}
-                        <p><a href="{{profile.github}}"><i class="fa-brands fa-github"></i> Github</a></p>
-                        {% endif %}
-                    </div>
-                    {% endif %}
+<main class=" page-main page-main--wide public-profile ">
+    {# Profile header #}
+    <section class="public-profile__hero">
+        <div class="public-profile__hero-cover"></div>
+        <div class="public-profile__hero-content">
+            <img src="{% if profile.profile_pic %}
+            {{ profile.profile_pic.url }}
+          {% else %}
             
-                    
+            https://placehold.co/128x128?text=User
+
+          {% endif %}" alt="{{ request.user.first_name }} {{ request.user.last_name }}"
+                class="public-profile__avatar" />
+
+            <div class="public-profile__identity">
+                <div class="">
+                    <div class="public-profile__name-block">
+                        <div class="flex"">
+                        <h1 
+                        class="public-profile__name">
+                        {{ request.user.get_full_name|default:"request.user.username "}}</h1>
+                        <a class="" href="{% url 'edit_profile' %}" style="margin-top: 4px; color: var(--text-primary);"><i data-lucide="pencil" style="color: #ff5a36"></i>
+                        </a>
+                        </div>
+                        <p class="public-profile__stat">@{{ request.user.username}}</p>
+                        <div class="public-profile__stats">
+
+                            <div class="public-profile__stat">
+
+                                <span>Followers</span>
+                                <strong>{{ profile.followers.count|default:"0" }}</strong>
+                            </div>
+                            <div class="public-profile__stat">
+
+                                <span>Following</span>
+                                <strong>{{ profile.following.count|default:"0" }}</strong>
+                            </div>
+                        </div>
+                        {% if profile.headline %}
+                        <p class="public-profile__headline">{{ profile.headline }}</p>
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="public-profile__actions">
+                    </div>
+
+                </div>
+                {% if profile.bio %}
+                <p class="public-profile__bio">{{ profile.bio }}</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+
+    <div class="public-profile__layout">
+        <div class="public-profile__main">
+            <section class="profile-card public-profile__section">
+                <div class="public-profile__section-heading">
+                    <div>
+                        <h2 class="profile-card__title">Projects</h2>
+                        <p class="public-profile__section-subtitle">Projects shared by 
+                            {{ request.user.first_name|default:request.user.username }}</p>
+                    </div>
+                    <span class="public-profile__count">{{ profile.projects.count }}</span>
+                </div>
+
+                <div class="public-profile__projects">
+                    {% for project in profile.projects.all %}
+                    <article class="post public-profile__project">
+                        <div class="post__head">
+                            <img class="post__avatar" src="{% if profile.profile_pic %}
+                      {{ profile.profile_pic.url }}
+                    {% else %}
+                      
+                      https://placehold.co/48x48?text=U
+
+                    {% endif %}" alt="" />
+                            <div class="post__author-info">
+                                <strong class="post__author-name">{{
+                                    get_full_name|default:username }}</strong>
+                                {% if project.category %}
+                                <span class="public-profile__project-category">{{ project.category }}</span>
+                                {% endif %}
+                            </div>
+                            {% if project.status %}
+                            <span class="public-profile__status public-profile__status--{{ project.status|lower }}">{{
+                                project.get_status_display|default:project.status }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="post__body">
+                            <h3 class="public-profile__project-title"><a
+                                    href="{% url 'project_detail' project.slug %}">{{ project.title }}</a></h3>
+                            {% if project.desc %}
+                            <p class="public-profile__project-description">{{ project.desc|truncatewords:45 }}</p>
+                            {% endif %}
+                            {% if project.overview %}
+                            <p class="public-profile__project-description">{{ project.overview|truncatewords:45 }}</p>
+                            {% endif %}
+                        </div>
+
+                        {% if project.required_skills.all %}
+                        <div class="post__tags">
+                            {% for skill in project.required_skills.all|slice:':5' %}
+                            <span class="tech-tag">{{ skill.name }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="public-profile__project-footer">
+                            <span><i data-lucide="users"></i> {{ project.team_size }} team size</span>
+                            {% if project.deadline %}
+                            <span><i data-lucide="calendar-days"></i> {{ project.deadline|date:'M d, Y' }}</span>
+                            {% endif %}
+                            <a href="{% url 'project_detail' project.slug %}" class="public-profile__view-project">View
+                                project <i data-lucide="arrow-up-right"></i></a>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <div class="public-profile__empty">
+                        <i data-lucide="folder-open"></i>
+                        <strong>No projects yet</strong>
+                        <span>This user hasn't shared any projects.</span>
+                    </div>
+                    {% endfor %}
                 </div>
             </section>
         </div>
 
-        <div class="profile-grid">
-            <section class="profile-card profile-card--wide">
-                <h2 class="profile-card__title">
-                    <i data-lucide="cpu" class="profile-card__title-icon"></i>
-                    <span>Skills &amp; Expertise</span>
-                </h2>
-                <div class="skill-list">
+        <aside class="public-profile__sidebar">
+            <section class="profile-card public-profile__section">
+                <h2 class="profile-card__title">About</h2>
+                <div class="public-profile__details">
+                    {% if profile.institute %}
+                    <div class="public-profile__detail">
+                        <i data-lucide="graduation-cap"></i><span>{{ profile.institute }}</span>
+                    </div>
+                    {% endif %}
+                    {% if profile.location %}
+                    <div class="public-profile__detail">
+                        <i data-lucide="map-pin"></i><span>{{ profile.location }}</span>
+                    </div>
+                    {% endif %}
+                    {% if date_joined %}
+                    <div class="public-profile__detail">
+                        <i data-lucide="calendar"></i><span>Joined {{ date_joined|date:'M Y' }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="profile-card public-profile__section">
+                <h2 class="profile-card__title">Skills &amp; Expertise</h2>
+                <div class="public-profile__skills">
                     {% for skill in profile.skills.all %}
-                        <span class="skill-pill">{{skill.name}}</span>
+                    <span class="skill-pill">{{ skill.name }}</span>
+                    {% empty %}
+                    <span class="skill-pill skill-pill--muted">No skills added yet</span>
                     {% endfor %}
                 </div>
             </section>
 
-            <section class="profile-card">
-                <h2 class="profile-card__title">
-                    <i data-lucide="github" class="profile-card__title-icon profile-card__title-icon--secondary"></i>
-                    <span>GitHub Stats</span>
-                </h2>
-                <div class="stat-list">
-                    <div class="stat-row">
-                        <span>Contributions (2026)</span>
-                        <span class="stat-row__value">1,482</span>
+            <section class="profile-card public-profile__section">
+                <h2 class="profile-card__title">Community</h2>
+                <div class="public-profile__community">
+                    <div>
+                        <strong>{{ profile.followers.count }}</strong><span>Followers</span>
                     </div>
-                    <div class="stat-row">
-                        <span>Public Repositories</span>
-                        <span class="stat-row__value">34</span>
+                    <div>
+                        <strong>{{ profile.following.count }}</strong><span>Following</span>
                     </div>
                 </div>
             </section>
-        </div>
-    </main>
-
-    <div id="toastContainer" class="toast-container"></div>
-    <script src="js/app.js"></script>
-{% endblock main %}
+        </aside>
+    </div>
+</main>
+{% endblock %}
