@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block main %}
-  <main class="page-main page-main--wide public-profile">
+  <main class=" page-main page-main--wide public-profile ">
     {# Profile header #}
     <section class="public-profile__hero">
       <div class="public-profile__hero-cover"></div>
@@ -19,33 +19,31 @@
           <div class="public-profile__heading">
             <div class="public-profile__name-block">
               <h1 class="public-profile__name">{{ public_profile.get_full_name|default:public_profile.username }}</h1>
+              <p class="public-profile__stat">@{{ public_profile.username}}</p>
+              <div class="public-profile__stats">
+                <div class="public-profile__stat">
+                  
+                  <span>Projects</span>
+                  <strong>{{ public_profile.profile.projects.count|default:"0"}}</strong>
+                </div>
+                <div class="public-profile__stat">
+                  
+                  <span>Followers</span>
+                  <strong>{{ public_profile.profile.followers.count|default:"0" }}</strong>
+                </div>
+                <div class="public-profile__stat">
+                  
+                  <span>Following</span>
+                  <strong>{{ public_profile.profile.following.count|default:"0" }}</strong>
+                </div>
+              </div>
               {% if public_profile.profile.headline %}
                 <p class="public-profile__headline">{{ public_profile.profile.headline }}</p>
               {% endif %}
-              {% if public_profile.profile.location %}
-                <p class="public-profile__location">
-                  <i data-lucide="map-pin"></i>
-                  {{ public_profile.profile.location }}
-                </p>
-              {% endif %}
+
               {% if public_profile.profile.bio %}
                 <p class="public-profile__bio">{{ public_profile.profile.bio }}</p>
               {% endif %}
-
-              <div class="public-profile__stats">
-                <div class="public-profile__stat">
-                  <strong>{{ public_profile.profile.projects.count }}</strong>
-                  <span>Projects</span>
-                </div>
-                <div class="public-profile__stat">
-                  <strong>{{ public_profile.profile.followers.count }}</strong>
-                  <span>Followers</span>
-                </div>
-                <div class="public-profile__stat">
-                  <strong>{{ public_profile.profile.following.count }}</strong>
-                  <span>Following</span>
-                </div>
-              </div>
             </div>
 
             <div class="public-profile__actions">
@@ -74,13 +72,13 @@
                 <i data-lucide="message-square" class="btn-icon"></i>
                 <span>Message</span>
               </a>
-              <button class="btn-secondary">
-                <i class="fa-solid fa-chevron-down"></i>
+              <button id="btn-down" class="btn-down" >
+                <i data-lucide="chevron-down" class="btn-icon"></i>
               </button>
             </div>
           </div>
 
-          <div class="public-profile__contacts">
+          <div id="extra-items" class="public-profile__contacts hide">
             {% comment %} {% if public_profile.profile.whatsapp_number %} {% endcomment %}
               <a class="public-profile__contact public-profile__contact--whatsapp" href="https://wa.me/{{ public_profile.profile.whatsapp_no|cut:' '|cut:'+'|cut:'-'|cut:'('|cut:')' }}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></a>
             {% comment %} {% endif %} {% endcomment %}

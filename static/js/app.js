@@ -347,3 +347,17 @@ try {
   console.log(error);
   console.log("not clicked");
 }
+
+// Profile buttons show-hide system (whatsapp ,linkedin etc)
+try{
+  const btnDown = document.getElementById("btn-down");
+  const extraItems = document.getElementById("extra-items");
+
+  btnDown.addEventListener("click", () => {
+    btnDown.classList.toggle("btn-up");
+    extraItems.classList.toggle("hide");
+  })
+}
+catch(error){
+  console.log(error)
+}

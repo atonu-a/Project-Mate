@@ -186,6 +186,10 @@ img {
   flex-shrink: 0;
 }
 
+.hide {
+  display: none!important;
+}
+
 input::placeholder,
 textarea::placeholder {
   color: var(--color-text-muted);
@@ -856,7 +860,7 @@ textarea::placeholder {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
   padding: 8px 16px;
   font-size: 0.875rem;
   font-weight: 700;
@@ -868,6 +872,18 @@ textarea::placeholder {
   border: 1px solid var(--color-border);
   color: var(--color-text);
   transition: background 0.2s;
+}
+.btn-down,
+.btn-up {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: background 0.2s;
+  padding:10px;
+  border-radius: 12px;
+}
+.btn-up {
+  transform: rotate(180deg);
 }
 .btn-success {
   background: var(--color-success);
@@ -3986,7 +4002,7 @@ textarea::placeholder {
 }
 .public-profile__headline {
   margin: 0.35rem 0 0;
-  color: var(--color-text, #334155);
+  color: var(--color-primary, #334155);
   font-size: 0.96rem;
   font-weight: 550;
 }
@@ -4014,7 +4030,6 @@ textarea::placeholder {
 .public-profile__stats {
   display: flex;
   gap: 1.75rem;
-  margin-top: 1rem;
 }
 .public-profile__stat {
   display: flex;
@@ -4028,7 +4043,6 @@ textarea::placeholder {
   font-size: 1rem;
 }
 .public-profile__bio {
-  margin: 0.85rem 0 0;
   color: var(--color-text, #334155);
   line-height: 1.65;
   white-space: pre-line;
@@ -4066,21 +4080,23 @@ textarea::placeholder {
 .public-profile__contact--whatsapp {
   background: var(--color-success);
   border: 1px solid var(--color-border);
-  color: var(--color-text);
+  color: #fff;
 }
 .public-profile__contact--whatsapp:hover{
   background: var(--color-bg, #f8fafc);
-  border-color: var(--color-success, #6366f1);  
+  border-color: var(--color-success, #6366f1);
+  color: var(--color-text);  
 }
 .public-profile__contact--linkedin {
   background: #0A66C2;
   border: 1px solid var(--color-border);
-  color: var(--color-text);
+  color: #fff;
 }
 
 .public-profile__contact--linkedin:hover {
   background: var(--color-bg, #f8fafc);
   border-color: #0a66c2;
+  color: var(--color-text);
 }
 .public-profile__layout {
   display: grid;
