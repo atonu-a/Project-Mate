@@ -21,11 +21,7 @@
               <h1 class="public-profile__name">{{ public_profile.get_full_name|default:public_profile.username }}</h1>
               <p class="public-profile__stat">@{{ public_profile.username}}</p>
               <div class="public-profile__stats">
-                <div class="public-profile__stat">
-                  
-                  <span>Projects</span>
-                  <strong>{{ public_profile.profile.projects.count|default:"0"}}</strong>
-                </div>
+
                 <div class="public-profile__stat">
                   
                   <span>Followers</span>
@@ -41,10 +37,8 @@
                 <p class="public-profile__headline">{{ public_profile.profile.headline }}</p>
               {% endif %}
 
-              {% if public_profile.profile.bio %}
-                <p class="public-profile__bio">{{ public_profile.profile.bio }}</p>
-              {% endif %}
             </div>
+
 
             <div class="public-profile__actions">
               <button type="button" onclick="toggleFollow(this)" data-follow-id="{{ public_profile.id }}" class="btn-primary {% if is_following %}is-following{% endif %}">
@@ -76,7 +70,11 @@
                 <i data-lucide="chevron-down" class="btn-icon"></i>
               </button>
             </div>
+
           </div>
+                                  {% if public_profile.profile.bio %}
+                <p class="public-profile__bio">{{ public_profile.profile.bio }}</p>
+            {% endif %}
 
           <div id="extra-items" class="public-profile__contacts hide">
             {% comment %} {% if public_profile.profile.whatsapp_number %} {% endcomment %}

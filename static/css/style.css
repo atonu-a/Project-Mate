@@ -3993,6 +3993,9 @@ textarea::placeholder {
   justify-content: space-between !important;
   gap: 1rem;
 }
+.public-profile__name-block{
+  /* width: 50%; */
+}
 .public-profile__name {
   margin: 0;
   color: var(--color-text, #111827);
@@ -4322,6 +4325,9 @@ textarea::placeholder {
   }
   .public-profile__heading {
     flex-direction: column;
+  }
+  .public-profile__name-block{
+    /* width: 100%; */
   }
 }
 @media (max-width: 640px) {

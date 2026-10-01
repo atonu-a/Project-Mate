@@ -26,7 +26,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True, default="Remote")
     institute = models.CharField(max_length=100, blank=True, null=True, default="Independent")
     url = models.URLField(blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
+    bio = models.CharField(blank=True, null=True, max_length=150)
     github = models.URLField(blank=True, null=True)
     whatsapp_no = models.CharField()
     linkedin = models.URLField(blank=True, null=True)
