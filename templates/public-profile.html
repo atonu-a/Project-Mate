@@ -74,18 +74,21 @@
                 <i data-lucide="message-square" class="btn-icon"></i>
                 <span>Message</span>
               </a>
+              <button class="btn-secondary">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
             </div>
           </div>
 
           <div class="public-profile__contacts">
             {% comment %} {% if public_profile.profile.whatsapp_number %} {% endcomment %}
-              <a class="public-profile__contact public-profile__contact--whatsapp" href="https://wa.me/{{ +8801873457664|cut:' '|cut:'+'|cut:'-'|cut:'('|cut:')' }}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></a>
+              <a class="public-profile__contact public-profile__contact--whatsapp" href="https://wa.me/{{ public_profile.profile.whatsapp_no|cut:' '|cut:'+'|cut:'-'|cut:'('|cut:')' }}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></a>
             {% comment %} {% endif %} {% endcomment %}
             {% if public_profile.profile.linkedin %}
-              <a class="public-profile__contact public-profile__contact--linkedin" href="{{ public_profile.profile.linkedin }}" target="_blank" rel="noopener noreferrer"><i data-lucide="linkedin"></i><span>LinkedIn</span></a>
+              <a class="public-profile__contact public-profile__contact--linkedin" href="{{ public_profile.profile.linkedin }}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i><span>LinkedIn</span></a>
             {% endif %}
             {% if public_profile.profile.github %}
-              <a class="public-profile__contact" href="{{ public_profile.profile.github }}" target="_blank" rel="noopener noreferrer"><i data-lucide="github"></i><span>GitHub</span></a>
+              <a class="public-profile__contact" href="{{ public_profile.profile.github }}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i><span>GitHub</span></a>
             {% endif %}
             {% if public_profile.profile.url %}
               <a class="public-profile__contact" href="{{ public_profile.profile.url }}" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-up-right-from-square"></i></i><span>Website</span></a>

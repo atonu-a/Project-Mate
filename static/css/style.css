@@ -4073,8 +4073,14 @@ textarea::placeholder {
   border-color: var(--color-success, #6366f1);  
 }
 .public-profile__contact--linkedin {
-  color: #0a66c2;
-  border-color: #93c5fd;
+  background: #0A66C2;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.public-profile__contact--linkedin:hover {
+  background: var(--color-bg, #f8fafc);
+  border-color: #0a66c2;
 }
 .public-profile__layout {
   display: grid;
