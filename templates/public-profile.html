@@ -1,111 +1,221 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block main %}
-<main class="page-main page-main--medium">
-    <section class="profile-hero">
-        <div class="profile-hero__glow"></div>
-        <div class="profile-hero__inner">
-            <img src="{{ public_profile.profile.profile_pic.url }}"
-                alt="{{ public_profile.first_name }} {{ public_profile.last_name }}" class="profile-hero__avatar">
-            <div class="profile-hero__info">
-                <div class="profile-hero__top">
-                    <div class="profile-hero__copy">
-                        <h1 class="profile-hero__name">{{ public_profile.first_name }} {{ public_profile.last_name }}
-                        </h1>
-                        <p class="profile-hero__role">{{ public_profile.profile.headline }}</p>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                    <div class="profile-actions">
-                        <button onclick="toggleFollow(this)" data-follow-id="{{ public_profile.id }}"
-                            class="btn-primary {% if is_following %}is-following{% endif %}">
-                            <i data-lucide="{% if is_following %}user-check{% else %}user-plus{% endif %}"
-                                class="btn-icon"></i><span>{% if is_following %}Following{% else %}Follow{% endif %}</span>
-                        </button>
-                        <button onclick="window.location.href='{% url 'messages' %}?with={{ public_profile.id }}'"
-                            class="btn-secondary">
-                            <i data-lucide="message-square" class="btn-icon"></i><span>Message</span>
-                        </button>
-                        
-                    </div>
-                    <button onclick="copyProfileLink(this)" class="btn-secondary" aria-label="Copy profile link">
-                        <i data-lucide="share-2" class="btn-icon"></i> Share
-                    </button>
-                    </div>
+  <main class="page-main page-main--wide public-profile">
+    {# Profile header #}
+    <section class="public-profile__hero">
+      <div class="public-profile__hero-cover"></div>
+      <div class="public-profile__hero-content">
+        <img src="{% if public_profile.profile.profile_pic %}
+            {{ public_profile.profile.profile_pic.url }}
+          {% else %}
+            
+            https://placehold.co/128x128?text=User
+
+          {% endif %}"
+          alt="{{ public_profile.first_name }} {{ public_profile.last_name }}"
+          class="public-profile__avatar" />
+
+        <div class="public-profile__identity">
+          <div class="public-profile__heading">
+            <div class="public-profile__name-block">
+              <h1 class="public-profile__name">{{ public_profile.get_full_name|default:public_profile.username }}</h1>
+              {% if public_profile.profile.headline %}
+                <p class="public-profile__headline">{{ public_profile.profile.headline }}</p>
+              {% endif %}
+              {% if public_profile.profile.location %}
+                <p class="public-profile__location">
+                  <i data-lucide="map-pin"></i>
+                  {{ public_profile.profile.location }}
+                </p>
+              {% endif %}
+              {% if public_profile.profile.bio %}
+                <p class="public-profile__bio">{{ public_profile.profile.bio }}</p>
+              {% endif %}
+
+              <div class="public-profile__stats">
+                <div class="public-profile__stat">
+                  <strong>{{ public_profile.profile.projects.count }}</strong>
+                  <span>Projects</span>
                 </div>
-
-                <div class="profile-stats">
-                    <div class="profile-stat">
-                        <span class="profile-stat__value">{{ public_profile.profile.projects.count }}</span>
-                        <span class="profile-stat__label">Projects</span>
-                    </div>
-                    <div class="profile-stat">
-                        <span class="profile-stat__value">{{ public_profile.profile.followers.count }}</span>
-                        <span class="profile-stat__label">Followers</span>
-                    </div>
-                    <div class="profile-stat">
-                        <span class="profile-stat__value">{{ public_profile.profile.following.count }}</span>
-                        <span class="profile-stat__label">Following</span>
-                    </div>
+                <div class="public-profile__stat">
+                  <strong>{{ public_profile.profile.followers.count }}</strong>
+                  <span>Followers</span>
                 </div>
-
-                <p class="profile-hero__bio">{{ public_profile.profile.bio }}</p>
+                <div class="public-profile__stat">
+                  <strong>{{ public_profile.profile.following.count }}</strong>
+                  <span>Following</span>
+                </div>
+              </div>
             </div>
-        </div>
-    </section>
 
-    <section class="profile-card profile-card--wide">
-        <h2 class="profile-card__title">More Details</h2>
-        <div class="profile-detail-grid">
-            <div class="profile-detail-list">
-                <p><i class="fa-solid fa-location-dot"></i> {{ public_profile.profile.location }}</p>
-                <p><i class="fa-solid fa-building"></i> {{ public_profile.profile.institute }}</p>
-            </div>
-            {% if public_profile.profile.url or public_profile.profile.github %}
-            <div class="profile-detail-list">
-                {% if public_profile.profile.url %}
-                <p><a href="{{ public_profile.profile.url }}" target="_blank" rel="noreferrer"><i
-                            class="fa-solid fa-link"></i> Website</a></p>
-                {% endif %}
+            <div class="public-profile__actions">
+              <button type="button" onclick="toggleFollow(this)" data-follow-id="{{ public_profile.id }}" class="btn-primary {% if is_following %}is-following{% endif %}">
+                <i data-lucide="{% if is_following %}
+                    
+                    user-check
 
-                {% if public_profile.profile.github %}
-                <p><a href="{{ public_profile.profile.github }}" target="_blank" rel="noreferrer"><i
-                            class="fa-brands fa-github"></i> Github</a></p>
-                {% endif %}
+                  {% else %}
+                    
+                    user-plus
+
+                  {% endif %}"
+                  class="btn-icon">
+
+                </i>
+                <span>
+                  {% if is_following %}
+                    Following
+                  {% else %}
+                    Follow
+                  {% endif %}
+                </span>
+              </button>
+              <a class="btn-secondary" href="{% url 'messages' %}?with={{ public_profile.id }}">
+                <i data-lucide="message-square" class="btn-icon"></i>
+                <span>Message</span>
+              </a>
             </div>
+          </div>
+
+          <div class="public-profile__contacts">
+            {% comment %} {% if public_profile.profile.whatsapp_number %} {% endcomment %}
+              <a class="public-profile__contact public-profile__contact--whatsapp" href="https://wa.me/{{ +8801873457664|cut:' '|cut:'+'|cut:'-'|cut:'('|cut:')' }}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span></a>
+            {% comment %} {% endif %} {% endcomment %}
+            {% if public_profile.profile.linkedin %}
+              <a class="public-profile__contact public-profile__contact--linkedin" href="{{ public_profile.profile.linkedin }}" target="_blank" rel="noopener noreferrer"><i data-lucide="linkedin"></i><span>LinkedIn</span></a>
             {% endif %}
+            {% if public_profile.profile.github %}
+              <a class="public-profile__contact" href="{{ public_profile.profile.github }}" target="_blank" rel="noopener noreferrer"><i data-lucide="github"></i><span>GitHub</span></a>
+            {% endif %}
+            {% if public_profile.profile.url %}
+              <a class="public-profile__contact" href="{{ public_profile.profile.url }}" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-up-right-from-square"></i></i><span>Website</span></a>
+            {% endif %}
+            <button type="button" class="btn-secondary" onclick="copyProfileLink(this)">
+              <i data-lucide="share-2" class="btn-icon"></i>
+              <span>Share</span>
+            </button>
+          </div>
         </div>
+      </div>
     </section>
 
-    <div class="profile-grid">
-        <section class="profile-card profile-card--wide">
-            <h2 class="profile-card__title">
-                <i data-lucide="cpu" class="profile-card__title-icon"></i>
-                <span>Skills &amp; Expertise</span>
-            </h2>
-            <div class="skill-list">
-                {% for skill in public_profile.profile.skills.all %}
-                <span class="skill-pill">{{ skill.name }}</span>
-                {% empty %}
-                <span class="skill-pill skill-pill--muted">No skills added yet</span>
-                {% endfor %}
+    <div class="public-profile__layout">
+      <div class="public-profile__main">
+        <section class="profile-card public-profile__section">
+          <div class="public-profile__section-heading">
+            <div>
+              <h2 class="profile-card__title">Projects</h2>
+              <p class="public-profile__section-subtitle">Projects shared by {{ public_profile.first_name|default:public_profile.username }}</p>
             </div>
+            <span class="public-profile__count">{{ public_profile.profile.projects.count }}</span>
+          </div>
+
+          <div class="public-profile__projects">
+            {% for project in public_profile.profile.projects.all %}
+              <article class="post public-profile__project">
+                <div class="post__head">
+                  <img class="post__avatar"
+                    src="{% if public_profile.profile.profile_pic %}
+                      {{ public_profile.profile.profile_pic.url }}
+                    {% else %}
+                      
+                      https://placehold.co/48x48?text=U
+
+                    {% endif %}"
+                    alt="" />
+                  <div class="post__author-info">
+                    <strong class="post__author-name">{{ public_profile.get_full_name|default:public_profile.username }}</strong>
+                    {% if project.category %}
+                      <span class="public-profile__project-category">{{ project.category }}</span>
+                    {% endif %}
+                  </div>
+                  {% if project.status %}
+                    <span class="public-profile__status public-profile__status--{{ project.status|lower }}">{{ project.get_status_display|default:project.status }}</span>
+                  {% endif %}
+                </div>
+
+                <div class="post__body">
+                  <h3 class="public-profile__project-title"><a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a></h3>
+                  {% if project.desc %}
+                    <p class="public-profile__project-description">{{ project.desc|truncatewords:45 }}</p>
+                  {% endif %}
+                  {% if project.overview %}
+                    <p class="public-profile__project-description">{{ project.overview|truncatewords:45 }}</p>
+                  {% endif %}
+                </div>
+
+                {% if project.required_skills.all %}
+                  <div class="post__tags">
+                    {% for skill in project.required_skills.all|slice:':5' %}
+                      <span class="tech-tag">{{ skill.name }}</span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <div class="public-profile__project-footer">
+                  <span><i data-lucide="users"></i> {{ project.team_size }} team size</span>
+                  {% if project.deadline %}
+                    <span><i data-lucide="calendar-days"></i> {{ project.deadline|date:'M d, Y' }}</span>
+                  {% endif %}
+                  <a href="{% url 'project_detail' project.slug %}" class="public-profile__view-project">View project <i data-lucide="arrow-up-right"></i></a>
+                </div>
+              </article>
+            {% empty %}
+              <div class="public-profile__empty">
+                <i data-lucide="folder-open"></i>
+                <strong>No projects yet</strong>
+                <span>This user hasn't shared any projects.</span>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      </div>
+
+      <aside class="public-profile__sidebar">
+        <section class="profile-card public-profile__section">
+          <h2 class="profile-card__title">About</h2>
+          <div class="public-profile__details">
+            {% if public_profile.profile.institute %}
+              <div class="public-profile__detail">
+                <i data-lucide="graduation-cap"></i><span>{{ public_profile.profile.institute }}</span>
+              </div>
+            {% endif %}
+            {% if public_profile.profile.location %}
+              <div class="public-profile__detail">
+                <i data-lucide="map-pin"></i><span>{{ public_profile.profile.location }}</span>
+              </div>
+            {% endif %}
+            {% if public_profile.date_joined %}
+              <div class="public-profile__detail">
+                <i data-lucide="calendar"></i><span>Joined {{ public_profile.date_joined|date:'M Y' }}</span>
+              </div>
+            {% endif %}
+          </div>
         </section>
 
-        <section class="profile-card">
-            <h2 class="profile-card__title">
-                <i data-lucide="folder-kanban" class="profile-card__title-icon profile-card__title-icon--secondary"></i>
-                <span>Project Stats</span>
-            </h2>
-            <div class="stat-list">
-                <div class="stat-row">
-                    <span>Total Projects</span>
-                    <span class="stat-row__value">{{ public_profile.profile.projects.count }}</span>
-                </div>
-                <div class="stat-row">
-                    <span>Completed Projects</span>
-                    <span class="stat-row__value">{{ public_profile.profile.completed_projects.count }}</span>
-                </div>
-            </div>
+        <section class="profile-card public-profile__section">
+          <h2 class="profile-card__title">Skills &amp; Expertise</h2>
+          <div class="public-profile__skills">
+            {% for skill in public_profile.profile.skills.all %}
+              <span class="skill-pill">{{ skill.name }}</span>
+            {% empty %}
+              <span class="skill-pill skill-pill--muted">No skills added yet</span>
+            {% endfor %}
+          </div>
         </section>
+
+        <section class="profile-card public-profile__section">
+          <h2 class="profile-card__title">Community</h2>
+          <div class="public-profile__community">
+            <div>
+              <strong>{{ public_profile.profile.followers.count }}</strong><span>Followers</span>
+            </div>
+            <div>
+              <strong>{{ public_profile.profile.following.count }}</strong><span>Following</span>
+            </div>
+          </div>
+        </section>
+      </aside>
     </div>
-</main>
-{% endblock main %}
+  </main>
+{% endblock %}
