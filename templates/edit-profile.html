@@ -59,7 +59,7 @@
             <div class="form-field">
 
                 <label for="editName" class="form-label">
-                    Full Name
+                    Full Name<span class="text-danger">*</span>
                 </label>
 
                 <input id="editName" type="text" required class="form-input" name="full_name"
@@ -72,7 +72,7 @@
             <div class="form-field">
 
                 <label for="editHeadline" class="form-label">
-                    Headline
+                    Headline<span class="text-danger">*</span>
                 </label>
 
                 <input id="editHeadline" type="text" required name="headline" value="{{ profile.headline }}"
@@ -89,7 +89,7 @@
             <div class="form-section">
 
                 <span class="form-section__title">
-                    What field are you in?
+                    What field are you in?<span class="text-danger">*</span>
                 </span>
 
                 <span class="form-section__hint">
@@ -228,6 +228,31 @@
                 
                 </div>
 
+            </div>
+            <!-- Whatsapp and Linkedin -->
+            <div class="form-row">
+            
+                <div class="form-field">
+            
+                    <label for="editLink" class="form-label">
+                        Whatsapp NO<span class="text-danger">*</span>
+                    </label>
+            
+                    <input id="editLink" type="text" name="whatsapp" value="{{ profile.whatsapp}}" placeholder="+880........" class="form-input" required>
+            
+                </div>
+            
+            
+                <div class="form-field">
+            
+                    <label for="editLink" class="form-label">
+                        Linkedin URL
+                    </label>
+            
+                    <input id="editLink" type="url" name="linkedin" value="{{profile.linkedin}}" placeholder="https://..." class="form-input">
+            
+                </div>
+            
             </div>
 
 

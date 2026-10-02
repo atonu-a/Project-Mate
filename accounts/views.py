@@ -51,6 +51,8 @@ def complete_profile(request):
         
         
         profile.headline = request.POST.get("headline", "")
+        profile.whatsapp = request.POST.get("whatsapp","")
+        profile.linkedin = request.POST.get("linkedin","")
         profile.location = request.POST.get("location","")
         profile.url = request.POST.get("url","")
         profile.institute = request.POST.get("institute", "")
@@ -172,6 +174,8 @@ def edit_profile(request):
 
         # Profile information
         profile.headline = request.POST.get("headline", "")
+        profile.whatsapp = request.POST.get("whatsapp", "")
+        profile.linkedin = request.POST.get("linkedin", "")
         profile.location = request.POST.get("location", "")
         profile.url = request.POST.get("url", "")
         profile.institute = request.POST.get("institute", "")

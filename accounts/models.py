@@ -28,7 +28,7 @@ class Profile(models.Model):
     url = models.URLField(blank=True, null=True)
     bio = models.CharField(blank=True, null=True, max_length=150)
     github = models.URLField(blank=True, null=True)
-    whatsapp_no = models.CharField()
+    whatsapp = models.CharField()
     linkedin = models.URLField(blank=True, null=True)
     
     profile_pic = models.ImageField(upload_to='images',blank=True, null=True, default="/static/images/default.svg")
