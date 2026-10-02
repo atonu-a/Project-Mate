@@ -4106,7 +4106,7 @@ textarea::placeholder {
 }
 .public-profile__layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-columns: 280px minmax(0, 1fr) ;
   gap: 1.25rem;
   align-items: start;
 }

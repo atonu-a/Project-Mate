@@ -99,6 +99,54 @@
     </section>
 
     <div class="public-profile__layout">
+      <aside class="public-profile__sidebar">
+        <section class="profile-card public-profile__section">
+          <h2 class="profile-card__title">About</h2>
+          <div class="public-profile__details">
+            {% if public_profile.profile.institute %}
+            <div class="public-profile__detail">
+              <i data-lucide="graduation-cap"></i><span>{{ public_profile.profile.institute }}</span>
+            </div>
+            {% endif %}
+            {% if public_profile.profile.location %}
+            <div class="public-profile__detail">
+              <i data-lucide="map-pin"></i><span>{{ public_profile.profile.location }}</span>
+            </div>
+            {% endif %}
+            {% if public_profile.date_joined %}
+            <div class="public-profile__detail">
+              <i data-lucide="calendar"></i><span>Joined {{ public_profile.date_joined|date:'M Y' }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </section>
+      
+        <section class="profile-card public-profile__section">
+          <h2 class="profile-card__title">Skills &amp; Expertise</h2>
+          <div class="public-profile__skills">
+            {% for skill in public_profile.profile.skills.all %}
+            <span class="skill-pill">{{ skill.name }}</span>
+            {% empty %}
+            <span class="skill-pill skill-pill--muted">No skills added yet</span>
+            {% endfor %}
+          </div>
+        </section>
+      
+        <section class="profile-card public-profile__section">
+          <h2 class="profile-card__title">Community</h2>
+          <div class="public-profile__community">
+            <div>
+              <strong>{{ public_profile.profile.followers.count }}</strong><span>Followers</span>
+            </div>
+            <div>
+              <strong>{{ public_profile.profile.following.count }}</strong><span>Following</span>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+
+
       <div class="public-profile__main">
         <section class="profile-card public-profile__section">
           <div class="public-profile__section-heading">
@@ -106,57 +154,74 @@
               <h2 class="profile-card__title">Projects</h2>
               <p class="public-profile__section-subtitle">Projects shared by {{ public_profile.first_name|default:public_profile.username }}</p>
             </div>
-            <span class="public-profile__count">{{ public_profile.profile.projects.count }}</span>
+            <span class="public-profile__count">{{ public_profile.projects.count }}</span>
           </div>
 
           <div class="public-profile__projects">
-            {% for project in public_profile.profile.projects.all %}
-              <article class="post public-profile__project">
+            {% for project in public_profile.projects.all %}
+              <article class="post">
                 <div class="post__head">
-                  <img class="post__avatar"
-                    src="{% if public_profile.profile.profile_pic %}
-                      {{ public_profile.profile.profile_pic.url }}
-                    {% else %}
-                      
-                      https://placehold.co/48x48?text=U
-
-                    {% endif %}"
-                    alt="" />
-                  <div class="post__author-info">
-                    <strong class="post__author-name">{{ public_profile.get_full_name|default:public_profile.username }}</strong>
-                    {% if project.category %}
-                      <span class="public-profile__project-category">{{ project.category }}</span>
-                    {% endif %}
+                  <div class="post__author">
+                    <img src="{{ project.owner_name.profile.profile_pic.url }}" alt="{{ project.owner_name.username }}"
+                      class="post__avatar" />
+                    <div>
+                      <div class="post__author-row">
+                        <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">
+                          {{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>
+                        <span class="role-badge">Owner</span>
+                      </div>
+                      <p class="post__meta">{{ project.category }} • {{ project.create_at }}</p>
+                    </div>
                   </div>
-                  {% if project.status %}
-                    <span class="public-profile__status public-profile__status--{{ project.status|lower }}">{{ project.get_status_display|default:project.status }}</span>
-                  {% endif %}
+                  <button class="post__more" aria-label="More options"><i data-lucide="more-horizontal"
+                      class="post__more-icon"></i></button>
                 </div>
-
+              
                 <div class="post__body">
-                  <h3 class="public-profile__project-title"><a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a></h3>
-                  {% if project.desc %}
-                    <p class="public-profile__project-description">{{ project.desc|truncatewords:45 }}</p>
-                  {% endif %}
-                  {% if project.overview %}
-                    <p class="public-profile__project-description">{{ project.overview|truncatewords:45 }}</p>
-                  {% endif %}
-                </div>
-
-                {% if project.required_skills.all %}
-                  <div class="post__tags">
-                    {% for skill in project.required_skills.all|slice:':5' %}
-                      <span class="tech-tag">{{ skill.name }}</span>
-                    {% endfor %}
+                  <div>
+                    <span class="category-badge">{{ project.category }}</span>
+                    <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">
+                      {{ project.title}}</h2>
+                    <p class="post__text">{{ project.desc }}</p>
                   </div>
-                {% endif %}
-
-                <div class="public-profile__project-footer">
-                  <span><i data-lucide="users"></i> {{ project.team_size }} team size</span>
-                  {% if project.deadline %}
-                    <span><i data-lucide="calendar-days"></i> {{ project.deadline|date:'M d, Y' }}</span>
+                  {% if project.img %}
+                  <div onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__media">
+                    <img src="{{ project.img.url }}" class="post__media-grid" />
+              
+                    {% comment %} <div class="post__media-content">
+                      <div class="post__media-icon">
+                        <i data-lucide="network" class="post__media-glyph"></i>
+                      </div>
+                      <h4 class="post__media-title">{{ project.title }}</h4>
+                      <p class="post__media-text">Click to inspect project details and join the team.</p>
+                    </div> {% endcomment %}
+                  </div>
+                  {% else %}
+                  <a href="{% url 'project_detail' project.slug %}" class="btn-secondary">Check Details <i
+                      class="fa-solid fa-arrow-right"></i></a>
                   {% endif %}
-                  <a href="{% url 'project_detail' project.slug %}" class="public-profile__view-project">View project <i data-lucide="arrow-up-right"></i></a>
+              
+                  <div class="post__tags-row">
+                    <div class="post__tags">
+                      {% for skill in project.required_skills.all|slice:':3' %}
+                      <span class="tech-tag">{{ skill.name }}</span>
+                      {% empty %}
+                      <span class="tech-tag">General</span>
+                      {% endfor %}
+                    </div>
+                    <span class="status-badge">{{ project.members.count }}/{{ project.team_size }} Members</span>
+                  </div>
+                </div>
+              
+                <div class="post__actions">
+                  <div class="post__reactions">
+                    <button onclick="toggleLike(this)" class="reaction"><i data-lucide="heart" class="reaction__icon"></i><span>24
+                        Likes</span></button>
+                    <button onclick="toggleComments(this)" class="reaction reaction--comment"><i data-lucide="message-circle"
+                        class="reaction__icon"></i><span>7 Comments</span></button>
+                  </div>
+                  <button onclick="showToast('Join request sent successfully!')" class="post__join btn-check"
+                    data-text="Requested">Request to Join</button>
                 </div>
               </article>
             {% empty %}
@@ -170,51 +235,7 @@
         </section>
       </div>
 
-      <aside class="public-profile__sidebar">
-        <section class="profile-card public-profile__section">
-          <h2 class="profile-card__title">About</h2>
-          <div class="public-profile__details">
-            {% if public_profile.profile.institute %}
-              <div class="public-profile__detail">
-                <i data-lucide="graduation-cap"></i><span>{{ public_profile.profile.institute }}</span>
-              </div>
-            {% endif %}
-            {% if public_profile.profile.location %}
-              <div class="public-profile__detail">
-                <i data-lucide="map-pin"></i><span>{{ public_profile.profile.location }}</span>
-              </div>
-            {% endif %}
-            {% if public_profile.date_joined %}
-              <div class="public-profile__detail">
-                <i data-lucide="calendar"></i><span>Joined {{ public_profile.date_joined|date:'M Y' }}</span>
-              </div>
-            {% endif %}
-          </div>
-        </section>
-
-        <section class="profile-card public-profile__section">
-          <h2 class="profile-card__title">Skills &amp; Expertise</h2>
-          <div class="public-profile__skills">
-            {% for skill in public_profile.profile.skills.all %}
-              <span class="skill-pill">{{ skill.name }}</span>
-            {% empty %}
-              <span class="skill-pill skill-pill--muted">No skills added yet</span>
-            {% endfor %}
-          </div>
-        </section>
-
-        <section class="profile-card public-profile__section">
-          <h2 class="profile-card__title">Community</h2>
-          <div class="public-profile__community">
-            <div>
-              <strong>{{ public_profile.profile.followers.count }}</strong><span>Followers</span>
-            </div>
-            <div>
-              <strong>{{ public_profile.profile.following.count }}</strong><span>Following</span>
-            </div>
-          </div>
-        </section>
-      </aside>
+      
     </div>
   </main>
 {% endblock %}

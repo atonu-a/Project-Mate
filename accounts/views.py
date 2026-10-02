@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm
 from django.views.decorators.cache import never_cache
 from .models import *
+from projects.models import Project
 # Create your views here.
 # ======================
 #       Registrantion
@@ -145,8 +146,10 @@ def signin(request):
 @login_required(login_url="signin")
 def profile(request, username):
     profile = get_object_or_404(Profile, user__username=username)
+    # projects = Project.objects.filter(owner_name= request.user).order_by("-create_at")
     context = {
-        "profile":profile
+        "profile":profile,
+        # "projects":projects,
     }
     return render(request, "profile.html", context)
 
@@ -229,8 +232,8 @@ def edit_profile(request):
         "selected_fields": selected_fields,
     })       
     
-    
-    
+
+   
 # ======================
 #    Other's profile
 # ======================  
