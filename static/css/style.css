@@ -189,6 +189,9 @@ img {
 .hide {
   display: none!important;
 }
+.text-danger {
+  color: var(--color-danger)!important;
+}
 
 input::placeholder,
 textarea::placeholder {

@@ -61,7 +61,7 @@
         
         
             <div class="form-field">
-                <label for="setupHeadline" class="form-label">Headline</label>
+                <label for="setupHeadline" class="form-label">Headline<span class="text-danger">*</span></label>
         
                 <input id="setupHeadline" name="headline" type="text" required
                     placeholder="e.g., Marketing Strategist, Product Designer, Backend Developer, Student" class="form-input">
@@ -74,7 +74,7 @@
         
             <div class="form-section">
                 <span class="form-section__title">
-                    What field are you in?
+                    What field are you in?<span class="text-danger">*</span>
                 </span>
         
                 <span class="form-section__hint">
@@ -138,29 +138,90 @@
                 <input id="setupSkills" name="skills" type="text"
                     placeholder="e.g., Copywriting, Excel Modeling, React, Public Speaking, Illustration..." class="form-input">
             </div>
+            <!-- Whatsapp and Linkedin -->
+            <div class="form-row">
+            
+                <div class="form-field">
+            
+                    <label for="editLink" class="form-label">
+                        Whatsapp NO<span class="text-danger">*</span>
+                    </label>
+            
+                    <input id="editLink" type="text" name="whatsapp" placeholder="+880........" class="form-input" required>
+            
+                </div>
+            
+            
+                <div class="form-field">
+            
+                    <label for="editLink" class="form-label">
+                        Linkedin URL
+                    </label>
+            
+                    <input id="editLink" type="url" name="linkedin" placeholder="https://..." class="form-input">
+            
+                </div>
+            
+            </div>
         
         
             <div class="form-row">
-        
+            
                 <div class="form-field">
-                    <label for="setupLocation" class="form-label">
+            
+                    <label for="editLocation" class="form-label">
                         Location
                     </label>
-        
-                    <input id="setupLocation" name="location" type="text" placeholder="City, Country (or Remote)"
-                        class="form-input">
+            
+                    <input id="editLocation" type="text" name="location" 
+                        placeholder="City, Country (or Remote)" class="form-input">
+            
                 </div>
-        
-        
+            
                 <div class="form-field">
-                    <label for="setupLink" class="form-label">
+            
+                    <label for="editLocation" class="form-label">
+                        Organization / Institute
+                    </label>
+            
+                    <input id="editLocation" type="text" name="institute" 
+                        placeholder="e.g. ABC Company Ltd." class="form-input">
+            
+                </div>
+            
+            
+            
+            
+            </div>
+            <!-- URL & Github -->
+            <div class="form-row">
+            
+                <div class="form-field">
+            
+                    <label for="editLink" class="form-label">
                         Portfolio / Profile Link
                     </label>
-        
-                    <input id="setupLink" name="url" type="url" placeholder="https://..." class="form-input">
+            
+                    <input id="editLink" type="url" name="url" placeholder="https://..."
+                        class="form-input">
+            
                 </div>
-        
+            
+            
+                <div class="form-field">
+            
+                    <label for="editLink" class="form-label">
+                        GitHub Link
+                    </label>
+            
+                    <input id="editLink" type="url" name="github" placeholder="https://..."
+                        class="form-input">
+            
+                </div>
+            
             </div>
+
+            
         
         
             <div class="form-field">

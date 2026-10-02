@@ -138,7 +138,7 @@ def signin(request):
 
 
 # ======================
-#       Profile
+#     User  Profile
 # ======================
 @login_required(login_url="signin")
 def profile(request, username):
@@ -227,7 +227,9 @@ def edit_profile(request):
     
     
     
-    
+# ======================
+#    Other's profile
+# ======================  
 def public_profile(request, username):
     public_profile = get_object_or_404(User, username=username)
     is_following = False
