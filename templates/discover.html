@@ -16,7 +16,7 @@
       <article class="post">
         <div class="post__head">
           <div class="post__author">
-            <img src="{{ project.owner_name.profile.profile_pic.url }}" alt="{{ project.owner_name.username }}" class="post__avatar" />
+            <img src="{{ project.owner_name.profile.profile_pic_url }}" alt="{{ project.owner_name.username }}" class="post__avatar" />
             <div>
               <div class="post__author-row">
                 <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">{{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>

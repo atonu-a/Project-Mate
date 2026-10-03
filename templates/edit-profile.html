@@ -3,9 +3,8 @@
 {% block main %}
 
 <main class="page-main page-main--narrow">
-
     <div class="form-panel">
-
+        <!-- header  -->
         <header>
             <div class="eyebrow">
                 <i data-lucide="pencil" class="eyebrow__icon"></i>
@@ -13,47 +12,54 @@
             </div>
 
             <h1 class="page-title">Update your details</h1>
-
             <p class="page-subtitle">
                 Keep your profile current so the right people can find you.
             </p>
         </header>
 
-
         <form method="post" class="form" enctype="multipart/form-data">
-
             {% csrf_token %}
 
-
-            <!-- Profile Picture -->
+            <!-- Profile Photo -->
             <div class="avatar-upload">
-
                 <div class="avatar-upload__frame">
-
-                    {% if profile.profile_pic %}
-                    <img id="editAvatarPreview" src="{{ profile.profile_pic.url }}" alt="Profile photo preview"
-                        class="avatar-upload__preview">
-                    {% else %}
-                    <img id="editAvatarPreview" src="/static/images/default.svg" alt="Profile photo preview"
-                        class="avatar-upload__preview">
-                    {% endif %}
-
+                    <img id="editAvatarPreview" src="{{ profile.profile_pic_url }}" alt="Profile photo preview"
+                        class="avatar-upload__preview"
+                        style="object-fit: cover; object-position: {{ profile.avatar_position|default:'50% 50%' }}; cursor: grab;">
+            
                     <label for="editAvatarInput" class="avatar-upload__edit" aria-label="Change profile photo">
                         <i data-lucide="camera" class="avatar-upload__edit-icon"></i>
                     </label>
-
-                    <input id="editAvatarInput" type="file" accept="image/*"
-                        onchange="previewAvatar(this, 'editAvatarPreview')" class="avatar-upload__input"
-                        name="profile_pic">
-
+            
+                    <input id="editAvatarInput" type="file" accept="image/*" onchange="previewAvatar(this, 'editAvatarPreview')"
+                        class="avatar-upload__input" name="profile_pic">
+            
+                    <!-- Hidden Input to save alignment -->
+                    <input type="hidden" id="editAvatarPosition" name="avatar_position"
+                        value="{{ profile.avatar_position|default:'50% 50%' }}">
                 </div>
 
-                <p class="avatar-upload__hint">
-                    Click the camera icon to change your photo
-                </p>
-
             </div>
-
+            
+            <!-- Cover Photo -->
+            <div class="avatar-upload cover-upload">
+                <div class="avatar-upload__frame public-profile__hero-cover_img">
+                    <img id="editCoverPreview" src="{{ profile.cover_pic.url }}" alt="Cover photo preview"
+                        class="public-profile__hero-cover_img cover-upload__preview"
+                        style="object-fit: cover; object-position: {{ profile.cover_position|default:'50% 50%' }}; cursor: grab;">
+            
+                    <label for="editCoverInput" class="avatar-upload__edit" aria-label="Change cover photo">
+                        <i data-lucide="camera" class="avatar-upload__edit-icon"></i>
+                    </label>
+            
+                    <input id="editCoverInput" type="file" accept="image/*" onchange="previewAvatar(this, 'editCoverPreview')"
+                        class="avatar-upload__input" name="cover_pic">
+            
+                    <!-- Hidden Input to save alignment -->
+                    <input type="hidden" id="editCoverPosition" name="cover_position"
+                        value="{{ profile.cover_position|default:'50% 50%' }}">
+                </div>
+            </div>
 
             <!-- Full Name -->
             <div class="form-field">
@@ -193,66 +199,69 @@
                         Organization / Institute
                     </label>
 
-                    <input id="editLocation" type="text" name="institute" value="{{ profile.institute|default:'Independent' }}"
-                        placeholder="e.g. ABC Company Ltd." class="form-input">
+                    <input id="editLocation" type="text" name="institute"
+                        value="{{ profile.institute|default:'Independent' }}" placeholder="e.g. ABC Company Ltd."
+                        class="form-input">
 
                 </div>
 
 
-                
+
 
             </div>
             <!-- URL & Github -->
             <div class="form-row">
 
                 <div class="form-field">
-                
+
                     <label for="editLink" class="form-label">
                         Portfolio / Profile Link
                     </label>
-                
-                    <input id="editLink" type="url" name="url" value="{{ profile.url|default:'' }}" placeholder="https://..."
-                        class="form-input">
-                
+
+                    <input id="editLink" type="url" name="url" value="{{ profile.url|default:'' }}"
+                        placeholder="https://..." class="form-input">
+
                 </div>
 
 
                 <div class="form-field">
-                
+
                     <label for="editLink" class="form-label">
                         GitHub Link
                     </label>
-                
-                    <input id="editLink" type="url" name="github" value="{{ profile.github|default:'' }}" placeholder="https://..."
-                        class="form-input">
-                
+
+                    <input id="editLink" type="url" name="github" value="{{ profile.github|default:'' }}"
+                        placeholder="https://..." class="form-input">
+
                 </div>
 
             </div>
             <!-- Whatsapp and Linkedin -->
             <div class="form-row">
-            
+
                 <div class="form-field">
-            
+
                     <label for="editLink" class="form-label">
                         Whatsapp NO<span class="text-danger">*</span>
                     </label>
-            
-                    <input id="editLink" type="text" name="whatsapp" value="{{ profile.whatsapp}}" placeholder="+880........" class="form-input" required>
-            
+
+                    <input id="editLink" type="text" name="whatsapp" value="{{ profile.whatsapp}}"
+                        placeholder="+880........" class="form-input" required>
+
                 </div>
-            
-            
+
+
                 <div class="form-field">
-            
+
                     <label for="editLink" class="form-label">
                         Linkedin URL
                     </label>
-            
-                    <input id="editLink" type="url" name="linkedin" value="{{profile.linkedin}}" placeholder="https://..." class="form-input">
-            
+
+                    <input id="editLink" type="url" name="linkedin" value="{{profile.linkedin}}"
+                        placeholder="https://..." class="form-input">
+
                 </div>
-            
+
             </div>
 
 
@@ -272,7 +281,8 @@
             <!-- Actions -->
             <div class="form-actions">
 
-                <button type="button" onclick="window.location.href='{% url 'profile' request.user.username%}'" class="form-cancel">
+                <button type="button" onclick="window.location.href='{% url 'profile' request.user.username%}'"
+                    class="form-cancel">
                     Cancel
                 </button>
 
@@ -286,6 +296,23 @@
 
     </div>
 
+
+    <!-- Crop Modal -->
+    <div id="cropModal"
+        style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+        <div style="background:#fff; padding:20px; border-radius:8px; max-width:90%; width:500px; text-align:center;">
+            <h3>Adjust / Crop Image</h3>
+            <div style="max-height: 400px; margin: 15px 0; overflow: hidden;">
+                <img id="imageToCrop" src="" style="max-width: 100%; display: block;">
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button type="button" id="cancelCropBtn"
+                    style="padding:8px 16px; background:#ccc; border:none; border-radius:4px; cursor:pointer;">Cancel</button>
+                <button type="button" id="applyCropBtn"
+                    style="padding:8px 16px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer;">Done</button>
+            </div>
+        </div>
+    </div>
 
 </main>
 

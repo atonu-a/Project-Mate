@@ -3,15 +3,16 @@
   <main class=" page-main page-main--wide public-profile ">
     {# Profile header #}
     <section class="public-profile__hero">
-      <div class="public-profile__hero-cover"></div>
-      <div class="public-profile__hero-content">
-        <img src="{% if public_profile.profile.profile_pic %}
-            {{ public_profile.profile.profile_pic.url }}
-          {% else %}
-            
-            https://placehold.co/128x128?text=User
+      {% if public_profile.profile.cover_pic %}
+        <div class="public-profile__hero-cover">
+          <img class="public-profile__hero-cover_img" src="public_profile.profile.cover_pic" alt="">
+        </div>
+      {% else %}
+        <div class="public-profile__hero-cover"></div>
+      {% endif %}
 
-          {% endif %}"
+      <div class="public-profile__hero-content">
+        <img src="{{ public_profile.profile.profile_pic_url }}"
           alt="{{ public_profile.first_name }} {{ public_profile.last_name }}"
           class="public-profile__avatar" />
 
@@ -162,7 +163,7 @@
               <article class="post">
                 <div class="post__head">
                   <div class="post__author">
-                    <img src="{{ project.owner_name.profile.profile_pic.url }}" alt="{{ project.owner_name.username }}"
+                    <img src="{{ project.owner_name.profile.profile_pic_url }}" alt="{{ project.owner_name.username }}"
                       class="post__avatar" />
                     <div>
                       <div class="post__author-row">

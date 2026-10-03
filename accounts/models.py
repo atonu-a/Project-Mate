@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+DEFAULT_PROFILE_PIC_URL = (
+    "https://res.cloudinary.com/ddrochzoq/image/upload/default_mdzqdy.svg"
+)
+
 # Create your models here.
 class Skill(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -31,9 +35,20 @@ class Profile(models.Model):
     whatsapp = models.CharField()
     linkedin = models.URLField(blank=True, null=True)
     
-    profile_pic = models.ImageField(upload_to='images',blank=True, null=True, default="/static/images/default.svg")
+    profile_pic = models.ImageField(upload_to='images',blank=True, null=True,  default="default_mdzqdy.svg")
+    cover_pic = models.ImageField(upload_to='images', blank=True, null=True)
     
-    
+    def save(self, *args, **kwargs):
+        if not self.profile_pic:
+            self.profile_pic = 'default_mdzqdy.svg'
+        super().save(*args, **kwargs)
+
+    @property
+    def profile_pic_url(self):
+        if not self.profile_pic or self.profile_pic.name == "default_mdzqdy.svg":
+            return DEFAULT_PROFILE_PIC_URL
+        return self.profile_pic.url
+
     def __str__(self) :
         return self.user.username
     

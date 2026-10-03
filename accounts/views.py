@@ -64,6 +64,9 @@ def complete_profile(request):
         profile_pic = request.FILES.get("profile_pic")
         if profile_pic:
             profile.profile_pic = profile_pic
+        cover_pic = request.FILES.get("cover_pic")
+        if cover_pic:
+            profile.cover_pic = cover_pic
         
         
         profile.save()
@@ -187,9 +190,13 @@ def edit_profile(request):
 
         # Profile picture
         profile_pic = request.FILES.get("profile_pic")
+        cover_pic = request.FILES.get("cover_pic")
 
         if profile_pic:
             profile.profile_pic = profile_pic
+        
+        if cover_pic:
+            profile.cover_pic = cover_pic
 
         profile.save()
 
