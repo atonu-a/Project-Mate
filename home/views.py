@@ -18,10 +18,6 @@ def discover(request):
 def dashboard(request):
     return render(request, "index.html")
 
-#Creation page
-def create(request):
-    return render(request, "create-project.html")
-
 # My Projects page
 def requests(request):
     return render(request, "requests.html")

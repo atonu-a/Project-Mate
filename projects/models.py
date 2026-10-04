@@ -14,6 +14,14 @@ class Project(models.Model):
         ("Closed", "Closed"),
     )
     
+    COMPENSATION = (
+        ("Unpaid", "Unpaid"),
+        ("Paid", "Paid"),
+        ("Negotiable", "Negotiable"),      
+    )
+    
+    
+    
     owner_name = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from = "title", unique=True, max_length=255)
@@ -26,6 +34,9 @@ class Project(models.Model):
     create_at = models.DateField(auto_now_add=True)
     img = models.ImageField(upload_to="images", blank=True, null=True)
     overview = models.TextField()
+    
+    compensation_type = models.CharField(choices=COMPENSATION,max_length=20, default="Unpaid")
+    payment_amount = models.IntegerField(max_length=10, null=True, blank=True)
     
     
     
