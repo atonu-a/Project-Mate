@@ -351,29 +351,26 @@ try {
 
 try{
 
-// // Cropper & Preview State
-// let cropperInstance = null;
-// let currentPreviewId = null;
+// Cropper & Preview State
+let cropperInstance = null;
+let currentPreviewId = null;
 
-// // Original File Reference Storage
-// const originalFiles = {
-//   editAvatarPreview: null,
-//   editCoverPreview: null,
-// };
+// Original File Reference Storage
+const originalFiles = {
+  editAvatarPreview: null,
+  editCoverPreview: null,
+};
 
-// // Input File Change Handler (Camera Icon Click)
-// function previewAvatar(input, imgId) {
-//   const file = input.files && input.files[0];
-//   if (!file) return;
-
-//   // Save original file reference in memory
-//   originalFiles[imgId] = file;
-
-//   openCropModal(file, imgId);
-
-//   // Reset input value so selecting same file works again
-//   input.value = '';
-// }
+function previewAvatar(input, previewId) {
+  const file = input.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      document.getElementById(previewId).src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
 
 // // Function to open crop modal (Accepts both File Object and URL String)
 // function openCropModal(fileOrUrl, imgId) {
@@ -486,6 +483,6 @@ try{
 //   }
 // });
 }
-catch {
-  
+catch (error){
+  console.log(error)
 }
