@@ -5,7 +5,7 @@ from projects.models import Project
 # Create your views here.
 # Home Page
 def discover(request):
-    projects = Project.objects.all()
+    projects = Project.objects.all().order_by("-id")
     context = {
         "projects": projects,
     }

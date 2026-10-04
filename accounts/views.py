@@ -149,10 +149,10 @@ def signin(request):
 @login_required(login_url="signin")
 def profile(request, username):
     profile = get_object_or_404(Profile, user__username=username)
-    # projects = Project.objects.filter(owner_name= request.user).order_by("-create_at")
+    projects = Project.objects.filter(owner_name= request.user).order_by("-id")
     context = {
         "profile":profile,
-        # "projects":projects,
+        "projects":projects,
     }
     return render(request, "profile.html", context)
 
