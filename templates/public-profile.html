@@ -155,11 +155,11 @@
               <h2 class="profile-card__title">Projects</h2>
               <p class="public-profile__section-subtitle">Projects shared by {{ public_profile.first_name|default:public_profile.username }}</p>
             </div>
-            <span class="public-profile__count">{{ public_profile.projects.count }}</span>
+            <span class="public-profile__count">{{ project_count }}</span>
           </div>
 
           <div class="public-profile__projects">
-            {% for project in public_profile.projects.all %}
+            {% for project in projects %}
               <article class="post">
                 <div class="post__head">
                   <div class="post__author">

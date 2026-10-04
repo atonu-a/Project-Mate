@@ -104,11 +104,11 @@
               <p class="public-profile__section-subtitle">Projects shared by
                 {{ request.user.first_name|default:request.user.username }}</p>
             </div>
-            <span class="public-profile__count">{{ projects.count }}</span>
+            <span class="public-profile__count">{{ project_count }}</span>
           </div>
 
           <div class="public-profile__projects">
-            {% for project in request.user.projects.all %}
+            {% for project in projects %}
               <article class="post">
                 <div class="post__head">
                   <div class="post__author">

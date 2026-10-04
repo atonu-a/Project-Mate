@@ -146,15 +146,25 @@ def signin(request):
 # ======================
 #     User  Profile
 # ======================
-@login_required(login_url="signin")
 def profile(request, username):
     profile = get_object_or_404(Profile, user__username=username)
-    projects = Project.objects.filter(owner_name= request.user).order_by("-id")
+    user = profile.user
+    projects = Project.objects.filter(owner_name=user).order_by("-id")
     context = {
-        "profile":profile,
-        "projects":projects,
+        "projects": projects,
+        "project_count": projects.count(),
+        "date_joined": user.date_joined,
     }
-    return render(request, "profile.html", context)
+
+    if request.user == user:
+        context["profile"] = profile
+        return render(request, "profile.html", context)
+
+    context.update({
+        "public_profile": user,
+        "is_following": False,
+    })
+    return render(request, "public-profile.html", context)
 
 
 # ======================
@@ -239,20 +249,3 @@ def edit_profile(request):
         "selected_fields": selected_fields,
     })       
     
-
-   
-# ======================
-#    Other's profile
-# ======================  
-def public_profile(request, username):
-    public_profile = get_object_or_404(User, username=username)
-    is_following = False
-    context = {
-        "public_profile": public_profile,
-        "is_following": is_following,
-    }
-
-    if request.user == public_profile:
-        return render(request, "profile.html", context)
-    else:
-        return render(request, "public-profile.html", context)
