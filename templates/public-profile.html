@@ -5,7 +5,7 @@
     <section class="public-profile__hero">
       {% if public_profile.profile.cover_pic %}
         <div class="public-profile__hero-cover">
-          <img class="public-profile__hero-cover_img" src="public_profile.profile.cover_pic" alt="">
+          <img class="public-profile__hero-cover_img" src="{{ public_profile.profile.cover_pic.url }}" alt="">
         </div>
       {% else %}
         <div class="public-profile__hero-cover"></div>
