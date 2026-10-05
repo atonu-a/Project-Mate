@@ -2084,7 +2084,7 @@ textarea::placeholder {
 }
 
 .post__media:hover .post__media-grid {
-  filter: blur(4px);
+  opacity: 0.2;
 }
 
 .post__media:hover .check-details-btn {
