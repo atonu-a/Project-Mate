@@ -37,6 +37,7 @@ def create_project(request):
         overview = request.POST.get("overview")
         compensation_type = request.POST.get("compensation_type")
         payment_details = request.POST.get("payment_details")
+        currency = request.POST.get("currency")
         
         if compensation_type == "Paid" and not payment_details:
             messages.error(request, "Please enter payment details!")
@@ -44,6 +45,7 @@ def create_project(request):
             
         if compensation_type != "Paid":
             payment_details = 0
+
             
         project = Project.objects.create(
             owner_name = request.user,
@@ -57,6 +59,7 @@ def create_project(request):
             overview = overview,
             compensation_type = compensation_type,
             payment_amount = payment_details,
+            currency = currency
         )
         
         if raw_skills:

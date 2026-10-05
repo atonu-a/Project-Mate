@@ -30,24 +30,32 @@
 
         <div class="post__body">
           <div>
-            <span class="category-badge">{{ project.category }}</span>
+            
+            <div class="badges flex flex-wrap gap-1">
+              <span class="category-badge ">{{ project.category }}</span>
+              <span class="category-badge">Deadline : {{ project.deadline }}</span>
+              <span class="status-badge">{{ project.compensation_type }}</span>
+              {% if project.compensation_type == "Paid" %} 
+              
+              <span class="status-badge">{{ project.payment_amount }} BDT</span>             
+              {% else %}
+              
+              {% endif %}
+              
+            </div>
             <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">{{ project.title }}</h2>
             <p class="post__text">{{ project.desc }}</p>
           </div>
           {% if project.img %}
-          <div onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__media">
+          <div onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__media project-img">
             
             
             
             <img src="{{ project.img.url }}" class="post__media-grid" />
             
-            {% comment %} <div class="post__media-content">
-              <div class="post__media-icon">
-                <i data-lucide="network" class="post__media-glyph"></i>
-              </div>
-              <h4 class="post__media-title">{{ project.title }}</h4>
-              <p class="post__media-text">Click to inspect project details and join the team.</p>
-            </div> {% endcomment %}
+            <div class="post__media-content">
+              <a href="{% url 'project_detail' project.slug %}" class="btn-secondary check-details-btn hide">Check Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
           </div>
           {% else %}
           <a href="{% url 'project_detail' project.slug %}" class="btn-secondary">Check Details <i class="fa-solid fa-arrow-right"></i></a>

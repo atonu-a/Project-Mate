@@ -503,3 +503,23 @@ function toggleDetails() {
     amount.value = "";
   }
 }
+
+
+// Project detalis checking
+try{
+  const projectImgBox = document.querySelectorAll(".project-img");
+  
+  projectImgBox.forEach((img) => {
+    img.addEventListener("mouseenter", () => {
+      const checkdetails = img.querySelector(".check-details-btn");
+      checkdetails.classList.remove("hide");
+    });
+    img.addEventListener("mouseleave", () => {
+      const checkdetails = img.querySelector(".check-details-btn");
+      checkdetails.classList.add("hide");
+    });
+  });
+}
+catch (error){
+  console.log(error)
+}
