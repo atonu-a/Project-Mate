@@ -30,10 +30,9 @@
 
         <div class="post__body">
           <div>
-            
-            <div class="badges flex flex-wrap gap-1">
+              <div class="badges flex flex-wrap gap-1">
 
-              <span class="category-badge">Deadline : {{ project.deadline }}</span>
+              <span class="category-badge"><i class="fa-solid fa-business-time"></i> {{ project.deadline }}</span>
               <span class="status-badge">{{ project.compensation_type }}</span>
               {% if project.compensation_type == "Paid" %} 
               
@@ -43,7 +42,8 @@
               {% endif %}
               
             </div>
-            <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">{{ project.title }}</h2>
+
+              <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">{{ project.title }}</h2>
             <p class="post__text">{{ project.desc }}</p>
           </div>
           {% if project.img %}
