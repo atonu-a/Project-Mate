@@ -168,7 +168,7 @@ def delete_project(request, slug):
     else :
         messages.error(request, "You are not authorized to delete this project")
         return redirect(previous_page)
-    messages.success(request, "Project deleted.")
+    messages.success(request, "Project deleted successfully.")
     
     return redirect(previous_page)
 

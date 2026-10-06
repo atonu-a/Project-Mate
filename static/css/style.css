@@ -4450,7 +4450,7 @@ textarea::placeholder {
 
 /* basic modal styling */
 .modal {
-    display: none; /* Hidden by default */
+    display: none; 
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -4466,8 +4466,46 @@ textarea::placeholder {
     margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 90%;
     max-width: 600px;
+      border-radius: 8px;
+}
+.modal-content .header {
+  color: var(--color-text-muted);
+  font-size: 20px;
+  font-weight: bolder;
+  font-family: var(--font-sans);
+  padding: 16px 0px;
+  border-bottom: 2px solid var(--color-border);
+}
+.modal-content .msg {
+  color: var(--color-danger);
+  font-size: 14px;
+  padding: 16px 0px;
+  border-bottom: 2px solid var(--color-border);
+}
+.modal-content .btns{
+  font-size: 14px;
+  padding: 16px 0px;
+  display: flex;
+  gap: 4px;
+  justify-content: end;
+}
+.modal-content .btns .btn-danger,
+.modal-content .btns .btn-cancel{
+  border-radius: 25px;
+  font-weight: 400;
+  padding: 6px 12px;
+  font: 14px;
+  color: white;
+
+}
+.modal-content .btns .btn-danger{
+  background-color: var(--color-danger);
+}
+.modal-content .btns .btn-cancel{
+  background-color: var(--color-text-muted);
+  cursor: pointer;
 }
 
 .img-container img {

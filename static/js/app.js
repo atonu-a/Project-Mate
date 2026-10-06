@@ -549,3 +549,19 @@ catch(error){
   
 }
 
+
+// Project delete modal open
+function openModal(slug){
+  const modal = document.getElementById(`delete-modal-${slug}`);
+  if (modal){
+    modal.style.display = "block";
+  }
+}
+// Project delete modal close
+function closeModal(slug){
+  const modal = document.getElementById(`delete-modal-${slug}`);
+  if (modal){
+    modal.style.display = "none";
+  }
+}
+
