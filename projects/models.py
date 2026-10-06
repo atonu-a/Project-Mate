@@ -24,7 +24,7 @@ class Project(models.Model):
     
     owner_name = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    slug = AutoSlugField(populate_from = "title", unique=True, max_length=255)
+    slug = AutoSlugField(populate_from = "title", unique=True, max_length=255, always_update=False)
     desc = models.TextField()
     status = models.CharField(choices=STATUS, max_length=20, default="Open")
     required_skills = models.ManyToManyField(Skill, related_name="projects")
@@ -41,8 +41,8 @@ class Project(models.Model):
     
     
     def save(self, *args, **kwargs):
-       if not self.slug:
-           self.slug = slugify(self.title)
+    #    if not self.slug:
+    #        self.slug = slugify(self.title)
        super().save(*args, **kwargs) # Call the real save() method
        
     def get_absolute_url(self):

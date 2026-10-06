@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block main %}
+<main class="page-main page-main--narrow">
+    <div class="form-panel">
+        <header>
+            <div class="eyebrow">
+                <i data-lucide="plus-circle" class="eyebrow__icon"></i>
+                <span>Project Studio</span>
+            </div>
+            <h1 class="page-title">Create a New Project</h1>
+            <p class="page-subtitle">Pitch your idea, specify required tech stacks, and start building your dream team.
+            </p>
+        </header>
+
+        <form method="post" class="form">
+
+            {% csrf_token %}
+            {% comment %} Project title {% endcomment %}
+            <div class="form-field">
+                <label for="projectTitle" class="form-label">Project Title <span class="text-danger">*</span></label>
+                <input id="projectTitle" type="text" name="title" value="{{project.title}}" required
+                    placeholder="e.g., Quantum Compiler for Neural Networks" class="form-input">
+            </div>
+
+
+            {% comment %} Short desc {% endcomment %}
+            <div class="form-field">
+                <label for="projectTagline" class="form-label">Short Tagline <span class="text-danger">*</span></label>
+                <input id="projectTagline" type="text" name="desc" value="{{project.desc}}" required
+                    placeholder="One sentence description of what your project achieves..." class="form-input">
+            </div>
+
+            <!-- Status and Teamsize -->
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="projectStatus" class="form-label">Status</label>
+                    <select id="projectStatus" class="form-input" name="status"  required>
+                        {% for status_type in status_list %}
+                        <option
+                            value="{{status_type}}"
+                            {% if status_type == status %}
+                                selected
+                            {% endif %}
+                        >
+                                {{status_type}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label for="projectTeamSize" class="form-label">Max Team Size</label>
+                    <input id="projectTeamSize" type="number" min="2" max="10" value="4" value="{{project.team_size}}" class="form-input"
+                        name="team_size" required>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="form-field">
+                <label for="projectSkills" class="form-label">Required Skills (Comma separated) <span
+                        class="text-danger">*</span></label>
+                <input id="projectSkills" name="required_skills" 
+                value="{{ skills_string }}" 
+                
+                type="text"
+                    placeholder="Python, Autocad, Circuit Design, Thermodynamics..." required class="form-input">
+            </div>
+
+            <!-- Category and Deadline -->
+            <div class="form-row">
+                <!-- Category -->
+                <div class="form-field">
+                    <label for="projectCategory" class="form-label">Category <span class="text-danger">*</span></label>
+                    <input id="projectCategory" required value="{{project.category}}" name="category" type="text"
+                        placeholder="e.g..AI, Automation etc" class="form-input">
+                </div>
+
+                <!-- Deadline -->
+                <div class="form-field">
+                    <label for="deadline" class="form-label">Deadline <span class="text-danger">*</span></label>
+                    <input type="date" id="deadline" name="deadline" required value="{{project.deadline|date:'Y-m-d'}}" class="form-input">
+                </div>
+            </div>
+
+
+            <!-- Compensation and Payment -->
+            <div class="form-row">
+
+                <div class="form-field">
+                    <label for="compensation" class="form-label">Compensation Type <span
+                            class="text-danger">*</span></label>
+                    <select id="compensation" class="form-input" name="compensation_type" value="{{project.compensation_type}}" required
+                        onchange="toggleDetails()">
+                        {% for type in comp_list  %}
+                        <option value="{{type}}" 
+                        {% if type == compensation_type  %}
+                            selected
+                        {% else %}
+                        {% endif %}>{{type}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+                <div class="form-field" id="payment-details-box" style="display: none;">
+                    <label for="payment-details" class="form-label">Payment Amount (BDT) <span
+                            class="text-danger">*</span></label>
+                    <input type="number" id="payment-details" name="payment_details" value="{{project.payment_amount}}" class="form-input"
+                        placeholder="10000 BDT" min="1">
+                </div>
+            </div>
+
+            <!-- Project overview -->
+            <div class="form-field">
+                <label for="projectDescription" class="form-label">Full Description <span
+                        class="text-danger">*</span></label>
+                <textarea id="projectDescription" rows="5" required
+                    placeholder="Detail your architecture, milestones, and what kind of teammates you are looking for..."
+                    class="form-input" name="overview" value="">{{ project.overview }}</textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" onclick="window.location.href='{% url 'dashboard' %}'"
+                    class="form-cancel">Cancel</button>
+                <button type="submit" class="form-submit btn-loading" data-text="Saving...">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+
+{% endblock main %}

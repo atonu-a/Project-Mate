@@ -29,8 +29,7 @@ def messages(request):
 
 
 
-def my_projects(request):
-    return render(request, 'my-projects.html')
+
 
 
 def notifications(request):

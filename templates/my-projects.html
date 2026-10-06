@@ -14,6 +14,7 @@
     </div>
 
     <div class="project-grid">
+        {% for project in projects %}
         <article class="project-card">
             <div class="project-card__body">
                 <div class="project-card__meta">
@@ -21,40 +22,20 @@
                     <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>Sprint 2
                         Active</span>
                 </div>
-                <h3 onclick="window.location.href='{% url 'project_detail' 'p1' %}'" class="project-card__title">
-                    NeuralSync -
-                    AI Brainstorming Canvas</h3>
-                <p class="project-card__text">Real-time collaborative mind mapping powered by local LLMs and vector
-                    embeddings.</p>
+                <h3 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="project-card__title">
+                    {{project.title}}</h3>
+                <p class="project-card__text">{{project.desc}}</p>
             </div>
             <div class="project-card__footer">
-                <span class="project-card__team">3 Members in Team</span>
+                <span class="project-card__team"> Members in Team</span>
                 <button onclick="window.location.href='{% url 'messages' %}'" class="btn-tonal">
                     <i data-lucide="message-square" class="btn-tonal__icon"></i>
                     <span>Team Chat</span>
                 </button>
             </div>
         </article>
+        {% endfor %}
 
-        <article class="project-card">
-            <div class="project-card__body">
-                <div class="project-card__meta">
-                    <span class="role-tag role-tag--secondary">Contributor</span>
-                    <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>Active
-                        Sprint</span>
-                </div>
-                <h3 class="project-card__title">EcoRoute - Carbon Footprint Optimizer</h3>
-                <p class="project-card__text">Smart transit routing application calculating real-time carbon offsets for
-                    urban commuters.</p>
-            </div>
-            <div class="project-card__footer">
-                <span class="project-card__team">2 Members in Team</span>
-                <button onclick="window.location.href='{% url 'messages' %}'" class="btn-tonal">
-                    <i data-lucide="message-square" class="btn-tonal__icon"></i>
-                    <span>Team Chat</span>
-                </button>
-            </div>
-        </article>
     </div>
 </main>
 

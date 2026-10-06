@@ -22,7 +22,7 @@ def project_detail(request, slug):
 # ======================
 #   Project Creation 
 # ======================
-# views.py
+
 @login_required(login_url="signin")
 def create_project(request):
     if request.method == 'POST':
@@ -37,7 +37,6 @@ def create_project(request):
         overview = request.POST.get("overview")
         compensation_type = request.POST.get("compensation_type")
         payment_details = request.POST.get("payment_details")
-        currency = request.POST.get("currency")
         
         if compensation_type == "Paid" and not payment_details:
             messages.error(request, "Please enter payment details!")
@@ -59,7 +58,7 @@ def create_project(request):
             overview = overview,
             compensation_type = compensation_type,
             payment_amount = payment_details,
-            currency = currency
+
         )
         
         if raw_skills:
@@ -79,3 +78,91 @@ def create_project(request):
         return redirect("home")
         
     return render(request, "create-project.html")
+
+# ======================
+#   Project Editing 
+# ======================
+
+@login_required(login_url="signin")
+def edit_project(request, slug):
+    
+    project = get_object_or_404(Project, slug = slug)
+    skills_string = ", ".join([skill.name for skill in project.required_skills.all()])
+    status_list = ["Open", "In Progress", "Completed", "Closed"]
+    selected_status = project.status
+    comp_list = ["Unpaid", "Paid", "Negotiable"]
+    selected_comp = project.compensation_type
+    
+    
+    if (project.owner_name != request.user):
+        messages.error(request, "You're no authorized to edit this post.")
+    
+    if request.method == 'POST':
+        title = request.POST.get("title")
+        desc = request.POST.get("desc")
+        selected_status = request.POST.get("status")
+        raw_skills = request.POST.get("required_skills")
+        team_size = request.POST.get("team_size")
+        deadline = request.POST.get("deadline")
+        category = request.POST.get("category")
+        img = request.FILES.get("img")
+        overview = request.POST.get("overview")
+        selected_comp = request.POST.get("compensation_type")
+        payment_details = request.POST.get("payment_details")
+        
+        if selected_comp == "Paid" and not payment_details:
+            messages.error(request, "Please enter payment details!")
+            return render(request, "create-project.html")
+            
+        if selected_comp != "Paid":
+            payment_details = 0
+        
+        
+        
+        project.title = title
+        project.desc = desc
+        project.status = selected_status
+        project.team_size = team_size if team_size else 1
+        project.category = category
+        project.overview = overview
+        project.compensation_type = selected_comp
+        project.payment_amount = payment_details
+        
+        if deadline:
+            project.deadline = deadline
+        else:
+            project.deadline = None
+        if img:
+            project.img = img
+
+        
+        
+        project.save()
+        
+        messages.success(request, "Project edited successfully!")
+        return redirect("my_projects")
+        
+    context = {
+        "project":project,
+        "skills_string": skills_string,
+        "status_list" : status_list,
+        'status' : selected_status,
+        "comp_list" : comp_list,
+        "compensation_type" : selected_comp
+    }
+        
+    return render(request, "edit-project.html", context)
+
+
+
+
+
+# ======================
+#   My Projects 
+# ======================
+def my_projects(request):
+    projects = Project.objects.all().filter(owner_name = request.user)
+    context= {
+        "projects" : projects
+    }
+    return render(request, 'my-projects.html', context)
