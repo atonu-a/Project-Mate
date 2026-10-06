@@ -274,7 +274,7 @@ function openConversation(item) {
 //     },10000)
 //   })
 // } catch (error) {
-//   console.log(error)
+//   
 // }
 
 // Back button in the conversation header: return to the list on phones.
@@ -303,7 +303,7 @@ try {
       .catch(() => showToast("Could not copy link", "info"));
   }
 } catch (error) {
-  console.log(error);
+  ;
 }
 
 try {
@@ -331,7 +331,7 @@ try {
     });
   });
 } catch (error) {
-  console.log(error);
+  ;
   console.log("not clicked");
 }
 
@@ -345,7 +345,7 @@ try {
     extraItems.classList.toggle("hide");
   });
 } catch (error) {
-  console.log(error);
+  ;
 }
 
 // Profile image editing
@@ -482,7 +482,7 @@ try {
   //   }
   // });
 } catch (error) {
-  console.log(error);
+  ;
 }
 
 // Show and hide of payment details
@@ -521,5 +521,31 @@ function toggleDetails() {
 //   });
 // }
 // catch (error){
-//   console.log(error)
+//   
 // }
+
+
+
+// Project More Option
+try{
+  const containers = document.querySelectorAll(".post-more-container");
+
+  containers.forEach((container) => {
+    const btn = container.querySelector("button");
+    const dropdown = container.querySelector(".three-dot-dropdown")
+    btn.addEventListener("click", (e)=>{ 
+      e.stopPropagation();
+      dropdown.classList.toggle("hide");
+
+    })
+
+    document.addEventListener("click", () => {
+      dropdown.classList.add("hide");
+    });
+  });
+}
+
+catch(error){
+  
+}
+

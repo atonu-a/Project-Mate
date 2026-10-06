@@ -3,16 +3,23 @@ from accounts.models import Profile
 from projects.models import Project
 
 # Create your views here.
+# get posts
+def get_posts(owner_name = None):
+    if owner_name:
+        return Project.objects.filter(owner_name = owner_name).order_by("-id")
+    return Project.objects.all().order_by("-id")
+
+
 # Home Page
 def discover(request):
-    projects = Project.objects.all().order_by("-id")
+    projects = get_posts()
     context = {
         "projects": projects,
     }
     
     return render(request, "discover.html", context)
         
-    
+
 
 #Dashboard Page
 def dashboard(request):

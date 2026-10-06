@@ -108,71 +108,7 @@
           </div>
 
           <div class="public-profile__projects">
-            {% for project in projects %}
-              <article class="post">
-                <div class="post__head">
-                  <div class="post__author">
-                    <img src="{{ project.owner_name.profile.profile_pic_url }}" alt="{{ project.owner_name.username }}" class="post__avatar" />
-                    <div>
-                      <div class="post__author-row">
-                        <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">{{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>
-                        <span class="role-badge">Owner</span>
-                      </div>
-                      <p class="post__meta">{{ project.category }} • {{ project.create_at }}</p>
-                    </div>
-                  </div>
-                  <button class="post__more" aria-label="More options"><i data-lucide="more-horizontal" class="post__more-icon"></i></button>
-                </div>
-
-                <div class="post__body">
-                  <div>
-                    <span class="category-badge">{{ project.category }}</span>
-                    <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">{{ project.title }}</h2>
-                    <p class="post__text">{{ project.desc }}</p>
-                  </div>
-                  {% if project.img %}
-                    <div onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__media">
-                      <img src="{{ project.img.url }}" class="post__media-grid" />
-
-                      {% comment %} <div class="post__media-content">
-                        <div class="post__media-icon">
-                          <i data-lucide="network" class="post__media-glyph"></i>
-                        </div>
-                        <h4 class="post__media-title">{{ project.title }}</h4>
-                        <p class="post__media-text">Click to inspect project details and join the team.</p>
-                      </div> {% endcomment %}
-                    </div>
-                  {% else %}
-                    <a href="{% url 'project_detail' project.slug %}" class="btn-secondary">Check Details <i class="fa-solid fa-arrow-right"></i></a>
-                  {% endif %}
-
-                  <div class="post__tags-row">
-                    <div class="post__tags">
-                      {% for skill in project.required_skills.all|slice:':3' %}
-                        <span class="tech-tag">{{ skill.name }}</span>
-                      {% empty %}
-                        <span class="tech-tag">General</span>
-                      {% endfor %}
-                    </div>
-                    <span class="status-badge">{{ project.members.count }}/{{ project.team_size }} Members</span>
-                  </div>
-                </div>
-
-                <div class="post__actions">
-                  <div class="post__reactions">
-                    <button onclick="toggleLike(this)" class="reaction"><i data-lucide="heart" class="reaction__icon"></i><span>24 Likes</span></button>
-                    <button onclick="toggleComments(this)" class="reaction reaction--comment"><i data-lucide="message-circle" class="reaction__icon"></i><span>7 Comments</span></button>
-                  </div>
-                  <button onclick="showToast('Join request sent successfully!')" class="post__join btn-check" data-text="Requested">Request to Join</button>
-                </div>
-              </article>
-            {% empty %}
-              <div class="public-profile__empty">
-                <i data-lucide="folder-open"></i>
-                <strong>No projects yet</strong>
-                <span>This user hasn't shared any projects.</span>
-              </div>
-            {% endfor %}
+            {% include "posts.html" %}
           </div>
         </section>
       </div>

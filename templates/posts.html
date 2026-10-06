@@ -1,0 +1,106 @@
+{% for project in projects %}
+<article class="post ">
+    <div class="post__head">
+        <div class="post__author">
+            <img src="{{ project.owner_name.profile.profile_pic_url }}" alt="{{ project.owner_name.username }}"
+                class="post__avatar" />
+            <div>
+                <div class="post__author-row">
+                    <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">
+                        {{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>
+                    <span class="role-badge">Owner</span>
+                </div>
+                <p class="post__meta">{{ project.category }} • {{ project.create_at }}</p>
+            </div>
+        </div>
+
+
+        <div class="post-more-container">
+            <button class="post__more relative " aria-label="More options"><i class="fa-solid fa-ellipsis"></i></i>
+            </button>
+
+            <div class="three-dot-dropdown hide absolute">
+                <a href=""><i class="fa-solid fa-copy"></i> Copy Link</a>
+                <a class="" href=""><i class="fa-solid fa-bookmark"></i> Save</a>
+
+                {% if request.user == project.owner_name %}
+                    <a href="{% url 'edit_project' project.slug %}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                <a class="text-danger" href="{% url 'delete_project' project.slug %}"><i class="fa-solid fa-trash"></i> Delete</a>
+                {% else %}
+                {% endif %}
+            </div> 
+
+        </div>
+    </div>
+
+    <div class="post__body">
+        <div>
+            <div class="badges flex flex-wrap gap-1">
+
+                <span class="category-badge"><i class="fa-solid fa-business-time"></i> {{ project.deadline }}</span>
+                <span class=" {% if project.compensation_type == " Unpaid" %} category-badge--secondary {% elif
+                    project.compensation_type=="Negotiable" %} nego-tag {% else %} status-badge {% endif %} ">{{ project.compensation_type }}</span>
+              {% if project.compensation_type == " Paid" %} <span class="status-badge">{{ project.payment_amount }}
+                    BDT</span>
+                {% else %}
+
+                {% endif %}
+
+            </div>
+
+            <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">
+                {{ project.title }}</h2>
+            <p class="post__text">{{ project.desc }}</p>
+        </div>
+        {% if project.img %}
+        <div onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__media project-img">
+
+
+
+            <img src="{{ project.img.url }}" class="post__media-grid" />
+
+            <div class="post__media-content">
+                <a href="{% url 'project_detail' project.slug %}" class="btn-secondary check-details-btn">Check Details
+                    <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+        {% else %}
+        <a href="{% url 'project_detail' project.slug %}" class="btn-secondary">Check Details <i
+                class="fa-solid fa-arrow-right"></i></a>
+        {% endif %}
+
+        <div class="post__tags-row">
+            <div class="post__tags">
+                {% for skill in project.required_skills.all|slice:':3' %}
+                <span class="tech-tag">{{ skill.name }}</span>
+                {% empty %}
+                <span class="tech-tag">General</span>
+                {% endfor %}
+            </div>
+            <span class="status-badge">{{ project.members.count }}/{{ project.team_size }} Members</span>
+        </div>
+    </div>
+
+    <div class="post__actions">
+        <div class="post__reactions">
+            <button onclick="toggleLike(this)" class="reaction"><i data-lucide="heart"
+                    class="reaction__icon"></i><span>24 Likes</span></button>
+            <button onclick="toggleComments(this)" class="reaction reaction--comment"><i data-lucide="message-circle"
+                    class="reaction__icon"></i><span>7 Comments</span></button>
+        </div>
+        {% if project.owner_name != request.user %}
+            <button onclick="showToast('Join request sent successfully!')" class="post__join btn-check"
+            data-text="Requested">Request to Join</button>
+        {% else %}
+        {% endif %}
+        
+    </div>
+</article>
+{% empty %}
+<div class="public-profile__empty">
+    <i data-lucide="folder-open"></i>
+    <strong>No projects yet</strong>
+</div>
+{% endfor %}
+
+

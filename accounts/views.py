@@ -7,6 +7,7 @@ from .forms import RegistrationForm
 from django.views.decorators.cache import never_cache
 from .models import *
 from projects.models import Project
+from home.views import get_posts
 # Create your views here.
 # ======================
 #       Registrantion
@@ -149,7 +150,7 @@ def signin(request):
 def profile(request, username):
     profile = get_object_or_404(Profile, user__username=username)
     user = profile.user
-    projects = Project.objects.filter(owner_name=user).order_by("-id")
+    projects = get_posts(user)
     context = {
         "projects": projects,
         "project_count": projects.count(),

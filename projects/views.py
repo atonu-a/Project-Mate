@@ -85,6 +85,7 @@ def create_project(request):
 
 @login_required(login_url="signin")
 def edit_project(request, slug):
+    previous_page = request.META.get('HTTP_REFERER', 'home')
     
     project = get_object_or_404(Project, slug = slug)
     skills_string = ", ".join([skill.name for skill in project.required_skills.all()])
@@ -95,7 +96,8 @@ def edit_project(request, slug):
     
     
     if (project.owner_name != request.user):
-        messages.error(request, "You're no authorized to edit this post.")
+        messages.error(request, "You are not authorized to edit this post.")
+        return redirect(previous_page)
     
     if request.method == 'POST':
         title = request.POST.get("title")
@@ -154,8 +156,21 @@ def edit_project(request, slug):
     return render(request, "edit-project.html", context)
 
 
-
-
+# ======================
+#   Project Deletion
+# ======================
+@login_required(login_url="sigin")
+def delete_project(request, slug):
+    project = Project.objects.get(slug=slug)
+    previous_page = request.META.get('HTTP_REFERER', 'home')
+    if project.owner_name == request.user:
+        project.delete()
+    else :
+        messages.error(request, "You are not authorized to delete this project")
+        return redirect(previous_page)
+    messages.success(request, "Project deleted.")
+    
+    return redirect(previous_page)
 
 # ======================
 #   My Projects 
