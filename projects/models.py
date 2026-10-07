@@ -37,7 +37,7 @@ class Project(models.Model):
     overview = models.TextField()
     
     compensation_type = models.CharField(choices=COMPENSATION,max_length=20, default="Unpaid")
-    payment_amount = models.IntegerField(max_length=10, null=True, blank=True)
+    payment_amount = models.IntegerField( null=True, blank=True)
     
     
     
@@ -59,7 +59,21 @@ class ProjectMember(models.Model):
     role = models.CharField(max_length=100)
     
     
+class JoinRequest(models.Model):
     
+    STATUS = (
+        ("Pending", "Pending"),
+        ("Accepted", "Accepted"),
+        ("Rejected", "Rejected"),
+        ("Cancelled", "Cancelled")
+    )
+    
+    
+    project = models.ForeignKey(Project, related_name="request", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="requested", on_delete=models.CASCADE)
+    msg = models.CharField(blank=True, null=True, max_length=255)
+    status = models.CharField(choices=STATUS, max_length=20, default="Pending")
+    created_at = models.DateTimeField(default=timezone.now)
     
     
     
