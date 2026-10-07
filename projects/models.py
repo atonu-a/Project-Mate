@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from autoslug import AutoSlugField
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 from accounts.models import Skill
 
 class Project(models.Model):
@@ -49,6 +50,16 @@ class Project(models.Model):
         return reverse("project_detail", kwargs={"slug": self.slug})
     def __str__(self):
             return self.title
+    
+ 
+class ProjectMember(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="members")
+    user =  models.ForeignKey(User, on_delete=models.CASCADE, related_name="memberships" )
+    joined_at = models.DateTimeField(default=timezone.now)
+    role = models.CharField(max_length=100)
+    
+    
+    
     
     
     
