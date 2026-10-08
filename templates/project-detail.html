@@ -1,89 +1,102 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block main %}
-
-<main class="page-main page-main--wide">
-    <button onclick="window.history.back()" class="back-link">
-        <i data-lucide="arrow-left" class="back-link__icon"></i><span>Back</span>
-    </button>
+  <main class="page-main page-main--wide">
+    <button onclick="window.history.back()" class="back-link"><i data-lucide="arrow-left" class="back-link__icon"></i><span>Back</span></button>
 
     <section class="detail-hero">
-        <div class="detail-hero__glow"></div>
-        <div class="detail-hero__row">
-            <div class="detail-hero__info">
-                <div class="detail-hero__badges">
-                    <span class="category-badge">{{project.category}}</span>
-                    <span class="status-badge">{{project.status}}</span>
-                    <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{project.deadline}}</span>
-                </div>
-                <h1 class="detail-hero__title">{{project.title}}</h1>
-                <p class="detail-hero__tagline">{{project.desc}}</p>
-            </div>
-            <div class="detail-hero__actions">
-                <button onclick="showToast('Join request submitted successfully!')" class="btn-check btn-primary " data-text="Requested">Request to
-                    Join</button>
-                <button onclick="window.location.href='{% url 'messages' %}'" class="btn-secondary">
-                    <i data-lucide="message-square" class="btn-icon btn-icon--accent"></i>
-                    <span>Message Owner</span>
-                </button>
-            </div>
+      <div class="detail-hero__glow"></div>
+      <div class="detail-hero__row">
+        <div class="detail-hero__info">
+          <div class="detail-hero__badges">
+            <span class="category-badge">{{ project.category }}</span>
+            <span class="status-badge">{{ project.status }}</span>
+            <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{ project.deadline }}</span>
+          </div>
+          <h1 class="detail-hero__title">{{ project.title }}</h1>
+          <p class="detail-hero__tagline">{{ project.desc }}</p>
         </div>
+        <div class="detail-hero__actions">
+          {% comment %}Join request{% endcomment %}
+          {% if project.owner_name != request.user %}
+            {% if is_member %}
+              <button class="btn-secondary" disabled>Already Joined</button>
+            {% elif project.members.count >= project.team_size %}
+              <button class="btn-secondary" disabled>Team Full</button>
+            {% elif join_request %}
+              {% if join_request.status == 'Pending' %}
+                <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
+              {% elif join_request.status == 'Rejected' %}
+                <form method="post" action="{% url 'send_request' project.slug %}">
+                  {% csrf_token %}
+                  <button type="submit" class="post__join"><i class="fa-solid fa-arrow-rotate-left"></i> Request Again</button>
+                </form>
+              {% endif %}
+            {% else %}
+              <form method="post" action="{% url 'send_request' project.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="post__join">Request to Join</button>
+              </form>
+            {% endif %}
+          {% endif %}
+
+          <button onclick="window.location.href='{% url 'messages' %}'" class="btn-secondary">
+            <i data-lucide="message-square" class="btn-icon btn-icon--accent"></i>
+            <span>Message Owner</span>
+          </button>
+        </div>
+      </div>
     </section>
 
     <div class="detail-layout">
-        <div class="detail-main">
-            <section class="detail-card detail-card--main">
-                <h2 class="detail-card__title">
-                    <i data-lucide="file-text" class="detail-card__title-icon"></i>
-                    <span>Project Overview</span>
-                </h2>
-            <p class="detail-card__text">{{project.overview}}</p>
-            </section>
+      <div class="detail-main">
+        <section class="detail-card detail-card--main">
+          <h2 class="detail-card__title">
+            <i data-lucide="file-text" class="detail-card__title-icon"></i>
+            <span>Project Overview</span>
+          </h2>
+          <p class="detail-card__text">{{ project.overview }}</p>
+        </section>
 
-            <section class="detail-card detail-card--main">
-                <h2 class="detail-card__title">
-                    <i data-lucide="cpu" class="detail-card__title-icon detail-card__title-icon--secondary"></i>
-                    <span>Required Tech Stack</span>
-                </h2>
-                <div class="skill-list">
-                    {% for skill in project.required_skills.all %}
-                    <span class="skill-pill">{{skill}}</span>
+        <section class="detail-card detail-card--main">
+          <h2 class="detail-card__title">
+            <i data-lucide="cpu" class="detail-card__title-icon detail-card__title-icon--secondary"></i>
+            <span>Required Tech Stack</span>
+          </h2>
+          <div class="skill-list">
+            {% for skill in project.required_skills.all %}
+              <span class="skill-pill">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        </section>
+      </div>
 
-                    {% endfor %}
+      <aside class="detail-side">
+        <section class="detail-card">
+          <h3 class="detail-card__side-title">Project Owner</h3>
+          <div class="owner-card">
+            <img src="{{ project.owner_name.profile.profile_pic_url }}" alt="{{ project.owner_name.username }}" class="owner-card__avatar" />
+            <div>
+              <h4 class="owner-card__name">{{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</h4>
+              <p class="owner-card__role">Backend Developer</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-card">
+          <h3 class="detail-card__side-title">Current Team ({{ project.members.count }}/{{ project.team_size }})</h3>
+          <div class="team-list">
+            {% for member in members %}
+              <div class="member">
+                <img src="{{ member.user.profile.profile_pic.url }}" alt="Elena" class="member__avatar" />
+                <div>
+                  <h4 class="member__name">{{ member.user.first_name }} {{ member.user.last_name }}</h4>
+                  <p class="member__role">{{ member.role }}</p>
                 </div>
-            </section>
-        </div>
-
-        <aside class="detail-side">
-            <section class="detail-card">
-                <h3 class="detail-card__side-title">Project Owner</h3>
-                <div class="owner-card">
-                <img src="{{ project.owner_name.profile.profile_pic_url }}"
-                        alt="{{project.owner_name.username}}" class="owner-card__avatar">
-                    <div>
-                        <h4 class="owner-card__name">{{project.owner_name.first_name}} {{project.owner_name.last_name}}</h4>
-                        <p class="owner-card__role">Backend Developer</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="detail-card">
-                <h3 class="detail-card__side-title">Current Team ({{project.members.count }}/{{project.team_size}})</h3>
-                <div class="team-list">
-                    {% for member in members %}
-                    <div class="member">
-                        <img src="{{member.user.profile.profile_pic.url}}"
-                            alt="Elena" class="member__avatar">
-                        <div>
-                            <h4 class="member__name">{{member.user.first_name}} {{member.user.last_name}}</h4>
-                            <p class="member__role">{{ member.role }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-
-                </div>
-            </section>
-        </aside>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      </aside>
     </div>
-</main>
-
-{% endblock main %}
+  </main>
+{% endblock %}

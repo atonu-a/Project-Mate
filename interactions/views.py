@@ -33,6 +33,7 @@ def send_request(request, slug):
             project = project,
             user = request.user
         )
+        messages.success(request, "Join request sent!")
         
         
     return redirect("project_detail", slug=slug)

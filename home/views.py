@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from accounts.models import Profile
-from projects.models import Project
+from projects.models import Project, ProjectMember
+from interactions.models import JoinRequest
 
 # Create your views here.
 # get posts
@@ -13,6 +14,17 @@ def get_posts(owner_name = None):
 # Home Page
 def discover(request):
     projects = get_posts()
+    if request.user.is_authenticated:
+        for project in projects:
+            project.is_member = ProjectMember.objects.filter(
+                project=project,
+                user=request.user
+            ).exists()
+
+            project.join_request = JoinRequest.objects.filter(
+                project=project,
+                user=request.user
+            ).order_by("-created_at").first()
     context = {
         "projects": projects,
     }

@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Project, ProjectMember
 from accounts.models import Profile
 from accounts.views import signin
+from interactions.models import JoinRequest
 from home.views import discover
 
 
@@ -14,9 +15,25 @@ from home.views import discover
 def project_detail(request, slug):
     project = get_object_or_404(Project, slug = slug)  
     members = project.members.all()
+    join_request = None
+    is_member = False
+
+    if request.user.is_authenticated:
+        join_request = JoinRequest.objects.filter(
+            project=project,
+            user=request.user
+        ).order_by("-created_at").first()
+
+        is_member = ProjectMember.objects.filter(
+            project=project,
+            user=request.user
+        ).exists()
+    
     context = {
         "members" : members,
-        "project" : project
+        "project" : project,
+        "join_request" : join_request,
+        "is_member" : is_member
         }
     return render(request, "project-detail.html",context)
 

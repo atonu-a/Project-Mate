@@ -89,15 +89,26 @@
                     class="reaction__icon"></i><span>7 Comments</span></button>
         </div>
         {% if project.owner_name != request.user %}
-
-            <form method="post" action="{% url 'send_request' project.slug %}">
+            {% if is_member %}
+              <button class="btn-secondary" disabled>Already Joined</button>
+            {% elif project.members.count >= project.team_size %}
+              <button class="btn-secondary" disabled>Team Full</button>
+            {% elif join_request %}
+              {% if join_request.status == 'Pending' %}
+                <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
+              {% elif join_request.status == 'Rejected' %}
+                <form method="post" action="{% url 'send_request' project.slug %}">
+                  {% csrf_token %}
+                  <button type="submit" class="post__join"><i class="fa-solid fa-arrow-rotate-left"></i> Request Again</button>
+                </form>
+              {% endif %}
+            {% else %}
+              <form method="post" action="{% url 'send_request' project.slug %}">
                 {% csrf_token %}
-                <button type="submit" class="post__join "
-            data-text="Requested">Request to Join</button>
-            </form>
-            
-        {% else %}
-        {% endif %}
+                <button type="submit" class="post__join">Request to Join</button>
+              </form>
+            {% endif %}
+          {% endif %}
         
     </div>
  
