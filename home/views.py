@@ -25,8 +25,13 @@ def discover(request):
                 project=project,
                 user=request.user
             ).order_by("-created_at").first()
+    request_count = JoinRequest.objects.filter(
+     project__owner_name=request.user,
+    status="Pending"
+).count()        
     context = {
         "projects": projects,
+        "request_count" : request_count,
     }
     
     return render(request, "discover.html", context)

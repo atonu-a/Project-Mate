@@ -153,7 +153,7 @@
           {% endif %} ">
           <i data-lucide="git-pull-request" class="sidebar__link-icon"></i>
           <span>Join Requests</span>
-          <span class="sidebar__count sidebar__count--alert">2</span>
+          <span class="sidebar__count sidebar__count--alert"> {{ request_count }} </span>
         </a>
         {% else %}
         <a href="{% url 'signin' %}" class=" sidebar__link">
