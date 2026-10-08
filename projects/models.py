@@ -38,7 +38,7 @@ class Project(models.Model):
     
     compensation_type = models.CharField(choices=COMPENSATION,max_length=20, default="Unpaid")
     payment_amount = models.IntegerField( null=True, blank=True)
-    
+
     
     
     def save(self, *args, **kwargs):
@@ -57,24 +57,7 @@ class ProjectMember(models.Model):
     user =  models.ForeignKey(User, on_delete=models.CASCADE, related_name="memberships" )
     joined_at = models.DateTimeField(default=timezone.now)
     role = models.CharField(max_length=100)
-    
-    
-class JoinRequest(models.Model):
-    
-    STATUS = (
-        ("Pending", "Pending"),
-        ("Accepted", "Accepted"),
-        ("Rejected", "Rejected"),
-        ("Cancelled", "Cancelled")
-    )
-    
-    
-    project = models.ForeignKey(Project, related_name="request", on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name="requested", on_delete=models.CASCADE)
-    msg = models.CharField(blank=True, null=True, max_length=255)
-    status = models.CharField(choices=STATUS, max_length=20, default="Pending")
-    created_at = models.DateTimeField(default=timezone.now)
-    
+        
     
     
 # Create your models here.
