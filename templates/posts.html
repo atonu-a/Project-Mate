@@ -89,8 +89,13 @@
                     class="reaction__icon"></i><span>7 Comments</span></button>
         </div>
         {% if project.owner_name != request.user %}
-            <button onclick="showToast('Join request sent successfully!')" class="post__join btn-check"
+
+            <form method="post" action="{% url 'send_request' project.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="post__join "
             data-text="Requested">Request to Join</button>
+            </form>
+            
         {% else %}
         {% endif %}
         

@@ -67,24 +67,19 @@
             </section>
 
             <section class="detail-card">
-                <h3 class="detail-card__side-title">Current Team ({{project.team_members}}/{{project.team_size}})</h3>
+                <h3 class="detail-card__side-title">Current Team ({{project.members.count }}/{{project.team_size}})</h3>
                 <div class="team-list">
+                    {% for member in members %}
                     <div class="member">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                        <img src="{{member.user.profile.profile_pic.url}}"
                             alt="Elena" class="member__avatar">
                         <div>
-                            <h4 class="member__name">Elena Rostova</h4>
-                            <p class="member__role">Lead AI Engineer</p>
+                            <h4 class="member__name">{{member.user.first_name}} {{member.user.last_name}}</h4>
+                            <p class="member__role">{{ member.role }}</p>
                         </div>
                     </div>
-                    <div class="member">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
-                            alt="Marcus" class="member__avatar">
-                        <div>
-                            <h4 class="member__name">Marcus Chen</h4>
-                            <p class="member__role">Fullstack Dev</p>
-                        </div>
-                    </div>
+                    {% endfor %}
+
                 </div>
             </section>
         </aside>

@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Project
+from .models import Project, ProjectMember
 from accounts.models import Profile
 from accounts.views import signin
 from home.views import discover
+
 
 
 # ======================
@@ -12,8 +13,9 @@ from home.views import discover
 # ======================
 def project_detail(request, slug):
     project = get_object_or_404(Project, slug = slug)  
+    members = project.members.all()
     context = {
-
+        "members" : members,
         "project" : project
         }
     return render(request, "project-detail.html",context)
@@ -59,6 +61,13 @@ def create_project(request):
             compensation_type = compensation_type,
             payment_amount = payment_details,
 
+        )
+        
+        ProjectMember.objects.create(
+            project = project,
+            user = request.user,
+            role = "Owner",
+            
         )
         
         if raw_skills:

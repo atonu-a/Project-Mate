@@ -25,18 +25,9 @@ def discover(request):
 def dashboard(request):
     return render(request, "index.html")
 
-# My Projects page
-def requests(request):
-    return render(request, "requests.html")
-
 
 def messages(request):
     return render(request, "messages.html")
-
-
-
-
-
 
 
 def notifications(request):

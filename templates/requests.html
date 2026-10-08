@@ -1,49 +1,45 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block main %}
-    <main class="page-main page-main--medium">
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">Join Requests</h1>
-                <p class="page-subtitle">Review incoming developer applications or track your outgoing project requests.</p>
+  <main class="page-main page-main--medium">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Join Requests</h1>
+        <p class="page-subtitle">Review incoming developer applications or track your outgoing project requests.</p>
+      </div>
+    </div>
+
+    <div class="request-list">
+      {% for join_req in requests %}
+        <article class="request" data-applicant="Devon Miles">
+          <div class="request__main">
+            <img src="{{ join_req.user.profile.profile_pic.url }}" alt="Devon Miles" class="post__avatar" />
+            <div class="request__info">
+              <div class="request__name-row">
+                <h3 class="request__name">{{ join_req.user.first_name }} {{ join_req.user.last_name }}</h3>
+                <span class="request__skill">{{ join_req.user.profile.headline }}</span>
+              </div>
+              <p class="request__project">
+                Requested to join <span class="request__project-name">{{ join_req.project.title }}</span>
+              </p>
+              <p class="request__message">"{{ join_req.msg }}"</p>
             </div>
+          </div>
+          <div class="request__actions">
+            <form action="{% url 'accept_request' join_req.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn-accept">Accept</button>
+            </form>
+            <form action="{% url 'reject_request' join_req.id %}" method="post">
+                {% csrf_token %}
+                <button class="btn-reject">Reject</button>
+            </form>
+          </div>
+        </article>
+      {% empty %}
+        <div class="public-profile__empty">
+          <strong>No Requests to Show</strong>
         </div>
-
-        <div class="request-list">
-            <article class="request" data-applicant="Devon Miles">
-                <div class="request__main">
-                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80" alt="Devon Miles" class="request__avatar">
-                    <div class="request__info">
-                        <div class="request__name-row">
-                            <h3 class="request__name">Devon Miles</h3>
-                            <span class="request__skill">(Frontend Specialist)</span>
-                        </div>
-                        <p class="request__project">Requested to join <span class="request__project-name">NeuralSync - AI Brainstorming Canvas</span></p>
-                        <p class="request__message">"Hey Elena! I have 3 years of React/Tailwind experience and built a similar node graph editor last semester."</p>
-                    </div>
-                </div>
-                <div class="request__actions">
-                    <button onclick="respondToRequest(this, 'accept')" class="btn-accept">Accept</button>
-                    <button onclick="respondToRequest(this, 'reject')" class="btn-reject">Reject</button>
-                </div>
-            </article>
-
-            <article class="request" data-applicant="Samantha Wu">
-                <div class="request__main">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Samantha Wu" class="request__avatar">
-                    <div class="request__info">
-                        <div class="request__name-row">
-                            <h3 class="request__name">Samantha Wu</h3>
-                            <span class="request__skill request__skill--secondary">(UI Designer)</span>
-                        </div>
-                        <p class="request__project">Requested to join <span class="request__project-name">EcoRoute - Carbon Footprint Optimizer</span></p>
-                        <p class="request__message">"Impressed by your mapbox integration concept. Ready to overhaul the mobile design system!"</p>
-                    </div>
-                </div>
-                <div class="request__actions">
-                    <button onclick="respondToRequest(this, 'accept')" class="btn-accept">Accept</button>
-                    <button onclick="respondToRequest(this, 'reject')" class="btn-reject">Reject</button>
-                </div>
-            </article>
-        </div>
-    </main>
-{% endblock main %}
+      {% endfor %}
+    </div>
+  </main>
+{% endblock %}
