@@ -5,6 +5,7 @@ from projects.views import project_detail
 from projects.models import Project, ProjectMember
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils.http import url_has_allowed_host_and_scheme
 
 # Create your views here.
 
@@ -14,6 +15,13 @@ from django.contrib import messages
 @login_required(login_url="signin")
 def send_request(request, slug):
     project = get_object_or_404(Project, slug = slug)
+    next_url = request.POST.get("next", "")
+    if not url_has_allowed_host_and_scheme(
+        next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        next_url = project.get_absolute_url()
     
     if request.method == "POST":
         
@@ -21,13 +29,13 @@ def send_request(request, slug):
         already_member = ProjectMember.objects.filter(project = project, user = request.user).exists()
         if already_member:
             messages.error(request, "You are already a member of this project!")
-            return redirect("project_detail", slug=slug)
+            return redirect(next_url)
         
         
         # Already Requested?
         already_requested = JoinRequest.objects.filter(project=project, user=request.user, status="Pending").exists()       
         if already_requested:
-            return redirect("project_detail", slug=slug)
+            return redirect(next_url)
         
         JoinRequest.objects.create(
             project = project,
@@ -36,7 +44,7 @@ def send_request(request, slug):
         messages.success(request, "Join request sent!")
         
         
-    return redirect("project_detail", slug=slug)
+    return redirect(next_url)
 
 # ===========================
 #   Join Request Checking

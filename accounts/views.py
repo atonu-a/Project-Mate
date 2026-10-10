@@ -6,7 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm
 from django.views.decorators.cache import never_cache
 from .models import *
-from projects.models import Project
+from projects.models import Project, ProjectMember
+from interactions.models import JoinRequest
 from home.views import get_posts
 # Create your views here.
 # ======================
@@ -146,6 +147,17 @@ def profile(request, username):
     profile = get_object_or_404(Profile, user__username=username)
     user = profile.user
     projects = get_posts(user)
+    if request.user.is_authenticated:
+        for project in projects:
+            project.is_member = ProjectMember.objects.filter(
+                project=project,
+                user=request.user,
+            ).exists()
+            project.join_request = JoinRequest.objects.filter(
+                project=project,
+                user=request.user,
+            ).order_by("-created_at").first()
+
     context = {
         "projects": projects,
         "project_count": projects.count(),
