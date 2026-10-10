@@ -12,7 +12,7 @@
       {% for join_req in requests %}
         <article class="request" data-applicant="Devon Miles">
           <div class="request__main">
-            <img src="{{ join_req.user.profile.profile_pic.url }}" alt="Devon Miles" class="post__avatar" />
+            <img src="{{ join_req.user.profile.profile_pic_url }}" alt="Devon Miles" class="post__avatar" />
             <div class="request__info">
               <div class="request__name-row">
                 <h3 class="request__name">{{ join_req.user.first_name }} {{ join_req.user.last_name }}</h3>

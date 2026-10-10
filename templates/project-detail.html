@@ -87,7 +87,7 @@
           <div class="team-list">
             {% for member in members %}
               <div class="member">
-                <img src="{{ member.user.profile.profile_pic.url }}" alt="Elena" class="member__avatar" />
+                <img src="{{ member.user.profile.profile_pic_url }}" alt="Elena" class="member__avatar" />
                 <div>
                   <h4 class="member__name">{{ member.user.first_name }} {{ member.user.last_name }}</h4>
                   <p class="member__role">{{ member.role }}</p>

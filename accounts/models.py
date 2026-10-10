@@ -45,7 +45,10 @@ class Profile(models.Model):
 
     @property
     def profile_pic_url(self):
-        if not self.profile_pic or self.profile_pic.name == "default_mdzqdy.svg":
+        if (
+            not self.profile_pic
+            or self.profile_pic.name.rsplit("/", 1)[-1] == "default_mdzqdy.svg"
+        ):
             return DEFAULT_PROFILE_PIC_URL
         return self.profile_pic.url
 
