@@ -14,6 +14,7 @@ def get_posts(owner_name = None):
 # Home Page
 def discover(request):
     projects = get_posts()
+    request_count = 0
     if request.user.is_authenticated:
         for project in projects:
             project.is_member = ProjectMember.objects.filter(
@@ -25,10 +26,10 @@ def discover(request):
                 project=project,
                 user=request.user
             ).order_by("-created_at").first()
-    request_count = JoinRequest.objects.filter(
-     project__owner_name=request.user,
-    status="Pending"
-).count()        
+        request_count = JoinRequest.objects.filter(
+            project__owner_name=request.user,
+            status="Pending"
+        ).count()        
     context = {
         "projects": projects,
         "request_count" : request_count,
