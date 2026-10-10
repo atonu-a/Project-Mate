@@ -68,7 +68,7 @@
 
 
         {% if request.user.is_authenticated %}
-        <button onclick="window.location.href='{% url 'notifications' %}'" class="icon-button icon-button--optional"
+        <button onclick="window.location.href='{% url 'notifications' %}'" class="icon-button "
           aria-label="Notifications">
           <i data-lucide="bell" class="icon-button__icon"></i>
           <span class="icon-button__ping"></span>
@@ -91,16 +91,16 @@
               <p class="user-menu__info-email">{{request.user.email}}</p>
             </div>
             <a href="{% url 'profile' request.user.username %}" class="user-menu__link">
-              <i data-lucide="user" class="user-menu__link-icon"></i>
+              <i data-lucide="user-circle" class="user-menu__link-icon user-menu__link-icon--secondary"></i>
               <span>My Profile</span>
             </a>
-            <a href="{% url 'my_projects' %}" class="user-menu__link">
+            <!-- <a href="{% url 'my_projects' %}" class="user-menu__link">
               <i data-lucide="folder-kanban" class="user-menu__link-icon user-menu__link-icon--secondary"></i>
               <span>My Projects</span>
             </a>
             <a href="{% url 'requests' %}" class="user-menu__link">
               <i data-lucide="git-pull-request" class="user-menu__link-icon user-menu__link-icon--accent"></i>
-              <span>Join Requests</span>
+              <span>Join Requests</span> -->
             </a>
             <div class="user-menu__divider"></div>
             <a href="{% url 'signout' %}" return false; class="user-menu__link user-menu__link--danger">
@@ -247,14 +247,14 @@
         <i data-lucide="git-pull-request" class="mobile-menu__link-icon mobile-menu__link-icon--warning"></i>
         <span>Join Requests</span>
       </a>
-      <a href="{% url 'messages' %}" class="mobile-menu__link">
+      <!-- <a href="{% url 'messages' %}" class="mobile-menu__link">
         <i data-lucide="message-square" class="mobile-menu__link-icon mobile-menu__link-icon--accent"></i>
         <span>Messages</span>
       </a>
       <a href="{% url 'notifications' %}" class="mobile-menu__link">
         <i data-lucide="bell" class="mobile-menu__link-icon"></i>
         <span>Notifications</span>
-      </a>
+      </a> -->
       <a href="{% url 'profile' request.user.username %}" class="mobile-menu__link">
         <i data-lucide="user-circle" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
         <span>My Profile</span>
