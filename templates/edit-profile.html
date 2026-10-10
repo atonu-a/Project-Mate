@@ -44,10 +44,15 @@
             <!-- Cover Photo -->
             <div class="avatar-upload cover-upload">
                 <div class="avatar-upload__frame public-profile__hero-cover_img">
+                    {% if profile.cover_pic %}
+                    
+                    
                     <img id="editCoverPreview" src="{{profile.cover_pic.url }}" alt="Cover photo preview"
                         class="public-profile__hero-cover_img cover-upload__preview"
                         style="object-fit: cover; object-position: {{ profile.cover_position|default:'50% 50%' }}; cursor: grab;">
-            
+                    {% else %}
+                    <div id="editCoverPreview" class="public-profile__hero-cover public-profile__hero-cover_img cover-upload__preview" style="object-fit: cover; object-position: {{ profile.cover_position|default:'50% 50%' }}; cursor: grab;"></div>
+                    {% endif %}
                     <label for="editCoverInput" class="avatar-upload__edit" aria-label="Change cover photo">
                         <i data-lucide="camera" class="avatar-upload__edit-icon"></i>
                     </label>

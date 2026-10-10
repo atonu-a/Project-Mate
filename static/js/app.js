@@ -393,7 +393,14 @@ try {
     if (file) {
       const reader = new FileReader();
       reader.onload = function (e) {
-        document.getElementById(previewId).src = e.target.result;
+        const preview = document.getElementById(previewId);
+        if (preview instanceof HTMLImageElement) {
+          preview.src = e.target.result;
+        } else if (preview) {
+          preview.style.backgroundImage = `url("${e.target.result}")`;
+          preview.style.backgroundSize = "cover";
+          preview.style.backgroundPosition = preview.style.objectPosition || "center";
+        }
       };
       reader.readAsDataURL(file);
     }
