@@ -47,11 +47,6 @@ def complete_profile(request):
         user = request.user
     )
     if request.method == "POST":
-        request.user.first_name = request.POST.get("first_name","")
-        request.user.last_name = request.POST.get("last_name","")
-        request.user.save()
-        
-        
         profile.headline = request.POST.get("headline", "")
         profile.whatsapp = request.POST.get("whatsapp","")
         profile.linkedin = request.POST.get("linkedin","")
