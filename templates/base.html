@@ -32,7 +32,7 @@
     <div class="site-header__inner">
       <div class="brand" onclick="window.location.href='{% url 'home' %}'">
         <div class="brand__logo">
-          <i data-lucide="layers" class="brand__logo-icon"></i>
+          <i class="fa-solid fa-users brand__logo-icon"></i>
         </div>
         <div class="brand__text">
           <span class="brand__name">TeamNest</span>
@@ -44,6 +44,14 @@
         <i data-lucide="search" class="header-search__icon"></i>
         <input type="text" id="globalSearchInput" placeholder="Search projects, skills, teammates..."
           class="header-search__input" />
+        <button type="button" class="header-search__toggle" onclick="openGlobalSearch()"
+          aria-label="Open search" aria-expanded="false">
+          <i data-lucide="search" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="header-search__close" onclick="closeGlobalSearch()"
+          aria-label="Cancel search">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
       </div>
 
       <div class="header-actions">
@@ -208,7 +216,7 @@
     <div class="mobile-menu__head">
       <div class="mobile-menu__brand">
         <div class="brand__logo">
-          <i data-lucide="layers" class="brand__logo-icon"></i>
+          <i class="fa-solid fa-users brand__logo-icon"></i>
         </div>
         <span class="mobile-menu__name">TeamNest</span>
       </div>

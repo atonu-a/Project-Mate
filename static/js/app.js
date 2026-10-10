@@ -45,6 +45,34 @@ function toggleMobileMenu() {
   );
 }
 
+function openGlobalSearch() {
+  const header = document.querySelector(".site-header__inner");
+  const toggle = document.querySelector(".header-search__toggle");
+  const input = document.getElementById("globalSearchInput");
+  if (!header || !toggle || !input) return;
+
+  header.classList.add("is-search-open");
+  toggle.setAttribute("aria-expanded", "true");
+  input.focus();
+}
+
+function closeGlobalSearch() {
+  const header = document.querySelector(".site-header__inner");
+  const toggle = document.querySelector(".header-search__toggle");
+  const input = document.getElementById("globalSearchInput");
+  if (!header || !toggle || !input) return;
+
+  header.classList.remove("is-search-open");
+  toggle.setAttribute("aria-expanded", "false");
+  input.value = "";
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeGlobalSearch();
+  }
+});
+
 /* ---------- Toasts ---------- */
 function showToast(message, type = "success") {
   const container = document.getElementById("toastContainer");
@@ -564,4 +592,3 @@ function closeModal(slug){
     modal.style.display = "none";
   }
 }
-
