@@ -302,7 +302,7 @@ function openConversation(item) {
 //     },10000)
 //   })
 // } catch (error) {
-//   
+//
 // }
 
 // Back button in the conversation header: return to the list on phones.
@@ -330,9 +330,7 @@ try {
       .then(() => showToast("Profile link copied!"))
       .catch(() => showToast("Could not copy link", "info"));
   }
-} catch (error) {
-  ;
-}
+} catch (error) {}
 
 try {
   const btnDone = document.querySelectorAll(".btn-check");
@@ -359,7 +357,6 @@ try {
     });
   });
 } catch (error) {
-  ;
   console.log("not clicked");
 }
 
@@ -372,9 +369,7 @@ try {
     btnDown.classList.toggle("btn-up");
     extraItems.classList.toggle("hide");
   });
-} catch (error) {
-  ;
-}
+} catch (error) {}
 
 // Profile image editing
 try {
@@ -399,7 +394,8 @@ try {
         } else if (preview) {
           preview.style.backgroundImage = `url("${e.target.result}")`;
           preview.style.backgroundSize = "cover";
-          preview.style.backgroundPosition = preview.style.objectPosition || "center";
+          preview.style.backgroundPosition =
+            preview.style.objectPosition || "center";
         }
       };
       reader.readAsDataURL(file);
@@ -516,86 +512,73 @@ try {
   //     cancelBtn.addEventListener("click", closeCropModal);
   //   }
   // });
-} catch (error) {
-  ;
-}
+} catch (error) {}
 
 // Show and hide of payment details
 function toggleDetails() {
-  console.log("function exicuted!")
+  console.log("function exicuted!");
   const compensation_type = document.getElementById("compensation").value;
   const paymentBox = document.getElementById("payment-details-box");
   const amount = document.getElementById("payment-details");
 
   if (compensation_type == "Paid") {
-    console.log("paid")
+    console.log("paid");
     paymentBox.style.display = "block";
     amount.required = true;
   } else {
-    console.log("others")
+    console.log("others");
     paymentBox.style.display = "none";
     amount.required = false;
     amount.value = "";
   }
 }
 
-
-// // Project detalis checking
-// try{
-//   const projectImgBox = document.querySelectorAll(".project-img");
-  
-//   projectImgBox.forEach((img) => {
-//     img.addEventListener("mouseenter", () => {
-//       const checkdetails = img.querySelector(".check-details-btn");
-//       checkdetails.classList.remove("hide");
-//     });
-//     img.addEventListener("mouseleave", () => {
-//       const checkdetails = img.querySelector(".check-details-btn");
-//       checkdetails.classList.add("hide");
-//     });
-//   });
-// }
-// catch (error){
-//   
-// }
-
-
-
 // Project More Option
-try{
+try {
   const containers = document.querySelectorAll(".post-more-container");
 
   containers.forEach((container) => {
     const btn = container.querySelector("button");
-    const dropdown = container.querySelector(".three-dot-dropdown")
-    btn.addEventListener("click", (e)=>{ 
+    const dropdown = container.querySelector(".three-dot-dropdown");
+    btn.addEventListener("click", (e) => {
       e.stopPropagation();
       dropdown.classList.toggle("hide");
-
-    })
+    });
 
     document.addEventListener("click", () => {
       dropdown.classList.add("hide");
     });
   });
-}
-
-catch(error){
-  
-}
-
+} catch (error) {}
 
 // Project delete modal open
-function openModal(slug){
+function openModal(slug) {
   const modal = document.getElementById(`delete-modal-${slug}`);
-  if (modal){
+  if (modal) {
     modal.style.display = "block";
   }
 }
 // Project delete modal close
-function closeModal(slug){
+function closeModal(slug) {
   const modal = document.getElementById(`delete-modal-${slug}`);
-  if (modal){
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+// join request message modal open
+function openMsgModal(slug) {
+  const modal = document.getElementById(`send-msg-modal-${slug}`);
+  console.log("got it")
+  if (modal) {
+    modal.style.display = "block";
+  }
+}
+
+// send request msg modal close
+function closeMsgModal(slug) {
+  const modal = document.getElementById(`send-msg-modal-${slug}`);
+  if (modal) {
     modal.style.display = "none";
   }
 }

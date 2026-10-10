@@ -39,7 +39,8 @@ def send_request(request, slug):
         
         JoinRequest.objects.create(
             project = project,
-            user = request.user
+            user = request.user,
+            msg = request.POST.get("msg", "")
         )
         messages.success(request, "Join request sent!")
         

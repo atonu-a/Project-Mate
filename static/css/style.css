@@ -187,10 +187,10 @@ img {
 }
 
 .hide {
-  display: none!important;
+  display: none !important;
 }
 .text-danger {
-  color: var(--color-danger)!important;
+  color: var(--color-danger) !important;
 }
 
 input::placeholder,
@@ -955,7 +955,7 @@ textarea::placeholder {
   border: 1px solid var(--color-border);
   color: var(--color-text);
   transition: background 0.2s;
-  padding:10px;
+  padding: 10px;
   border-radius: 12px;
 }
 .btn-up {
@@ -1445,19 +1445,16 @@ textarea::placeholder {
   border: 1px solid color-mix(in srgb, var(--tone) 20%, transparent); */
   border-radius: 8px;
 
-
-    background-color: var(--color-elevated);
+  background-color: var(--color-elevated);
   border: 1px solid var(--color-border);
   color: var(--color-text);
-  
-
 
   /* background: var(--color-surface);
   border: 1px solid var(--color-border);
   color: var(--color-text);
   transition: background 0.2s; */
 }
-.nego-tag{
+.nego-tag {
   --tone: var(--color-accent);
   display: inline-block;
   padding: 4px 10px;
@@ -1469,7 +1466,6 @@ textarea::placeholder {
   background: color-mix(in srgb, var(--tone) 10%, transparent);
   border: 1px solid color-mix(in srgb, var(--tone) 20%, transparent);
   border-radius: 8px;
-
 }
 
 /* "Recruiting" · "3 / 5 Members Joined" */
@@ -2178,7 +2174,7 @@ textarea::placeholder {
   transition: all 0.3s ease;
 }
 
-.post__media img{
+.post__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -2315,11 +2311,11 @@ textarea::placeholder {
   box-shadow: var(--shadow-md);
 }
 
-.three-dot-dropdown{
+.three-dot-dropdown {
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg);
-  border:1px solid var(--color-border);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   right: 4px;
   z-index: 10;
@@ -4154,7 +4150,7 @@ textarea::placeholder {
   justify-content: space-between !important;
   gap: 1rem;
 }
-.public-profile__name-block{
+.public-profile__name-block {
   /* width: 50%; */
 }
 .public-profile__name {
@@ -4246,13 +4242,13 @@ textarea::placeholder {
   border: 1px solid var(--color-border);
   color: #fff;
 }
-.public-profile__contact--whatsapp:hover{
+.public-profile__contact--whatsapp:hover {
   background: var(--color-bg, #f8fafc);
   border-color: var(--color-success, #6366f1);
-  color: var(--color-text);  
+  color: var(--color-text);
 }
 .public-profile__contact--linkedin {
-  background: #0A66C2;
+  background: #0a66c2;
   border: 1px solid var(--color-border);
   color: #fff;
 }
@@ -4264,7 +4260,7 @@ textarea::placeholder {
 }
 .public-profile__layout {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr) ;
+  grid-template-columns: 280px minmax(0, 1fr);
   gap: 1.25rem;
   align-items: start;
 }
@@ -4487,7 +4483,7 @@ textarea::placeholder {
   .public-profile__heading {
     flex-direction: column;
   }
-  .public-profile__name-block{
+  .public-profile__name-block {
     /* width: 100%; */
   }
 }
@@ -4520,28 +4516,27 @@ textarea::placeholder {
   }
 }
 
-
 /* basic modal styling */
 .modal {
-    display: none; 
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
+  display: none; 
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 90%;
-    max-width: 600px;
-      border-radius: 8px;
+  background-color: var(--color-bg);
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
 }
 .modal-content .header {
   color: var(--color-text-muted);
@@ -4552,12 +4547,11 @@ textarea::placeholder {
   border-bottom: 2px solid var(--color-border);
 }
 .modal-content .msg {
-  color: var(--color-danger);
   font-size: 14px;
   padding: 16px 0px;
   border-bottom: 2px solid var(--color-border);
 }
-.modal-content .btns{
+.modal-content .btns {
   font-size: 14px;
   padding: 16px 0px;
   display: flex;
@@ -4565,22 +4559,21 @@ textarea::placeholder {
   justify-content: end;
 }
 .modal-content .btns .btn-danger,
-.modal-content .btns .btn-cancel{
+.modal-content .btns .btn-cancel {
   border-radius: 25px;
   font-weight: 400;
   padding: 6px 12px;
   font: 14px;
   color: white;
-
 }
-.modal-content .btns .btn-danger{
+.modal-content .btns .btn-danger {
   background-color: var(--color-danger);
 }
-.modal-content .btns .btn-cancel{
+.modal-content .btns .btn-cancel {
   background-color: var(--color-text-muted);
   cursor: pointer;
 }
 
 .img-container img {
-    max-width: 100%; /* Important for Cropper.js */
+  max-width: 100%; /* Important for Cropper.js */
 }

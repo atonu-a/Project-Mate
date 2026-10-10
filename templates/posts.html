@@ -97,18 +97,13 @@
               {% if project.join_request.status == 'Pending' %}
                 <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
               {% elif project.join_request.status == 'Rejected' %}
-                <form method="post" action="{% url 'send_request' project.slug %}">
-                  {% csrf_token %}
-                  <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                  <button type="submit" class="post__join"><i class="fa-solid fa-arrow-rotate-left"></i> Request Again</button>
-                </form>
+                  <button type="submit" class="post__join" onclick="openMsgModal('{{ project.slug }}')"><i class="fa-solid fa-arrow-rotate-left"></i> Request Again</button>
+
               {% endif %}
             {% else %}
-              <form method="post" action="{% url 'send_request' project.slug %}">
-                {% csrf_token %}
                 <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                <button type="submit" class="post__join">Request to Join</button>
-              </form>
+                <button type="submit" onclick="openMsgModal('{{ project.slug }}')" class="post__join">Request to Join</button>
+
             {% endif %}
           {% endif %}
         
@@ -122,19 +117,51 @@
 </div>
 {% endfor %}
 
+<!-- Project Delete Modal -->
 {% for project in projects %}
-           {% comment %} Delete Modal {% endcomment %}
 <section id="delete-modal-{{ project.slug }}" class="modal">
-    <div class="modal-content">
+    <div class="modal-content relative">
+        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeModal('{{project.slug}}')"><i class="fa-solid fa-xmark"></i></a>
 
         <h1 class="header">Confirmation</h1>
-        <p class="msg">Are you sure you want to delete this project?</p>
+        <p class="msg text-danger">Are you sure you want to delete this project?</p>
         <div class="btns">
             <a class="btn-cancel" onclick="closeModal('{{ project.slug }}')">Cancel</a>
             <a class="btn-danger" href="{% url 'delete_project' project.slug %}">Delete</a>
         </div>
     </div>
-</section>{% endfor %}
+</section>
+{% endfor %}
 
 
-
+{% comment %} Sending Message During Join Request Modal {% endcomment %}
+{% for project in projects %}
+<section id="send-msg-modal-{{ project.slug }}" class="modal">
+    
+    <div class="modal-content relative">
+        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeMsgModal('{{project.slug}}')"><i class="fa-solid fa-xmark"></i></a>
+        <h1 class="header">
+            Want to Send Message?
+        </h1>
+            
+        <div class="chat__composer msg ">
+            <form method="post" action="{% url 'send_request' project.slug %}" class="chat__form">
+                {% csrf_token %}
+                <textarea required type="text"                                   placeholder="Type a message to your teammate..." class="chat__input"
+                aria-label="Message" name="msg"></textarea>
+                <button type="submit" id="send-msg" class="mobile-menu__link-icon">
+                    <i data-lucide="send-horizontal" class=""></i>
+                </button>
+            </form>
+        </div>
+        <div class="btns">
+            <form action="{% url 'send_request' project.slug %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="">
+                <button type="submit" class="btn-secondary">Request Without Message</button>
+            </form>
+        </div>
+            
+    </div>
+</section>
+{% endfor %}
