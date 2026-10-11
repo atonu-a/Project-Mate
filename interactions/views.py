@@ -121,21 +121,23 @@ def reject_request(request, request_id):
 
 
 @login_required(login_url="signin")
-@require_POST
+
 def toggle_follow(request, username):
-    targeted_user = get_object_or_404(User, username=username)
-      
-    if request.user == targeted_user:
-        return redirect(request.META.get("HTTP_REFERER", "/"), username=username)
-      
-    follow, created = Follow.objects.get_or_create(
-        follower = request.user, 
-        following = targeted_user
-        
-    )
-    messages.success(request, f"Followed {targeted_user.first_name} {targeted_user.last_name}")
     
-    if not created :
-        follow.delete()
-        messages.success(request, f"Unfollowed {targeted_user.first_name} {targeted_user.last_name}")
-    return redirect(request.META.get("HTTP_REFERER", "/"), username=username)
+    if request.method=='POST':
+        targeted_user = get_object_or_404(User, username=username)
+
+        if request.user == targeted_user:
+            return redirect("public_profile", username=username)
+
+        follow, created = Follow.objects.get_or_create(
+            follower = request.user, 
+            following = targeted_user
+
+        )
+        messages.success(request, f"Followed {targeted_user.first_name} {targeted_user.last_name}")
+        
+        if not created :
+            follow.delete()
+            messages.success(request, f"Unfollowed {targeted_user.first_name} {targeted_user.last_name}")
+    return redirect("public_profile", username=username)

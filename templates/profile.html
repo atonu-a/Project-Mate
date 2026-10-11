@@ -24,11 +24,11 @@
               <div class="public-profile__stats">
                 <div class="public-profile__stat">
                   <span>Followers</span>
-                  <strong>{{ profile.followers.count|default:'0' }}</strong>
+                  <strong>{{ followers_count|default:'0' }}</strong>
                 </div>
                 <div class="public-profile__stat">
                   <span>Following</span>
-                  <strong>{{ profile.following.count|default:'0' }}</strong>
+                  <strong>{{ following_count|default:'0' }}</strong>
                 </div>
               </div>
               {% if profile.headline %}

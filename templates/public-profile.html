@@ -26,12 +26,12 @@
                 <div class="public-profile__stat">
                   
                   <span>Followers</span>
-                  <strong>{{ public_profile.profile.followers.count|default:"0" }}</strong>
+                  <strong>{{ followers_count|default:"0" }}</strong>
                 </div>
                 <div class="public-profile__stat">
                   
                   <span>Following</span>
-                  <strong>{{ public_profile.profile.following.count|default:"0" }}</strong>
+                  <strong>{{  following_count|default:"0" }}</strong>
                 </div>
               </div>
               {% if public_profile.profile.headline %}

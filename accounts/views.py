@@ -148,6 +148,8 @@ def profile(request, username):
     profile = get_object_or_404(Profile, user__username=username)
     user = profile.user
     projects = get_posts(user)
+    followers_count = user.followers.all().count()
+    following_count = user.following.all().count()
     if request.user.is_authenticated:
         for project in projects:
             project.is_member = ProjectMember.objects.filter(
@@ -165,6 +167,8 @@ def profile(request, username):
         "project_count": projects.count(),
         "date_joined": user.date_joined,
         # "is_following": is_following,
+        "followers_count" : followers_count,
+        "following_count" : following_count,
     }
 
     if request.user == user:
