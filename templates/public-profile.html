@@ -42,8 +42,11 @@
 
 
             <div class="public-profile__actions">
-              <button type="button" onclick="toggleFollow(this)" data-follow-id="{{ public_profile.id }}" class="btn-primary {% if is_following %}is-following{% endif %}">
-                <i data-lucide="{% if is_following %}
+
+              <form method="post" action="{% url 'follow' public_profile.username %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-primary {% if is_following %}btn-secondary{% endif %}">
+                  <i data-lucide="{% if is_following %}
                     
                     user-check
 
@@ -54,15 +57,18 @@
                   {% endif %}"
                   class="btn-icon">
 
-                </i>
-                <span>
+                  </i>
+                  <span>
                   {% if is_following %}
                     Following
                   {% else %}
                     Follow
                   {% endif %}
-                </span>
-              </button>
+                  </span>
+                </button>
+              </form>
+
+
               <a class="btn-secondary" href="{% url 'messages' %}?with={{ public_profile.id }}">
                 <i data-lucide="message-square" class="btn-icon"></i>
                 <span>Message</span>

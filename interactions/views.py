@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.views import signin
-from .models import JoinRequest
+from .models import JoinRequest, Follow
 from projects.views import project_detail
 from projects.models import Project, ProjectMember
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -50,6 +52,7 @@ def send_request(request, slug):
 # ===========================
 #   Join Request Checking
 # ===========================
+@login_required(login_url="signin")
 def join_requests(request):
     requests = JoinRequest.objects.filter(
         project__owner_name = request.user,
@@ -66,7 +69,7 @@ def join_requests(request):
 # ===========================
 #   Join Request Accepting
 # ===========================
-
+@login_required(login_url="signin")
 def accept_request(request, request_id):
     join_request = get_object_or_404(JoinRequest, id=request_id)
     member_count = ProjectMember.objects.filter(
@@ -100,7 +103,7 @@ def accept_request(request, request_id):
 # ===========================
 #   Join Request Rejecting
 # ===========================
-
+@login_required(login_url="signin")
 def reject_request(request, request_id):
     join_request = get_object_or_404(JoinRequest, id=request_id)
     
@@ -115,3 +118,24 @@ def reject_request(request, request_id):
         join_request.save()
         
     return redirect("requests")
+
+
+@login_required(login_url="signin")
+@require_POST
+def toggle_follow(request, username):
+    targeted_user = get_object_or_404(User, username=username)
+      
+    if request.user == targeted_user:
+        return redirect(request.META.get("HTTP_REFERER", "/"), username=username)
+      
+    follow, created = Follow.objects.get_or_create(
+        follower = request.user, 
+        following = targeted_user
+        
+    )
+    messages.success(request, f"Followed {targeted_user.first_name} {targeted_user.last_name}")
+    
+    if not created :
+        follow.delete()
+        messages.success(request, f"Unfollowed {targeted_user.first_name} {targeted_user.last_name}")
+    return redirect(request.META.get("HTTP_REFERER", "/"), username=username)

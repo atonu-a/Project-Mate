@@ -9,6 +9,7 @@ from .models import *
 from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest
 from home.views import get_posts
+from interactions.models import Follow
 # Create your views here.
 # ======================
 #       Registrantion
@@ -158,10 +159,12 @@ def profile(request, username):
                 user=request.user,
             ).order_by("-created_at").first()
 
+    is_following = Follow.objects.filter(follower=request.user, following=profile.user).exists()
     context = {
         "projects": projects,
         "project_count": projects.count(),
         "date_joined": user.date_joined,
+        # "is_following": is_following,
     }
 
     if request.user == user:
@@ -170,7 +173,7 @@ def profile(request, username):
 
     context.update({
         "public_profile": user,
-        "is_following": False,
+        "is_following": is_following,
     })
     return render(request, "public-profile.html", context)
 
