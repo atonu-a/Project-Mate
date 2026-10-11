@@ -10,16 +10,6 @@ function toggleTheme() {
   }
 }
 
-// Apply the stored theme on load
-(function () {
-  const savedTheme = localStorage.getItem("pp_theme");
-  if (savedTheme === "light") {
-    document.documentElement.classList.remove("dark");
-  } else {
-    document.documentElement.classList.add("dark");
-  }
-})();
-
 /* ---------- Menus ---------- */
 function toggleUserMenu() {
   const menu = document.getElementById("userDropdown");
@@ -194,19 +184,19 @@ window.onload = function () {
 };
 
 // Preloader
-window.addEventListener("load", () => {
-  try {
-    const preloader = document.getElementById("preloader");
+// window.addEventListener("load", () => {
+//   try {
+//     const preloader = document.getElementById("preloader");
 
-    // Add the hidden class to trigger the smooth CSS transition
-    preloader.classList.add("preloader-hidden");
+//     // Add the hidden class to trigger the smooth CSS transition
+//     preloader.classList.add("preloader-hidden");
 
-    // Optional: Completely remove the element from the DOM after the animation finishes
-    setTimeout(() => {
-      preloader.remove();
-    }, 500);
-  } catch {}
-});
+//     // Optional: Completely remove the element from the DOM after the animation finishes
+//     setTimeout(() => {
+//       preloader.remove();
+//     }, 500);
+//   } catch {}
+// });
 
 // Loading buttons
 document.addEventListener("DOMContentLoaded", function () {
