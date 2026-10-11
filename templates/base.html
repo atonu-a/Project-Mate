@@ -88,7 +88,7 @@
           <div id="userDropdown" class="user-menu__dropdown">
             <div class="user-menu__info">
               <p class="user-menu__info-label">Signed in as</p>
-              <p class="user-menu__info-email">{{request.user.email}}</p>
+              <p class="user-menu__info-email">{{ request.user.email }}</p>
             </div>
             <a href="{% url 'profile' request.user.username %}" class="user-menu__link">
               <i data-lucide="user-circle" class="user-menu__link-icon user-menu__link-icon--secondary"></i>
