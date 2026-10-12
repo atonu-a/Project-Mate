@@ -7,20 +7,22 @@ from django.contrib.auth.models import User
 # Create your views here.
 # get posts
 def get_posts(owner_name = None, following = None, ai_matched = None, limit = None):
+    projects = Project.objects.select_related(
+        "owner_name", "owner_name__profile"
+    ).prefetch_related(
+        "required_skills"
+    )
     if owner_name:
-        return Project.objects.filter(owner_name = owner_name).order_by("-id")
+        projects =  projects.filter(owner_name=owner_name)
     if following:
-        return Project.objects.filter(owner_name__followers__follower = following).order_by("-id")
-    return Project.objects.all().order_by("-id")
+        projects = projects.filter(owner_name__followers__follower = following)
+    return projects.order_by("-id")
 
 
 # Home Page
-def discover(request):
-    
+def discover(request):  
     suggested_users = User.objects.exclude(username = request.user.username)
     request_count = 0
-    # is_following =False
-    
     feed = request.GET.get("feed", "all")
     if feed == "following":
         projects = get_posts(following=request.user)
@@ -32,18 +34,26 @@ def discover(request):
     
     if request.user.is_authenticated:
         following_users = Follow.objects.filter(follower = request.user).values_list("following_id", flat=True)
-        suggested_users = User.objects.exclude(id__in = following_users).exclude(username = request.user.username)
+        suggested_users = User.objects.exclude(id__in = following_users).exclude(username = request.user.username).select_related("profile")
+        
+        
+        project_ids = [project.id for project in projects]
+        member_project_ids = set(ProjectMember.objects.filter(
+            project_id__in = project_ids,
+            user = request.user
+        ).values_list("project_id", flat=True))
+        join_requests = {
+            join_request.project_id: join_request
+            for join_request in JoinRequest.objects.filter(
+                project_id__in = project_ids,
+                user = request.user
+            ).order_by("-id")
+        }
         for project in projects:
             project.is_following = project.owner_name_id in following_users
-            project.is_member = ProjectMember.objects.filter(
-                project=project,
-                user=request.user
-            ).exists()
+            project.is_member = (project.id in member_project_ids)
 
-            project.join_request = JoinRequest.objects.filter(
-                project=project,
-                user=request.user
-            ).order_by("-created_at").first()
+            project.join_request = (join_requests.get(project.id))
         request_count = JoinRequest.objects.filter(
             project__owner_name=request.user,
             status="Pending"
