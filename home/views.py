@@ -14,6 +14,7 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
     )
     if owner_name:
         projects =  projects.filter(owner_name=owner_name)
+
     if following:
         projects = projects.filter(owner_name__followers__follower = following)
     return projects.order_by("-id")

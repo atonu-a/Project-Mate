@@ -12,7 +12,7 @@ from home.views import get_posts
 from interactions.models import Follow
 # Create your views here.
 # ======================
-#       Registrantion
+#       Registration
 # ======================
 @never_cache
 def signup(request):
@@ -153,18 +153,27 @@ def profile(request, username, ):
     is_following = False
     followers_count = user.followers.all().count()
     following_count = user.following.all().count()
+    
     if request.user.is_authenticated:
         is_following = Follow.objects.filter(follower=request.user, following=profile.user).exists()
+        project_ids = [project.id for project in projects]
+        member_ids = set(ProjectMember.objects.filter(
+            project_id__in = project_ids,
+            user = request.user
+        ).values_list("project_id", flat=True))
+        
+        join_requests = {
+            join_request.project_id : join_request
+            for join_request in JoinRequest.objects.filter(
+                project_id__in = project_ids,
+                user = request.user
+            ).order_by("-id")
+        }
+        
         for project in projects:
             project.is_following = is_following
-            project.is_member = ProjectMember.objects.filter(
-                project=project,
-                user=request.user,
-            ).exists()
-            project.join_request = JoinRequest.objects.filter(
-                project=project,
-                user=request.user,
-            ).order_by("-created_at").first()
+            project.is_member = (project.id in member_ids)
+            project.join_request = (join_requests.get(project.id))
         
     context = {
         "projects": projects,
