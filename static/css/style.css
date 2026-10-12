@@ -2203,6 +2203,11 @@ textarea::placeholder {
   font-size: 0.875rem;
   font-weight: 700;
 }
+.post-follow {
+  font-size: 0.875rem;
+  font-weight: 700;
+
+}
 
 .post__meta {
   font-size: 0.6875rem;
@@ -4436,6 +4441,10 @@ textarea::placeholder {
 }
 .public-profile__project .post__author-name {
   color: var(--color-text, #111827);
+  font-size: 0.84rem;
+}
+.post-follow {
+  color: var(--color-primary);
   font-size: 0.84rem;
 }
 .public-profile__project-category {

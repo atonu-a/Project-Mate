@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Project, ProjectMember
 from accounts.models import Profile
 from accounts.views import signin
 from interactions.models import JoinRequest
 from home.views import discover
+from django.db.models import Q
 
 
 
@@ -202,8 +204,15 @@ def delete_project(request, slug):
 #   My Projects 
 # ======================
 def my_projects(request):
-    projects = Project.objects.all().filter(owner_name = request.user)
+    # owned_projects = Project.objects.all().filter(owner_name = request.user) 
+    # joined_projects = Project.objects.filter()
+    projects = Project.objects.filter(
+        Q(owner_name = request.user) |
+        Q(members__user = request.user)
+    ).distinct()
+    total_projects = projects.count()
     context= {
-        "projects" : projects
+        "projects" : projects,
+        "total_projects" : total_projects
     }
     return render(request, 'my-projects.html', context)

@@ -8,7 +8,20 @@
                 <div class="post__author-row">
                     <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">
                         {{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>
-                    <span class="role-badge">Owner</span>
+                        
+                    <form method="post" action="{% url 'follow' project.owner_name.username %}">
+                        {% csrf_token %}
+                        
+                        {% if not project.is_following and project.owner_name != request.user %}
+                            <span class="post__author-name">&middot;</span>
+                            <button type="submit" class="post-follow" aria-label="Send connection request">Follow</button>
+                        {% else %}
+                            {% comment %} <button type="submit" class="post-following">Following</button> {% endcomment %}
+                        {% endif %}
+                        
+                    </form>
+
+                    {% comment %} <span class="role-badge">Owner</span> {% endcomment %}
                 </div>
                 <p class="post__meta">{{ project.category }} • {{ project.create_at }}</p>
             </div>

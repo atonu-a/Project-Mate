@@ -34,6 +34,7 @@ def discover(request):
         following_users = Follow.objects.filter(follower = request.user).values_list("following_id", flat=True)
         suggested_users = User.objects.exclude(id__in = following_users).exclude(username = request.user.username)
         for project in projects:
+            project.is_following = project.owner_name_id in following_users
             project.is_member = ProjectMember.objects.filter(
                 project=project,
                 user=request.user

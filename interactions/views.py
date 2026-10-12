@@ -135,7 +135,8 @@ def toggle_follow(request, username):
             following = targeted_user
 
         )
-        messages.success(request, f"Followed {targeted_user.first_name} {targeted_user.last_name}")
+        if created:
+            messages.success(request, f"Followed {targeted_user.first_name} {targeted_user.last_name}")
         
         if not created :
             follow.delete()

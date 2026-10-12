@@ -154,7 +154,9 @@ def profile(request, username, ):
     followers_count = user.followers.all().count()
     following_count = user.following.all().count()
     if request.user.is_authenticated:
+        is_following = Follow.objects.filter(follower=request.user, following=profile.user).exists()
         for project in projects:
+            project.is_following = is_following
             project.is_member = ProjectMember.objects.filter(
                 project=project,
                 user=request.user,
@@ -163,8 +165,7 @@ def profile(request, username, ):
                 project=project,
                 user=request.user,
             ).order_by("-created_at").first()
-
-        is_following = Follow.objects.filter(follower=request.user, following=profile.user).exists()
+        
     context = {
         "projects": projects,
         "project_count": projects.count(),
@@ -180,7 +181,8 @@ def profile(request, username, ):
 
     context.update({
         "public_profile": user,
-        "is_following": is_following,
+        "is_following" : is_following
+
     })
     return render(request, "public-profile.html", context)
 
