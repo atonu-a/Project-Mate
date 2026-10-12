@@ -50,17 +50,17 @@
         <i data-lucide="search" class="header-search__icon"></i>
         <input type="text" id="globalSearchInput" placeholder="Search projects, skills, teammates..."
           class="header-search__input" />
-        <button type="button" class="header-search__toggle" onclick="openGlobalSearch()"
-          aria-label="Open search" aria-expanded="false">
-          <i data-lucide="search" aria-hidden="true"></i>
-        </button>
-        <button type="button" class="header-search__close" onclick="closeGlobalSearch()"
-          aria-label="Cancel search">
+
+        <button type="button" class="header-search__close" onclick="closeGlobalSearch()" aria-label="Cancel search">
           <i data-lucide="x" aria-hidden="true"></i>
         </button>
       </div>
 
       <div class="header-actions">
+        <button type="button" class="header-search__toggle" onclick="openGlobalSearch()" aria-label="Open search"
+          aria-expanded="false">
+          <i data-lucide="search" aria-hidden="true"></i>
+        </button>
         <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button icon-button--optional"
           title="Toggle Theme" aria-label="Toggle theme">
           <i data-lucide="sun" class="theme-icon-sun"></i>
@@ -74,6 +74,12 @@
 
 
         {% if request.user.is_authenticated %}
+        <button onclick="window.location.href='{% url 'create' %}'" class="icon-create-button icon-button"
+          aria-label="Create Project">
+          <i data-lucide="plus" class="icon-button__icon"></i>
+        </button>
+
+
         <button onclick="window.location.href='{% url 'notifications' %}'" class="icon-button "
           aria-label="Notifications">
           <i data-lucide="bell" class="icon-button__icon"></i>
@@ -141,7 +147,7 @@
           <span>Discover Feed</span>
         </a>
         {% if request.user.is_authenticated %}
-        
+
 
         <a href="{% url 'dashboard' %}" class="sidebar__link 
           {% if request.path == '/dashboard/' %}
@@ -235,8 +241,8 @@
         <span>Discover Feed</span>
       </a>
       {% if request.user.is_authenticated %}
-      
-      
+
+
       <a href="{% url 'dashboard' %}" class="mobile-menu__link">
         <i data-lucide="layout-dashboard" class="mobile-menu__link-icon"></i>
         <span>Dashboard</span>
@@ -290,7 +296,7 @@
     {% endfor %}
   </div>
   {% endif %}
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
   <script src="{% static 'js/app.js' %}"></script>
 </body>

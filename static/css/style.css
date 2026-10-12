@@ -545,6 +545,9 @@ textarea::placeholder {
   color: var(--color-text-muted);
   transition: all 0.2s;
 }
+.header-actions .icon-create-button{
+  display: inline-flex!important;
+}
 
 .icon-button:hover {
   background: var(--color-elevated);
@@ -565,6 +568,8 @@ textarea::placeholder {
   .icon-button--optional {
     display: inline-flex;
   }
+  
+
 }
 
 .icon-button__ping,
@@ -877,6 +882,9 @@ textarea::placeholder {
 @media (min-width: 768px) {
   .header-cta {
     display: flex;
+  }
+  .header-actions .icon-create-button{
+    display: none!important;
   }
 }
 
@@ -1281,6 +1289,14 @@ textarea::placeholder {
   flex-shrink: 0;
 }
 
+.feed-suggestions-toggle {
+  display: none !important;
+}
+
+.feed-aside__backdrop {
+  display: none;
+}
+
 .suggest-panel {
   position: sticky;
   top: 96px;
@@ -1296,6 +1312,10 @@ textarea::placeholder {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.suggest-panel__close {
+  display: none;
 }
 
 .suggest-panel__list {
@@ -1370,6 +1390,88 @@ textarea::placeholder {
   .feed-aside {
     display: block;
   }
+}
+
+@media (max-width: 1279px) {
+  .feed-suggestions-toggle {
+    display: flex!important;
+  }
+
+  .feed-aside.is-open {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: block;
+    width: auto;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .feed-aside__backdrop {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(0 0 0 / 55%);
+    border: 0;
+    cursor: default;
+  }
+
+  .suggest-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(20rem, calc(100vw - 2rem));
+    height: 100%;
+    overflow-y: auto;
+    border-radius: 16px 0 0 16px;
+    background: var(--color-bg);
+    border: 1px solid var(--border-60);
+    box-shadow: var(--shadow-xl);
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+
+  .feed-aside.is-open .suggest-panel {
+    transform: translateX(0);
+  }
+
+  .suggest-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .suggest-panel__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--border-60);
+    border-radius: 8px;
+  }
+
+  .suggest-panel__close svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .suggestions-open {
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 479px) {
+  .feed-suggestions-toggle {
+    padding: 8px 10px;
+  }
+
 }
 
 /* 9. Shared bits ---------------------------------------------------------- */

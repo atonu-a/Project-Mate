@@ -35,6 +35,33 @@ function toggleMobileMenu() {
   );
 }
 
+function toggleSuggestedTeammates() {
+  const panel = document.getElementById("suggestedTeammatesPanel");
+  const toggle = document.querySelector(".feed-suggestions-toggle");
+  if (!panel || !toggle) return;
+
+  const isOpen = panel.classList.toggle("is-open");
+  toggle.setAttribute("aria-expanded", String(isOpen));
+  document.body.classList.toggle("suggestions-open", isOpen);
+
+  if (isOpen) {
+    panel.querySelector(".suggest-panel__close")?.focus();
+  } else {
+    toggle.focus();
+  }
+}
+
+function closeSuggestedTeammates() {
+  const panel = document.getElementById("suggestedTeammatesPanel");
+  const toggle = document.querySelector(".feed-suggestions-toggle");
+  if (!panel || !toggle || !panel.classList.contains("is-open")) return;
+
+  panel.classList.remove("is-open");
+  toggle.setAttribute("aria-expanded", "false");
+  document.body.classList.remove("suggestions-open");
+  toggle.focus();
+}
+
 function openGlobalSearch() {
   const header = document.querySelector(".site-header__inner");
   const toggle = document.querySelector(".header-search__toggle");
@@ -60,6 +87,7 @@ function closeGlobalSearch() {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeGlobalSearch();
+    closeSuggestedTeammates();
   }
 });
 

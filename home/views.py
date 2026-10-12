@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from accounts.models import Profile
 from projects.models import Project, ProjectMember
-from interactions.models import JoinRequest
+from interactions.models import JoinRequest, Follow
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -16,8 +16,10 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
 
 # Home Page
 def discover(request):
+    
     suggested_users = User.objects.exclude(username = request.user.username)
     request_count = 0
+    # is_following =False
     
     feed = request.GET.get("feed", "all")
     if feed == "following":
@@ -29,6 +31,8 @@ def discover(request):
         projects = get_posts()
     
     if request.user.is_authenticated:
+        following_users = Follow.objects.filter(follower = request.user).values_list("following_id", flat=True)
+        suggested_users = User.objects.exclude(id__in = following_users).exclude(username = request.user.username)
         for project in projects:
             project.is_member = ProjectMember.objects.filter(
                 project=project,
