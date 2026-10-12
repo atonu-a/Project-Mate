@@ -52,7 +52,10 @@
               <p class="suggest-row__role">{{ teammates.profile.headline }}</p>
             </div>
           </div>
-          <button onclick="showToast('Connection request sent!')" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
+          <form method="post" action="{% url 'follow' teammates.username %}">
+            {% csrf_token %}
+            <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
+          </form>
         </div>
         {% empty %}
           <strong class="text-[var(--color-primary)] text-center">No recommendations yet</strong>
