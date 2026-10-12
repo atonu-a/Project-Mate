@@ -9,11 +9,16 @@
         is-active
         {% else %}
         {% endif %} ">All Projects</a>
+        {% if request.user.is_authenticate %}
+        
+        
         <a href="?feed=following" class="feed-tab {% if feed == 'following' %}
         is-active
         {% else %}
         {% endif %}">Following</a href="">
         <!-- <a href="?ai_matched" class="feed-tab">AI Matched</a href=""> -->
+        {% else %}
+        {% endif %}
       </div>
       <button type="button" class="feed-post-btn feed-suggestions-toggle" onclick="toggleSuggestedTeammates()" aria-controls="suggestedTeammatesPanel" aria-expanded="false" aria-label="Open suggested teammates">
         <i data-lucide="users" class="feed-post-btn__icon" aria-hidden="true"></i>
