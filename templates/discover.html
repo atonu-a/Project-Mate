@@ -5,9 +5,15 @@
     <!-- Filter bar -->
     <div class="feed-toolbar">
       <div class="feed-tabs">
-        <button class="feed-tab is-active">All Projects</button>
-        <button class="feed-tab">Following</button>
-        <button class="feed-tab">AI Matched</button>
+        <a href="?feed=all" class="feed-tab {% if feed == 'all' %}
+        is-active
+        {% else %}
+        {% endif %} ">All Projects</a href="">
+        <a href="?feed=following" class="feed-tab {% if feed == 'following' %}
+        is-active
+        {% else %}
+        {% endif %}">Following</a href="">
+        <!-- <a href="?ai_matched" class="feed-tab">AI Matched</a href=""> -->
       </div>
       <button onclick="window.location.href='{% url 'create' %}'" class="feed-post-btn"><i data-lucide="plus" class="feed-post-btn__icon"></i><span>Post</span></button>
     </div>
@@ -27,26 +33,21 @@
     <div class="suggest-panel">
       <h3 class="suggest-panel__title">Suggested Teammates</h3>
       <div class="suggest-panel__list">
+        {% for teammates in suggested_users %}
+        
+        
         <div class="suggest-row">
-          <div class="suggest-row__person">
-            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" alt="Kaito Tanaka" class="suggest-row__avatar" />
+          <div class="suggest-row__person cursor-pointer" onclick="location.href='{% url 'profile' teammates.username %}'">
+            <img src="{{ teammates.profile.profile_pic_url }}" alt="{{ teammates.username }}" class="suggest-row__avatar" />
             <div>
-              <h4 class="suggest-row__name">Kaito Tanaka</h4>
+              <h4 class="suggest-row__name">{{ teammates.first_name }} {{ teammates.last_name }}</h4>
               <p class="suggest-row__role">Rust Engineer</p>
             </div>
           </div>
           <button onclick="showToast('Connection request sent!')" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
         </div>
-        <div class="suggest-row">
-          <div class="suggest-row__person">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Sophia Sterling" class="suggest-row__avatar" />
-            <div>
-              <h4 class="suggest-row__name">Sophia Sterling</h4>
-              <p class="suggest-row__role">Product Designer</p>
-            </div>
-          </div>
-          <button onclick="showToast('Connection request sent!')" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
-        </div>
+        {% endfor %}
+
       </div>
     </div>
   </aside>

@@ -147,7 +147,7 @@
         <div class="chat__composer msg ">
             <form method="post" action="{% url 'send_request' project.slug %}" class="chat__form">
                 {% csrf_token %}
-                <textarea required type="text"                                   placeholder="Type a message to your teammate..." class="chat__input"
+                <textarea required type="text" placeholder="Type a message to your teammate..." class="chat__input"
                 aria-label="Message" name="msg"></textarea>
                 <button type="submit" id="send-msg" class="mobile-menu__link-icon">
                     <i data-lucide="send-horizontal" class=""></i>
