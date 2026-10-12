@@ -122,6 +122,7 @@ def signout(request):
 #       Signin
 # ======================
 def signin(request):
+    redirect_url = request.META.get('HTTP_REFERER', '/')
     if request.method == "POST":
         user_form = AuthenticationForm(request, data=request.POST)
         if user_form.is_valid():
@@ -144,10 +145,12 @@ def signin(request):
 # ======================
 #     User  Profile
 # ======================
-def profile(request, username):
+def profile(request, username, ):
+
     profile = get_object_or_404(Profile, user__username=username)
     user = profile.user
     projects = get_posts(user)
+    is_following = False
     followers_count = user.followers.all().count()
     following_count = user.following.all().count()
     if request.user.is_authenticated:
@@ -161,7 +164,7 @@ def profile(request, username):
                 user=request.user,
             ).order_by("-created_at").first()
 
-    is_following = Follow.objects.filter(follower=request.user, following=profile.user).exists()
+        is_following = Follow.objects.filter(follower=request.user, following=profile.user).exists()
     context = {
         "projects": projects,
         "project_count": projects.count(),
