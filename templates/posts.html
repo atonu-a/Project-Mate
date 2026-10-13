@@ -96,11 +96,18 @@
 
     <div class="post__actions">
         <div class="post__reactions">
+
+            for
             <button onclick="toggleLike(this)" class="reaction"><i data-lucide="heart"
                     class="reaction__icon"></i><span>24 Likes</span></button>
+
+
+
             <button onclick="toggleComments(this)" class="reaction reaction--comment"><i data-lucide="message-circle"
                     class="reaction__icon"></i><span>7 Comments</span></button>
         </div>
+
+        {% comment %} Join Request status {% endcomment %}
         {% if project.owner_name != request.user %}
             {% if project.is_member %}
               <button class="btn-secondary" disabled>Already Joined</button>
@@ -129,6 +136,11 @@
     <strong>No projects yet</strong>
 </div>
 {% endfor %}
+
+
+
+
+
 
 <!-- Project Delete Modal -->
 {% for project in projects %}
