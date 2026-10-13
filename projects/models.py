@@ -22,7 +22,6 @@ class Project(models.Model):
     )
     
     
-    
     owner_name = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from = "title", unique=True, max_length=255, always_update=False)

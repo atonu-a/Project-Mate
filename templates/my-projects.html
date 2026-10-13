@@ -18,7 +18,12 @@
         <article class="project-card">
             <div class="project-card__body">
                 <div class="project-card__meta">
-                    <span class="role-tag">Owner</span>
+                    {% for member in project.members.all %}
+                    {% if member.user.username == request.user.username %}
+                        <span class="role-tag">{{ member.role }}</span>
+                    {% endif %}
+                    {% endfor %}
+                    
                     <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>Sprint 2
                         Active</span>
                 </div>

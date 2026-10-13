@@ -209,8 +209,13 @@ def my_projects(request):
     projects = Project.objects.filter(
         Q(owner_name = request.user) |
         Q(members__user = request.user)
-    ).distinct()
+    ).distinct().select_related(
+        "owner_name"
+    ).prefetch_related(
+        "members"
+    )
     total_projects = projects.count()
+
     context= {
         "projects" : projects,
         "total_projects" : total_projects
