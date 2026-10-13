@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from accounts.models import Profile
 from projects.models import Project, ProjectMember
-from interactions.models import JoinRequest, Follow
+from interactions.models import JoinRequest, Follow, Like
 from django.contrib.auth.models import User
+from django.db.models import Exists, OuterRef
 
 # Create your views here.
 # get posts
-def get_posts(owner_name = None, following = None, ai_matched = None, limit = None):
+def get_posts(owner_name = None, following = None, ai_matched = None, limit = None, user = None):
     projects = Project.objects.select_related(
         "owner_name", "owner_name__profile"
     ).prefetch_related(
@@ -17,6 +18,12 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
 
     if following:
         projects = projects.filter(owner_name__followers__follower = following)
+    if user and user.is_authenticated:
+        liked_projects = Like.objects.filter(
+            project = OuterRef("pk"),
+            user = user
+        )
+        projects = projects.annotate(is_liked=Exists(liked_projects))
     return projects.order_by("-id")
 
 
@@ -26,12 +33,12 @@ def discover(request):
     request_count = 0
     feed = request.GET.get("feed", "all")
     if feed == "following":
-        projects = get_posts(following=request.user)
+        projects = get_posts(following=request.user, user=request.user)
     
     elif feed == "ai_matched":
-        projects = get_posts(ai_matched=None)
+        projects = get_posts(user=request.user, ai_matched=None)
     else:
-        projects = get_posts()
+        projects = get_posts(user=request.user)
     
     if request.user.is_authenticated:
         following_users = Follow.objects.filter(follower = request.user).values_list("following_id", flat=True)

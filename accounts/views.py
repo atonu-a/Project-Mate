@@ -149,7 +149,7 @@ def profile(request, username, ):
 
     profile = get_object_or_404(Profile, user__username=username)
     user = profile.user
-    projects = get_posts(user)
+    projects = get_posts(user, user=request.user)
     is_following = False
     followers_count = user.followers.all().count()
     following_count = user.following.all().count()

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from accounts.views import signin
-from .models import JoinRequest, Follow
+from .models import JoinRequest, Follow, Like
 from projects.views import project_detail
 from projects.models import Project, ProjectMember
 from django.contrib.auth.decorators import login_required
@@ -120,8 +121,10 @@ def reject_request(request, request_id):
     return redirect("requests")
 
 
+# ===========================
+#   Following an User
+# ===========================
 @login_required(login_url="signin")
-
 def toggle_follow(request, username):
     redirect_url = request.META.get('HTTP_REFERER', '/')
     if request.method=='POST':
@@ -142,3 +145,35 @@ def toggle_follow(request, username):
             follow.delete()
             messages.success(request, f"Unfollowed {targeted_user.first_name} {targeted_user.last_name}")
     return redirect(redirect_url, username=username)
+
+
+# ===========================
+#   Like/Dislike to a post
+# ===========================
+
+def like_project(request, slug):
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            "success":False,
+            "login_required":True,
+            "login_url":f"/signin/?next={request.path}"
+        }, status=401)
+        
+    if request.method == "POST":
+        project = get_object_or_404(Project, slug = slug)
+        
+        like, created = Like.objects.get_or_create(
+            project = project,
+            user = request.user
+        )
+        
+        if not created:
+            like.delete()
+            
+        is_liked = project.likes.filter(user = request.user).exists()
+    return JsonResponse({
+        "success" : True,
+        "liked" : created,
+        "likes_count" : project.likes.count(),
+        "is_liked" : is_liked
+    })

@@ -97,10 +97,22 @@
     <div class="post__actions">
         <div class="post__reactions">
 
-            for
-            <button onclick="toggleLike(this)" class="reaction"><i data-lucide="heart"
-                    class="reaction__icon"></i><span>24 Likes</span></button>
-
+            <form class="like-form" method="post" action="{% url 'like_project' project.slug %}">
+            {% csrf_token %}
+                <button type="submit" class="reaction {% if project.is_liked %}
+                    is-liked
+                {% else %}
+                {% endif %}">
+                    <i data-lucide="heart"
+                    class="reaction__icon"></i><span class="like-count">{% if project.likes.count == 0 %}
+                        Like
+                    {% elif project.likes.count == 1 %}
+                        {{ project.likes.count }} like
+                    {% else %}
+                        {{ project.likes.count }} likes
+                    {% endif %}</span>
+                </button>
+            </form>
 
 
             <button onclick="toggleComments(this)" class="reaction reaction--comment"><i data-lucide="message-circle"

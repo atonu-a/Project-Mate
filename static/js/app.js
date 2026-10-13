@@ -124,20 +124,62 @@ function showToast(message, type = "success") {
 }
 
 /* ---------- Feed actions ---------- */
-function toggleLike(btn) {
-  const label = btn.querySelector("span");
-  const count = parseInt(label.textContent, 10) || 0;
+// function toggleLike(btn) {
+//   const label = btn.querySelector("span");
+//   const count = parseInt(label.textContent, 10) || 0;
 
-  if (btn.classList.contains("is-liked")) {
-    btn.classList.remove("is-liked");
-    label.textContent = `${count - 1} Likes`;
-  } else {
-    btn.classList.add("is-liked");
-    label.textContent = `${count + 1} Likes`;
-    showToast("Project bookmarked & liked!");
+//   if (btn.classList.contains("is-liked")) {
+//     btn.classList.remove("is-liked");
+//     label.textContent = `${count - 1} Likes`;
+//   } else {
+//     btn.classList.add("is-liked");
+//     label.textContent = `${count + 1} Likes`;
+//     showToast("Project bookmarked & liked!");
+//   }
+// }
+
+document.addEventListener("submit", async (e) =>{
+  const form = e.target;
+  if (!form.classList.contains("like-form")){
+    console.log("not got the form")
+    return;
   }
-}
+  console.log("got the form");
+  e.preventDefault()
 
+  const response = await fetch(form.action, {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value
+    }
+  });
+  const data = await response.json();
+  if(data.login_required) {
+    window.location.href = data.login_url;
+    return;
+  }
+  if (!data.success) {
+    showToast(data.message)
+    return;
+  }
+  const btn = form.querySelector(".reaction");
+  const count = form.querySelector(".like-count")
+
+  if (data.liked) {
+    btn.classList.add("is-liked");
+  } else {
+    btn.classList.remove("is-liked")
+  }
+  if (data.likes_count == 0){
+    count.textContent = `Like`;
+  } else if (data.likes_count == 1){
+    count.textContent = `${data.likes_count} like`;
+  } else {
+    count.textContent = `${data.likes_count} likes`;
+  }
+  
+
+})
 function toggleComments(btn) {
   showToast("Comments panel opened", "info");
 }
