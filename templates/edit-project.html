@@ -12,7 +12,7 @@
             </p>
         </header>
 
-        <form method="post" class="form">
+        <form method="post" action="{% url 'edit_project' project.slug %}" class="form">
 
             {% csrf_token %}
             {% comment %} Project title {% endcomment %}
@@ -77,8 +77,8 @@
 
                 <!-- Deadline -->
                 <div class="form-field">
-                    <label for="deadline" class="form-label">Deadline <span class="text-danger">*</span></label>
-                    <input type="date" id="deadline" name="deadline" required value="{{project.deadline|date:'Y-m-d'}}" class="form-input">
+                    <label for="deadline" class="form-label">Deadline</label>
+                    <input type="date" id="deadline" name="deadline" value="{{project.deadline|date:'Y-m-d'}}" class="form-input">
                 </div>
             </div>
 

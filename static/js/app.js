@@ -570,21 +570,30 @@ try {
 
 // Show and hide of payment details
 function toggleDetails() {
-  console.log("function exicuted!");
   const compensation_type = document.getElementById("compensation").value;
   const paymentBox = document.getElementById("payment-details-box");
   const amount = document.getElementById("payment-details");
 
   if (compensation_type == "Paid") {
-    console.log("paid");
     paymentBox.style.display = "block";
     amount.required = true;
   } else {
-    console.log("others");
     paymentBox.style.display = "none";
     amount.required = false;
     amount.value = "";
   }
+}
+
+function initializePaymentDetails() {
+  if (document.getElementById("compensation")) {
+    toggleDetails();
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializePaymentDetails, { once: true });
+} else {
+  initializePaymentDetails();
 }
 
 // Project More Option

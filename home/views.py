@@ -3,7 +3,7 @@ from accounts.models import Profile
 from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest, Follow, Like
 from django.contrib.auth.models import User
-from django.db.models import Exists, OuterRef
+from django.db.models import Exists, OuterRef, Q
 
 # Create your views here.
 # get posts
@@ -77,7 +77,25 @@ def discover(request):
         
 # Search Results Page
 def search_results(request):
-    return render(request, 'search-results.html')
+    q = request.GET.get('q')
+    print(q)
+    if q:
+        projects = Project.objects.filter(
+            Q(title__search = q)  
+        )
+        people = User.objects.filter(
+            Q(first_name__search = q)
+        )
+    else :
+        projects = None
+        people = None
+    context = {
+        "projects" : projects,
+        "people" : people,
+        "q": q
+    }
+        
+    return render(request, 'search-results.html', context)
     
 
 #Dashboard Page

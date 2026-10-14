@@ -49,8 +49,8 @@
       <form class="header-search" action="{% url 'search_results' %}" method="get">
         <i data-lucide="search" class="header-search__icon" aria-hidden="true"></i>
         <input type="text" id="globalSearchInput" name="q" placeholder="Search projects, skills, teammates..."
-          class="header-search__input" />
-        <button type="submit" class="header-search__submit" aria-label="Search">
+          class="header-search__input" value="{{ q }}" />
+        <button type="submit" class="header-search__submit" style="color: var(--color-primary); font-weight: 800;" aria-label="Search">
           <!-- <i data-lucide="search" aria-hidden="true"></i> -->
            Go
         </button>
