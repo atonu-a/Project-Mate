@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+{% block main %}
+<main class="page-main page-main--wide">
+
+    <div class="search-header">
+        <h1 class="search-header__query">Results for "ai"</h1>
+        <p class="search-header__count">8 results found</p>
+    </div>
+
+    <div class="search-tabs">
+        <button onclick="switchSearchTab(this, 'searchAll')" class="search-tab is-active" data-tab="searchAll">All
+            Results</button>
+        <button onclick="switchSearchTab(this, 'searchUsers')" class="search-tab" data-tab="searchUsers">Users <span
+                class="search-tab__count">4</span></button>
+        <button onclick="switchSearchTab(this, 'searchProjects')" class="search-tab" data-tab="searchProjects">Projects
+            <span class="search-tab__count">4</span></button>
+    </div>
+
+    <!-- All Results -->
+    <div id="searchAll" class="search-panel is-active">
+
+        <div class="search-section">
+            <div class="search-section__head">
+                <h2 class="section-title"><i data-lucide="users" class="section-title__icon"></i><span>Users</span></h2>
+                <button onclick="switchSearchTab(document.querySelector('[data-tab=searchUsers]'), 'searchUsers')"
+                    class="section-link">View all →</button>
+            </div>
+            <div class="search-user-grid">
+
+                <div class="search-user-card">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                        alt="Elena Rostova" class="search-user-card__avatar">
+                    <div class="search-user-card__body">
+                        <h3 class="search-user-card__name">Elena Rostova</h3>
+                        <p class="search-user-card__headline">AI Researcher</p>
+                    </div>
+                    <button onclick="toggleFollow(this)" class="btn-follow btn-follow--sm">
+                        <i data-lucide="user-plus" class="btn-icon"></i><span>Follow</span>
+                    </button>
+                </div>
+
+                <div class="search-user-card">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
+                        alt="Kaito Tanaka" class="search-user-card__avatar">
+                    <div class="search-user-card__body">
+                        <h3 class="search-user-card__name">Kaito Tanaka</h3>
+                        <p class="search-user-card__headline">Rust &amp; Systems Engineer</p>
+                    </div>
+                    <button onclick="toggleFollow(this)" class="btn-follow btn-follow--sm">
+                        <i data-lucide="user-plus" class="btn-icon"></i><span>Follow</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="search-section">
+            <div class="search-section__head">
+                <h2 class="section-title"><i data-lucide="folder-kanban"
+                        class="section-title__icon section-title__icon--secondary"></i><span>Projects</span></h2>
+                <button onclick="switchSearchTab(document.querySelector('[data-tab=searchProjects]'), 'searchProjects')"
+                    class="section-link">View all →</button>
+            </div>
+            <div class="spotlight-grid">
+
+                <article class="spotlight-card">
+                    <div class="spotlight-card__body">
+                        <div class="spotlight-card__meta">
+                            <span class="category-badge">AI &amp; Machine Learning</span>
+                            <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Oct 15,
+                                2026</span>
+                        </div>
+                        <h3 onclick="window.location.href='project-detail.html?id=p1'" class="spotlight-card__title">
+                            NeuralSync - AI Brainstorming Canvas</h3>
+                        <p class="spotlight-card__text">Real-time collaborative mind mapping powered by local LLMs and
+                            vector embeddings.</p>
+                        <div class="chips">
+                            <span class="chip">Python</span>
+                            <span class="chip">React</span>
+                            <span class="chip">LangChain</span>
+                        </div>
+                    </div>
+                    <div class="spotlight-card__footer">
+                        <div class="author">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                                alt="Elena Rostova" class="author__avatar">
+                            <span class="author__name">Elena Rostova</span>
+                        </div>
+                        <button onclick="window.location.href='project-detail.html?id=p1'" class="btn-tonal">View
+                            Project</button>
+                    </div>
+                </article>
+
+                <article class="spotlight-card">
+                    <div class="spotlight-card__body">
+                        <div class="spotlight-card__meta">
+                            <span class="category-badge category-badge--secondary">CleanTech &amp; Mobile</span>
+                            <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Nov 01,
+                                2026</span>
+                        </div>
+                        <h3 onclick="window.location.href='project-detail.html?id=p2'" class="spotlight-card__title">
+                            EcoRoute - Carbon Optimizer</h3>
+                        <p class="spotlight-card__text">Smart transit routing application calculating real-time carbon
+                            offsets for urban commuters.</p>
+                        <div class="chips">
+                            <span class="chip">React Native</span>
+                            <span class="chip">Node.js</span>
+                            <span class="chip">PostGIS</span>
+                        </div>
+                    </div>
+                    <div class="spotlight-card__footer">
+                        <div class="author">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+                                alt="Julian Vance" class="author__avatar">
+                            <span class="author__name">Julian Vance</span>
+                        </div>
+                        <button onclick="window.location.href='project-detail.html?id=p2'" class="btn-tonal">View
+                            Project</button>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Users only -->
+    <div id="searchUsers" class="search-panel">
+        <div class="search-user-grid">
+
+            <div class="search-user-card">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                    alt="Elena Rostova" class="search-user-card__avatar">
+                <div class="search-user-card__body">
+                    <h3 class="search-user-card__name">Elena Rostova</h3>
+                    <p class="search-user-card__headline">AI Researcher</p>
+                </div>
+                <button onclick="toggleFollow(this)" class="btn-follow btn-follow--sm">
+                    <i data-lucide="user-plus" class="btn-icon"></i><span>Follow</span>
+                </button>
+            </div>
+
+            <div class="search-user-card">
+                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
+                    alt="Kaito Tanaka" class="search-user-card__avatar">
+                <div class="search-user-card__body">
+                    <h3 class="search-user-card__name">Kaito Tanaka</h3>
+                    <p class="search-user-card__headline">Rust &amp; Systems Engineer</p>
+                </div>
+                <button onclick="toggleFollow(this)" class="btn-follow btn-follow--sm">
+                    <i data-lucide="user-plus" class="btn-icon"></i><span>Follow</span>
+                </button>
+            </div>
+
+            <div class="search-user-card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
+                    alt="Sophia Sterling" class="search-user-card__avatar">
+                <div class="search-user-card__body">
+                    <h3 class="search-user-card__name">Sophia Sterling</h3>
+                    <p class="search-user-card__headline">Product Designer &amp; UX</p>
+                </div>
+                <button onclick="toggleFollow(this)" class="btn-follow btn-follow--sm">
+                    <i data-lucide="user-plus" class="btn-icon"></i><span>Follow</span>
+                </button>
+            </div>
+
+            <div class="search-user-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+                    alt="Julian Vance" class="search-user-card__avatar">
+                <div class="search-user-card__body">
+                    <h3 class="search-user-card__name">Julian Vance</h3>
+                    <p class="search-user-card__headline">Sustainability Tech Lead</p>
+                </div>
+                <button onclick="toggleFollow(this)" class="btn-follow btn-follow--sm">
+                    <i data-lucide="user-plus" class="btn-icon"></i><span>Follow</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Projects only -->
+    <div id="searchProjects" class="search-panel">
+        <div class="spotlight-grid">
+
+            <article class="spotlight-card">
+                <div class="spotlight-card__body">
+                    <div class="spotlight-card__meta">
+                        <span class="category-badge">AI &amp; Machine Learning</span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Oct 15, 2026</span>
+                    </div>
+                    <h3 onclick="window.location.href='project-detail.html?id=p1'" class="spotlight-card__title">
+                        NeuralSync - AI Brainstorming Canvas</h3>
+                    <p class="spotlight-card__text">Real-time collaborative mind mapping powered by local LLMs and
+                        vector embeddings.</p>
+                    <div class="chips">
+                        <span class="chip">Python</span>
+                        <span class="chip">React</span>
+                        <span class="chip">LangChain</span>
+                    </div>
+                </div>
+                <div class="spotlight-card__footer">
+                    <div class="author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                            alt="Elena Rostova" class="author__avatar">
+                        <span class="author__name">Elena Rostova</span>
+                    </div>
+                    <button onclick="window.location.href='project-detail.html?id=p1'" class="btn-tonal">View
+                        Project</button>
+                </div>
+            </article>
+
+            <article class="spotlight-card">
+                <div class="spotlight-card__body">
+                    <div class="spotlight-card__meta">
+                        <span class="category-badge category-badge--secondary">CleanTech &amp; Mobile</span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Nov 01, 2026</span>
+                    </div>
+                    <h3 onclick="window.location.href='project-detail.html?id=p2'" class="spotlight-card__title">
+                        EcoRoute - Carbon Optimizer</h3>
+                    <p class="spotlight-card__text">Smart transit routing application calculating real-time carbon
+                        offsets for urban commuters.</p>
+                    <div class="chips">
+                        <span class="chip">React Native</span>
+                        <span class="chip">Node.js</span>
+                        <span class="chip">PostGIS</span>
+                    </div>
+                </div>
+                <div class="spotlight-card__footer">
+                    <div class="author">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+                            alt="Julian Vance" class="author__avatar">
+                        <span class="author__name">Julian Vance</span>
+                    </div>
+                    <button onclick="window.location.href='project-detail.html?id=p2'" class="btn-tonal">View
+                        Project</button>
+                </div>
+            </article>
+
+            <article class="spotlight-card">
+                <div class="spotlight-card__body">
+                    <div class="spotlight-card__meta">
+                        <span class="category-badge">Healthcare &amp; IoT</span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Dec 05, 2026</span>
+                    </div>
+                    <h3 onclick="window.location.href='project-detail.html?id=p3'" class="spotlight-card__title">
+                        VitalWatch - Remote Patient Monitor</h3>
+                    <p class="spotlight-card__text">Wearable-integrated dashboard tracking vitals for at-home elderly
+                        care.</p>
+                    <div class="chips">
+                        <span class="chip">Swift</span>
+                        <span class="chip">Firebase</span>
+                        <span class="chip">BLE</span>
+                    </div>
+                </div>
+                <div class="spotlight-card__footer">
+                    <div class="author">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
+                            alt="Sophia Sterling" class="author__avatar">
+                        <span class="author__name">Sophia Sterling</span>
+                    </div>
+                    <button onclick="window.location.href='project-detail.html?id=p3'" class="btn-tonal">View
+                        Project</button>
+                </div>
+            </article>
+
+            <article class="spotlight-card">
+                <div class="spotlight-card__body">
+                    <div class="spotlight-card__meta">
+                        <span class="category-badge category-badge--secondary">Finance</span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Jan 20, 2027</span>
+                    </div>
+                    <h3 onclick="window.location.href='project-detail.html?id=p4'" class="spotlight-card__title">
+                        LedgerLite - Micro-Invoicing Tool</h3>
+                    <p class="spotlight-card__text">Lightweight invoicing and expense tracking built for freelancers and
+                        small teams.</p>
+                    <div class="chips">
+                        <span class="chip">Vue</span>
+                        <span class="chip">Stripe</span>
+                        <span class="chip">PostgreSQL</span>
+                    </div>
+                </div>
+                <div class="spotlight-card__footer">
+                    <div class="author">
+                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
+                            alt="Kaito Tanaka" class="author__avatar">
+                        <span class="author__name">Kaito Tanaka</span>
+                    </div>
+                    <button onclick="window.location.href='project-detail.html?id=p4'" class="btn-tonal">View
+                        Project</button>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+</main>
+
+<div id="toastContainer" class="toast-container"></div>
+<script src="js/app.js"></script>
+{% endblock main %}

@@ -75,7 +75,10 @@ def discover(request):
     
     return render(request, "discover.html", context)
         
-
+# Search Results Page
+def search_results(request):
+    return render(request, 'search-results.html')
+    
 
 #Dashboard Page
 def dashboard(request):

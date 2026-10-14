@@ -24,6 +24,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
+/* ---------- Mobile Menu toggles ---------- */
 function toggleMobileMenu() {
   const menu = document.getElementById("mobileMenu");
   if (!menu) return;
@@ -35,6 +36,8 @@ function toggleMobileMenu() {
   );
 }
 
+
+/* ---------- Suggested Teammates Panel  ---------- */
 function toggleSuggestedTeammates() {
   const panel = document.getElementById("suggestedTeammatesPanel");
   const toggle = document.querySelector(".feed-suggestions-toggle");
@@ -62,6 +65,8 @@ function closeSuggestedTeammates() {
   toggle.focus();
 }
 
+
+/* ---------- Opening Global Search Button ---------- */
 function openGlobalSearch() {
   const header = document.querySelector(".site-header__inner");
   const toggle = document.querySelector(".header-search__toggle");
@@ -73,6 +78,7 @@ function openGlobalSearch() {
   input.focus();
 }
 
+/* ---------- Closing Global Search Button ---------- */
 function closeGlobalSearch() {
   const header = document.querySelector(".site-header__inner");
   const toggle = document.querySelector(".header-search__toggle");
@@ -90,6 +96,25 @@ document.addEventListener("keydown", (event) => {
     closeSuggestedTeammates();
   }
 });
+
+function switchSearchTab(tabBtn, panelId) {
+  if (!tabBtn) return;
+  const tabsWrap = tabBtn.closest(".search-tabs");
+  const panelsWrap = tabsWrap ? tabsWrap.parentElement : document;
+
+  if (tabsWrap) {
+    tabsWrap
+      .querySelectorAll(".search-tab")
+      .forEach((t) => t.classList.remove("is-active"));
+  }
+  tabBtn.classList.add("is-active");
+
+  panelsWrap
+    .querySelectorAll(".search-panel")
+    .forEach((p) => p.classList.remove("is-active"));
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.add("is-active");
+}
 
 /* ---------- Toasts ---------- */
 function showToast(message, type = "success") {
@@ -123,21 +148,7 @@ function showToast(message, type = "success") {
   }, 3500);
 }
 
-/* ---------- Feed actions ---------- */
-// function toggleLike(btn) {
-//   const label = btn.querySelector("span");
-//   const count = parseInt(label.textContent, 10) || 0;
-
-//   if (btn.classList.contains("is-liked")) {
-//     btn.classList.remove("is-liked");
-//     label.textContent = `${count - 1} Likes`;
-//   } else {
-//     btn.classList.add("is-liked");
-//     label.textContent = `${count + 1} Likes`;
-//     showToast("Project bookmarked & liked!");
-//   }
-// }
-
+/* ---------- Like System Without Page Refreshing ---------- */
 document.addEventListener("submit", async (e) =>{
   const form = e.target;
   if (!form.classList.contains("like-form")){
@@ -180,6 +191,8 @@ document.addEventListener("submit", async (e) =>{
   
 
 })
+
+/* ---------- Opening Comment Section ---------- */
 function toggleComments(btn) {
   showToast("Comments panel opened", "info");
 }
@@ -372,6 +385,7 @@ function closeConversation(btn) {
 }
 
 
+/* ---------- Checking Request Button ---------- */
 try {
   const btnDone = document.querySelectorAll(".btn-check");
   btnDone.forEach((btn) => {

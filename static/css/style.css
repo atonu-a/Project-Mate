@@ -26,7 +26,8 @@
                                  21  Auth (sign in / sign up)
                                  22  Onboarding / edit profile
                                  23  Spinner / loader
-                                 24 Public profiles
+                                 24 Public profiles 
+                                 25 Search Results Page
    ========================================================================== */
 
 /* 1. Design tokens ------------------------------------------------------- */
@@ -545,8 +546,8 @@ textarea::placeholder {
   color: var(--color-text-muted);
   transition: all 0.2s;
 }
-.header-actions .icon-create-button{
-  display: inline-flex!important;
+.header-actions .icon-create-button {
+  display: inline-flex !important;
 }
 
 .icon-button:hover {
@@ -568,8 +569,6 @@ textarea::placeholder {
   .icon-button--optional {
     display: inline-flex;
   }
-  
-
 }
 
 .icon-button__ping,
@@ -883,8 +882,8 @@ textarea::placeholder {
   .header-cta {
     display: flex;
   }
-  .header-actions .icon-create-button{
-    display: none!important;
+  .header-actions .icon-create-button {
+    display: none !important;
   }
 }
 
@@ -1394,7 +1393,7 @@ textarea::placeholder {
 
 @media (max-width: 1279px) {
   .feed-suggestions-toggle {
-    display: flex!important;
+    display: flex !important;
   }
 
   .feed-aside.is-open {
@@ -1471,7 +1470,6 @@ textarea::placeholder {
   .feed-suggestions-toggle {
     padding: 8px 10px;
   }
-
 }
 
 /* 9. Shared bits ---------------------------------------------------------- */
@@ -2206,7 +2204,6 @@ textarea::placeholder {
 .post-follow {
   font-size: 0.875rem;
   font-weight: 700;
-
 }
 
 .post__meta {
@@ -4627,9 +4624,9 @@ textarea::placeholder {
   }
 }
 
-/* basic modal styling */
+/* 25. basic modal styling */
 .modal {
-  display: none; 
+  display: none;
   position: fixed;
   z-index: 1000;
   left: 0;
@@ -4687,4 +4684,155 @@ textarea::placeholder {
 
 .img-container img {
   max-width: 100%; /* Important for Cropper.js */
+}
+
+/* 26. Search Results Page */
+.search-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.search-header__query {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.search-header__count {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.search-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 4px;
+}
+
+.search-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.search-tab {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+
+.search-tab:hover {
+  color: var(--color-text);
+}
+
+.search-tab.is-active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.search-tab__count {
+  padding: 1px 7px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  background: var(--color-elevated);
+  border-radius: 999px;
+}
+
+.search-tab.is-active .search-tab__count {
+  color: var(--color-primary);
+  background: var(--primary-10);
+}
+
+.search-panel {
+  display: none;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.search-panel.is-active {
+  display: flex;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search-section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.search-user-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.search-user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.search-user-card__avatar {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.search-user-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-user-card__name {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.search-user-card__headline {
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.btn-follow--sm {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  font-size: 0.6875rem;
+}
+
+@media (min-width: 640px) {
+  .search-user-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-user-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
