@@ -46,18 +46,21 @@
         </div>
       </div>
 
-      <div class="header-search">
-        <i data-lucide="search" class="header-search__icon"></i>
-        <input type="text" id="globalSearchInput" placeholder="Search projects, skills, teammates..."
+      <form class="header-search" action="{% url 'search_results' %}" method="get">
+        <i data-lucide="search" class="header-search__icon" aria-hidden="true"></i>
+        <input type="text" id="globalSearchInput" name="q" placeholder="Search projects, skills, teammates..."
           class="header-search__input" />
-
+        <button type="submit" class="header-search__submit" aria-label="Search">
+          <!-- <i data-lucide="search" aria-hidden="true"></i> -->
+           Go
+        </button>
         <button type="button" class="header-search__close" onclick="closeGlobalSearch()" aria-label="Cancel search">
           <i data-lucide="x" aria-hidden="true"></i>
         </button>
-      </div>
+      </form>
 
       <div class="header-actions">
-        <button type="button" class="header-search__toggle" onclick="openGlobalSearch()" aria-label="Open search"
+        <button type="button" class="icon-button header-search__toggle" onclick="openGlobalSearch()" aria-label="Open search"
           aria-expanded="false">
           <i data-lucide="search" aria-hidden="true"></i>
         </button>

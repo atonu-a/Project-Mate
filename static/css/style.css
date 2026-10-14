@@ -468,7 +468,7 @@ textarea::placeholder {
 
   display: flex;
   align-items: center;
-  width: 20rem;
+  width: 15rem;
   min-width: 0px;
 }
 
@@ -486,12 +486,40 @@ textarea::placeholder {
 .header-search__input {
   width: 100%;
   min-width: 0;
-  padding: 8px 16px 8px 40px;
+  padding: 8px 48px 8px 40px;
   font-size: 0.875rem;
   background: var(--surface-80);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   transition: all 0.2s;
+}
+
+.header-search__submit {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.header-search__submit:hover {
+  color: var(--color-text);
+  background: var(--color-elevated);
+}
+
+.header-search__submit svg {
+  width: 18px;
+  height: 18px;
 }
 
 .header-search__input:focus {
@@ -500,7 +528,9 @@ textarea::placeholder {
   box-shadow: 0 0 0 1px var(--color-primary);
 }
 
-.header-search__toggle,
+.header-search__toggle{
+  display: none!important;
+}
 .header-search__close {
   display: none;
   align-items: center;
@@ -522,8 +552,8 @@ textarea::placeholder {
 
 .header-search__toggle svg,
 .header-search__close svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Right-hand actions */
@@ -829,12 +859,13 @@ textarea::placeholder {
   }
 
   .header-search__icon,
-  .header-search__input {
+  .header-search__input,
+  .header-search__submit {
     display: none;
   }
 
   .header-search__toggle {
-    display: inline-flex;
+    display: inline-flex !important;
   }
 
   .site-header__inner.is-search-open > :not(.header-search) {
@@ -848,7 +879,12 @@ textarea::placeholder {
 
   .site-header__inner.is-search-open .header-search__input {
     display: block;
-    padding: 8px 48px 8px 14px;
+    padding: 8px 80px 8px 14px;
+  }
+
+  .site-header__inner.is-search-open .header-search__submit {
+    right: 40px;
+    display: inline-flex;
   }
 
   .site-header__inner.is-search-open .header-search__toggle {
@@ -860,8 +896,8 @@ textarea::placeholder {
     top: 50%;
     right: 4px;
     display: inline-flex;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     border: 0;
     background: transparent;
