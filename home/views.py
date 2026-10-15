@@ -5,7 +5,7 @@ from interactions.models import JoinRequest, Follow, Like
 from django.contrib.auth.models import User
 from django.db.models import Exists, OuterRef, Q
 
-# Create your views here.
+
 # get posts
 def get_posts(owner_name = None, following = None, ai_matched = None, limit = None, user = None):
     projects = Project.objects.select_related(
