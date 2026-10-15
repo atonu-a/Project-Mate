@@ -3,6 +3,7 @@ from accounts.models import Profile
 from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest, Follow, Like
 from django.contrib.auth.models import User
+from django.contrib.postgres.search import SearchQuery, SearchVector
 from django.db.models import Exists, OuterRef, Q
 
 
