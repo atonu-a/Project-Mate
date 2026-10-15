@@ -28,9 +28,9 @@
             <div class="search-user-grid">
                 {% for user in people %}
                 <div class="search-user-card">
-                    <img src="{{ user.profile.profile_pic_url }}"
-                        alt="Elena Rostova" class="search-user-card__avatar">
-                    <div class="search-user-card__body">
+                    <img onclick="location.href='{% url 'profile' user %}'" src="{{ user.profile.profile_pic_url }}"
+                        alt="Elena Rostova" class="search-user-card__avatar cursor-pointer">
+                    <div onclick="location.href='{% url 'profile' user %}'" class="search-user-card__body cursor-pointer">
                         <h3 class="search-user-card__name">{{ user.first_name}} {{user.last_name}}</h3>
                         <p class="search-user-card__headline">{{ user.profile.headline }}</p>
                     </div>
@@ -54,13 +54,8 @@
                     class="section-link">View all →</button>
             </div>
             <div class="spotlight-grid">
-                {% for project in projects %}
-                
                 
                 {% include "posts.html" %}
-                {% empty %}
-                <h1>No Results Found</h1>
-                {% endfor %}
 
 
             </div>

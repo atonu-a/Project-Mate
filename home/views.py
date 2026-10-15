@@ -3,7 +3,7 @@ from accounts.models import Profile
 from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest, Follow, Like
 from django.contrib.auth.models import User
-from django.contrib.postgres.search import SearchQuery, SearchVector
+from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.db.models import Exists, OuterRef, Q
 
 
@@ -81,12 +81,38 @@ def search_results(request):
     q = request.GET.get('q')
     print(q)
     if q:
-        projects = Project.objects.filter(
-            Q(title__search = q)  
+        project_vector = SearchVector(
+            "title", 
+            "desc", 
+            "required_skills__name", 
+            "category", 
+            "overview"
+        ) 
+        user_vector = SearchVector(
+            "username", 
+            "first_name", 
+            "last_name", 
+            "profile__headline", 
+            "profile__skills__name",
+            "profile__location"
         )
-        people = User.objects.filter(
-            Q(first_name__search = q)
-        )
+        
+        query = SearchQuery(q)
+        
+        projects = get_posts().annotate(
+            rank=SearchRank(
+                project_vector, 
+                query
+            )
+        ).filter(
+            rank__gte=0.001
+        ).order_by(
+            "-rank", 
+            "id"
+        ).distinct()
+
+        people = User.objects.annotate(rank=SearchRank(user_vector, query)).filter(rank__gte=0.001).order_by("-rank").distinct()
+        
     else :
         projects = None
         people = None
