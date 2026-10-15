@@ -1,4 +1,24 @@
+
+# Environment variables and secrets
 .env
-.vercel
 .env*
-.data.json
+!.env.example
+
+# Vercel
+.vercel/
+
+# Database files
+*.sqlite3
+*.sqlite3-journal
+
+# Data exports and backups
+data.json
+*.dump
+*.sql
+*.backup
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
