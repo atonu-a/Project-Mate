@@ -113,13 +113,23 @@ def search_results(request):
 
         people = User.objects.annotate(rank=SearchRank(user_vector, query)).filter(rank__gte=0.001).order_by("-rank").distinct()
         
+        
+        projects_count = projects.count()
+        people_count = people.count()
     else :
         projects = None
         people = None
+        projects_count = 0
+        people_count = 0
+    
+    total_results = projects_count + people_count
     context = {
         "projects" : projects,
         "people" : people,
-        "q": q
+        "q": q,
+        "projects_count" :projects_count,
+        "people_count" : people_count,
+        "total_results" : total_results
     }
         
     return render(request, 'search-results.html', context)

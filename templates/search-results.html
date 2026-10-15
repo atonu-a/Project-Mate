@@ -1,17 +1,23 @@
 {% extends 'base.html' %}
 {% block main %}
-  <main class="page-main page-main--wide">
+  <main class="page-main page-main--wide feed">
     <div class="search-header">
       <h1 class="search-header__query">Results for "{{ q }}"</h1>
-      <p class="search-header__count">8 results found</p>
+      <p class="search-header__count">
+        {% if total_results == 0 %}
+          No results found
+        {% else %}
+          {{ total_results }} results found
+        {% endif %}
+      </p>
     </div>
 
     <div class="search-tabs">
-      <button onclick="switchSearchTab(this, 'searchAll')" class="search-tab is-active" data-tab="searchAll">All Results</button>
-      <button onclick="switchSearchTab(this, 'searchUsers')" class="search-tab" data-tab="searchUsers">Users <span class="search-tab__count">4</span></button>
+      <button onclick="switchSearchTab(this, 'searchAll')" class="search-tab is-active" data-tab="searchAll">All Results <span class="search-tab__count">{{ total_results }}</span></button>
+      <button onclick="switchSearchTab(this, 'searchUsers')" class="search-tab" data-tab="searchUsers">Users <span class="search-tab__count">{{ projects_count }}</span></button>
       <button onclick="switchSearchTab(this, 'searchProjects')" class="search-tab" data-tab="searchProjects">
         Projects
-        <span class="search-tab__count">4</span>
+        <span class="search-tab__count">{{ people_count }}</span>
       </button>
     </div>
 
@@ -22,7 +28,10 @@
           <h2 class="section-title"><i data-lucide="users" class="section-title__icon"></i><span>Users</span></h2>
           <button onclick="switchSearchTab(document.querySelector('[data-tab=searchUsers]'), 'searchUsers')" class="section-link">View all →</button>
         </div>
-        <div class="search-user-grid">
+        <div class="{% if people_count > 0 %}
+         search-user-grid
+        {% else %}
+        {% endif %}">
           {% for user in people %}
             <div class="search-user-card">
               <img onclick="location.href='{% url 'profile' user %}'" src="{{ user.profile.profile_pic_url }}" alt="" class="search-user-card__avatar cursor-pointer" />
@@ -31,15 +40,19 @@
                 <p class="search-user-card__headline">{{ user.profile.headline }}</p>
               </div>
               {% if user != request.user %}
-              <form method="post" action="{% url 'follow' user.username %}">
-                {% csrf_token %}
-                <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
-              </form>
+                <form method="post" action="{% url 'follow' user.username %}">
+                  {% csrf_token %}
+                  <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
+                </form>
               {% else %}
+
               {% endif %}
             </div>
           {% empty %}
-            No Users Found
+            <div class="public-profile__empty flex">
+            <i data-lucide="user-round-x"></i>
+            <strong>No Users Found</strong>
+          </div>
           {% endfor %}
         </div>
       </div>
@@ -49,7 +62,7 @@
           <h2 class="section-title"><i data-lucide="folder-kanban" class="section-title__icon section-title__icon--secondary"></i><span>Projects</span></h2>
           <button onclick="switchSearchTab(document.querySelector('[data-tab=searchProjects]'), 'searchProjects')" class="section-link">View all →</button>
         </div>
-        <div class="spotlight-grid">
+        <div class="public-profile__projects">
           {% include 'posts.html' %}
         </div>
       </div>
@@ -71,14 +84,17 @@
             </form>
           </div>
         {% empty %}
-          No Users Found
+          <div class="public-profile__empty flex">
+            <i data-lucide="user-round-x"></i>
+            <strong>No Users Found</strong>
+          </div>
         {% endfor %}
       </div>
     </div>
 
     <!-- Projects only -->
     <div id="searchProjects" class="search-panel">
-      <div class="spotlight-grid">
+      <div class="feed">
         {% include 'posts.html' %}
       </div>
     </div>
