@@ -79,8 +79,9 @@ def discover(request):
 # Search Results Page
 def search_results(request):
     q = request.GET.get('q')
-    print(q)
+
     if q:
+        terms = q.split()
         project_vector = SearchVector(
             "title", 
             "desc", 
@@ -97,7 +98,11 @@ def search_results(request):
             "profile__location"
         )
         
-        query = SearchQuery(q)
+        query = SearchQuery(
+            " & ".join(f"{term}:*" for term in terms),
+            search_type="raw"
+        )
+        print(query)
         
         projects = get_posts().annotate(
             rank=SearchRank(

@@ -14,10 +14,11 @@
 
     <div class="search-tabs">
       <button onclick="switchSearchTab(this, 'searchAll')" class="search-tab is-active" data-tab="searchAll">All Results <span class="search-tab__count">{{ total_results }}</span></button>
-      <button onclick="switchSearchTab(this, 'searchUsers')" class="search-tab" data-tab="searchUsers">Users <span class="search-tab__count">{{ projects_count }}</span></button>
+      <button onclick="switchSearchTab(this, 'searchUsers')" class="search-tab" data-tab="searchUsers">Users <span class="search-tab__count">
+        {{ people_count }}</span></button>
       <button onclick="switchSearchTab(this, 'searchProjects')" class="search-tab" data-tab="searchProjects">
         Projects
-        <span class="search-tab__count">{{ people_count }}</span>
+        <span class="search-tab__count">{{ projects_count }}</span>
       </button>
     </div>
 
