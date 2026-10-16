@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import Profile
 from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest, Follow, Like
@@ -7,6 +7,9 @@ from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.db.models import Exists, OuterRef, Q, Count
 
 
+# Landing Page
+def landing_page(request):
+    return render(request, "landing.html")
 # get posts
 def get_posts(owner_name = None, following = None, ai_matched = None, limit = None, user = None):
     projects = Project.objects.select_related(
@@ -30,8 +33,7 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
         projects = projects.annotate(is_liked=Exists(liked_projects))
     return projects.order_by("-id")
 
-
-# Home Page
+# feed Page
 def discover(request):  
     suggested_users = User.objects.exclude(username = request.user.username)
     request_count = 0
@@ -78,7 +80,13 @@ def discover(request):
     }
     
     return render(request, "discover.html", context)
-        
+ 
+# Home Page
+def home(request):
+    if not request.user.is_authenticated:
+        return redirect("overview")
+    else :
+        return redirect(discover)
 # Search Results Page
 def search_results(request):
     q = request.GET.get('q')

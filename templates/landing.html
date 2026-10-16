@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div class="brand" onclick="window.location.href='{% url 'discover' %}'">
+        <div class="brand__logo">
+          <i class="fa-solid fa-users brand__logo-icon"></i>
+        </div>
+        <span class="brand__name">TeamNest</span>
+      </div>
+      <div class="header-actions">
+        <button onclick="toggleTheme()" class="icon-button" aria-label="Toggle theme">
+          <i data-lucide="sun" class="theme-icon-sun"></i>
+          <i data-lucide="moon" class="theme-icon-moon"></i>
+        </button>
+        <button onclick="window.location.href='{% url 'signin' %}'" class="header-link">Sign In</button>
+        <button onclick="window.location.href='{% url 'signup' %}'" class="header-cta"><span>Get Started</span></button>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+{% block sidebar %}
+{% endblock %}
+
+{% block main %}
+  <main class="page-main page-main--wide">
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="hero__text">
+          <div class="eyebrow">
+            <i data-lucide="sparkles" class="eyebrow__icon"></i>
+            <span>For every field, not just developers</span>
+          </div>
+          <h1 class="hero__title">Find your team. <span>Build anything.</span></h1>
+          <p class="hero__subtitle">TeamNest connects developers, designers, marketers, writers, and every other kind of builder with people who complement their skills — so great ideas don't stay stuck as solo projects.</p>
+
+          <div class="hero__actions">
+            <button onclick="window.location.href='{% url 'signup' %}'" class="btn-primary btn-primary--lg">
+              <i data-lucide="rocket" class="btn-icon"></i>
+              <span>Get Started for Free</span>
+            </button>
+            <button onclick="window.location.href='{% url 'home' %}'" class="btn-secondary btn-secondary--lg"><span>Go to Home Page</span></button>
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <div class="hero__glow"></div>
+          <img src="{% static 'images/hero-image.svg' %}" alt="Team collaborating on a project together" class="hero__image" />
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <i data-lucide="users"></i>
+        </div>
+        <h3 class="feature-card__title">Find Collaborators in Any Field</h3>
+        <p class="feature-card__text">From engineers to copywriters, filter by skills and interests to find people who fit your project.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <i data-lucide="folder-kanban"></i>
+        </div>
+        <h3 class="feature-card__title">Showcase Your Projects</h3>
+        <p class="feature-card__text">Post your idea, set the roles you need, and let the right people find you.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <i data-lucide="message-square"></i>
+        </div>
+        <h3 class="feature-card__title">Collaborate Seamlessly</h3>
+        <p class="feature-card__text">Message teammates, track join requests, and manage every project from one dashboard.</p>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <h2 class="final-cta__title">Ready to build something together?</h2>
+      <p class="final-cta__text">Join TeamNest for free and start finding the people who can bring your next idea to life.</p>
+      <button onclick="window.location.href='{% url 'signup' %}'" class="btn-primary btn-primary--lg">
+        <i data-lucide="rocket" class="btn-icon"></i>
+        <span>Get Started for Free</span>
+      </button>
+    </section>
+  </main>
+{% endblock %}
