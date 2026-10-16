@@ -1394,15 +1394,22 @@ textarea::placeholder {
   color: var(--color-text-muted);
 }
 
-.suggest-row__add {
+.suggest-row__add ,
+.suggest-row__remove {
   padding: 6px;
   color: var(--color-primary);
   background: var(--primary-20);
   border-radius: 8px;
   transition: all 0.2s;
 }
+.suggest-row__remove{
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
 
-.suggest-row__add:hover {
+.suggest-row__add:hover,
+.suggest-row__remove:hover {
   color: #fff;
   background: var(--color-primary);
 }

@@ -108,9 +108,11 @@ def search_results(request):
             follower = user,
             following=OuterRef("pk")
         )
-        is_following = Exists(followed_users)
+        follow_status = Exists(followed_users)
+
     else:
-        is_following = Value(False, output_field=BooleanField())
+        follow_status = Value(False, output_field=BooleanField())
+
     if q:
         terms = q.split()
         project_vector = SearchVector(
@@ -136,8 +138,7 @@ def search_results(request):
             " & ".join(f"{term}:*" for term in terms),
             search_type="raw"
         )
-        print(query)
-        
+
         projects = get_posts(following=user, user=user).annotate(
             rank=SearchRank(
                 project_vector, 
@@ -149,10 +150,10 @@ def search_results(request):
             "-rank", 
             "id"
         ).distinct()
-
+        
         people = User.objects.annotate(
             rank=SearchRank(user_vector, query),
-            is_following = is_following
+            is_following = follow_status
         ).select_related(
             "profile"    
         ).filter(
@@ -160,6 +161,13 @@ def search_results(request):
         ).order_by(
             "-rank"
         ).distinct()
+
+        for person in people:
+            print(
+            person.username,
+            person.is_following,
+            type(person.is_following)
+        )
         
         
         projects_count = projects.count()

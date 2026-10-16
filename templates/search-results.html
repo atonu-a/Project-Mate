@@ -29,9 +29,12 @@
           <button onclick="switchSearchTab(document.querySelector('[data-tab=searchUsers]'), 'searchUsers')" class="section-link">View all →</button>
         </div>
         <div class="{% if people_count > 0 %}
+            
          search-user-grid
-        {% else %}
-        {% endif %}">
+
+          {% else %}
+
+          {% endif %}">
           {% for user in people %}
             <div class="search-user-card">
               <img onclick="location.href='{% url 'profile' user %}'" src="{{ user.profile.profile_pic_url }}" alt="" class="search-user-card__avatar cursor-pointer" />
@@ -42,7 +45,11 @@
               {% if user != request.user %}
                 <form method="post" action="{% url 'follow' user.username %}">
                   {% csrf_token %}
-                  <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
+                  {% if user.is_following %}
+                    <button type="submit" class="suggest-row__remove" aria-label="Send connection request"><i data-lucide="user-round-check" class="suggest-row__add-icon"></i></button>
+                  {% else %}
+                    <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
+                  {% endif %}
                 </form>
               {% else %}
 
@@ -50,9 +57,9 @@
             </div>
           {% empty %}
             <div class="public-profile__empty flex">
-            <i data-lucide="user-round-x"></i>
-            <strong>No Users Found</strong>
-          </div>
+              <i data-lucide="user-round-x"></i>
+              <strong>No Users Found</strong>
+            </div>
           {% endfor %}
         </div>
       </div>
@@ -80,7 +87,11 @@
             </div>
             <form method="post" action="{% url 'follow' user.username %}">
               {% csrf_token %}
-              <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
+              {% if user.is_following %}
+                <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-round-check" class="suggest-row__add-icon"></i></button>
+              {% else %}
+                <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
+              {% endif %}
             </form>
           </div>
         {% empty %}
