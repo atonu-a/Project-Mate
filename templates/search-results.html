@@ -42,7 +42,7 @@
               {% if user != request.user %}
                 <form method="post" action="{% url 'follow' user.username %}">
                   {% csrf_token %}
-                  <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
+                  <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
                 </form>
               {% else %}
 
@@ -80,7 +80,7 @@
             </div>
             <form method="post" action="{% url 'follow' user.username %}">
               {% csrf_token %}
-              <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-plus" class="suggest-row__add-icon"></i></button>
+              <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
             </form>
           </div>
         {% empty %}

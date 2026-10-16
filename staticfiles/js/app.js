@@ -301,7 +301,10 @@ try{
     const following = btn.classList.toggle('btn-secondary');
     const icon = btn.querySelector('i');
     const label = btn.querySelector('span');
-    if (icon) icon.setAttribute('data-lucide', following ? 'user-check' : 'user-plus');
+    if (icon) icon.setAttribute(
+      "data-lucide",
+      following ? "user-round-check" : "user-round-plus",
+    );
     if (label) label.textContent = following ? 'Following' : 'Follow';
     if (typeof lucide !== 'undefined') lucide.createIcons();
     showToast(following ? 'You are now following this user' : 'Unfollowed');

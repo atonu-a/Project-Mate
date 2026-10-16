@@ -4,12 +4,14 @@ from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest, Follow, Like
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
-from django.db.models import Exists, OuterRef, Q, Count
+from django.db.models import Exists, OuterRef, Q, Count, Value, BooleanField
 
 
 # Landing Page
 def landing_page(request):
     return render(request, "landing.html")
+
+
 # get posts
 def get_posts(owner_name = None, following = None, ai_matched = None, limit = None, user = None):
     projects = Project.objects.select_related(
@@ -25,13 +27,20 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
 
     if following:
         projects = projects.filter(owner_name__followers__follower = following)
-    if user and user.is_authenticated:
+        
+    if user:
+        followed_users = Follow.objects.filter(
+            follower = user,
+            following = OuterRef("owner_name")
+        )
+        projects = projects.annotate(is_following=Exists(followed_users))
         liked_projects = Like.objects.filter(
             project = OuterRef("pk"),
             user = user
         )
         projects = projects.annotate(is_liked=Exists(liked_projects))
     return projects.order_by("-id")
+
 
 # feed Page
 def discover(request):  
@@ -81,16 +90,27 @@ def discover(request):
     
     return render(request, "discover.html", context)
  
+ 
 # Home Page
 def home(request):
     if not request.user.is_authenticated:
         return redirect("overview")
     else :
         return redirect(discover)
+
+
 # Search Results Page
 def search_results(request):
     q = request.GET.get('q')
-
+    user = request.user if request.user.is_authenticated else None
+    if user:
+        followed_users = Follow.objects.filter(
+            follower = user,
+            following=OuterRef("pk")
+        )
+        is_following = Exists(followed_users)
+    else:
+        is_following = Value(False, output_field=BooleanField())
     if q:
         terms = q.split()
         project_vector = SearchVector(
@@ -98,7 +118,10 @@ def search_results(request):
             "desc", 
             "required_skills__name", 
             "category", 
-            "overview"
+            "overview", 
+            "owner_name__username",
+            "owner_name__first_name",
+            "owner_name__last_name",
         ) 
         user_vector = SearchVector(
             "username", 
@@ -115,7 +138,7 @@ def search_results(request):
         )
         print(query)
         
-        projects = get_posts().annotate(
+        projects = get_posts(following=user, user=user).annotate(
             rank=SearchRank(
                 project_vector, 
                 query
@@ -128,7 +151,8 @@ def search_results(request):
         ).distinct()
 
         people = User.objects.annotate(
-            rank=SearchRank(user_vector, query)
+            rank=SearchRank(user_vector, query),
+            is_following = is_following
         ).select_related(
             "profile"    
         ).filter(
