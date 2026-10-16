@@ -4,7 +4,7 @@ from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest, Follow, Like
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
-from django.db.models import Exists, OuterRef, Q
+from django.db.models import Exists, OuterRef, Q, Count
 
 
 # get posts
@@ -13,6 +13,9 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
         "owner_name", "owner_name__profile"
     ).prefetch_related(
         "required_skills"
+    ).annotate(
+        members_count=Count("members", distinct=True),
+        likes_count=Count("likes", distinct=True)
     )
     if owner_name:
         projects =  projects.filter(owner_name=owner_name)
@@ -116,7 +119,15 @@ def search_results(request):
             "id"
         ).distinct()
 
-        people = User.objects.annotate(rank=SearchRank(user_vector, query)).filter(rank__gte=0.001).order_by("-rank").distinct()
+        people = User.objects.annotate(
+            rank=SearchRank(user_vector, query)
+        ).select_related(
+            "profile"    
+        ).filter(
+            rank__gte=0.001
+        ).order_by(
+            "-rank"
+        ).distinct()
         
         
         projects_count = projects.count()

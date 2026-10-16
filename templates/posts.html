@@ -90,7 +90,7 @@
                 <span class="tech-tag">General</span>
                 {% endfor %}
             </div>
-            <span class="status-badge">{{ project.members.count }}/{{ project.team_size }} Members</span>
+            <span class="status-badge">{{ project.members_count }}/{{ project.team_size }} Members</span>
         </div>
     </div>
 
@@ -104,12 +104,12 @@
                 {% else %}
                 {% endif %}">
                     <i data-lucide="heart"
-                    class="reaction__icon"></i><span class="like-count">{% if project.likes.count == 0 %}
+                    class="reaction__icon"></i><span class="like-count">{% if project.likes_count == 0 %}
                         Like
-                    {% elif project.likes.count == 1 %}
-                        {{ project.likes.count }} like
+                    {% elif project.likes_count == 1 %}
+                        {{ project.likes_count }} like
                     {% else %}
-                        {{ project.likes.count }} likes
+                        {{ project.likes_count }} likes
                     {% endif %}</span>
                 </button>
             </form>
@@ -123,7 +123,7 @@
         {% if project.owner_name != request.user %}
             {% if project.is_member %}
               <button class="btn-secondary" disabled>Already Joined</button>
-            {% elif project.members.count >= project.team_size %}
+            {% elif project.members_count >= project.team_size %}
               <button class="btn-secondary" disabled>Team Full</button>
             {% elif project.join_request %}
               {% if project.join_request.status == 'Pending' %}
