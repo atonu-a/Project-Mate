@@ -35,7 +35,7 @@
           {% else %}
 
           {% endif %}">
-          {% for user in people %}
+          {% for user in people|slice:":2" %}
             <div class="search-user-card">
               <img onclick="location.href='{% url 'profile' user %}'" src="{{ user.profile.profile_pic_url }}" alt="" class="search-user-card__avatar cursor-pointer" />
               <div onclick="location.href='{% url 'profile' user %}'" class="search-user-card__body cursor-pointer">
@@ -70,7 +70,7 @@
           <button onclick="switchSearchTab(document.querySelector('[data-tab=searchProjects]'), 'searchProjects')" class="section-link">View all →</button>
         </div>
         <div class="public-profile__projects">
-          {% include 'posts.html' %}
+          {% include 'posts.html' with projects=projects|slice:":2" %}
         </div>
       </div>
     </div>
