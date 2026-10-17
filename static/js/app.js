@@ -36,7 +36,6 @@ function toggleMobileMenu() {
   );
 }
 
-
 /* ---------- Suggested Teammates Panel  ---------- */
 function toggleSuggestedTeammates() {
   const panel = document.getElementById("suggestedTeammatesPanel");
@@ -64,7 +63,6 @@ function closeSuggestedTeammates() {
   document.body.classList.remove("suggestions-open");
   toggle.focus();
 }
-
 
 /* ---------- Opening Global Search Button ---------- */
 function openGlobalSearch() {
@@ -148,49 +146,81 @@ function showToast(message, type = "success") {
   }, 3500);
 }
 
-/* ---------- Like System Without Page Refreshing ---------- */
-document.addEventListener("submit", async (e) =>{
+/* ---------- Like, Save Post Without Page Refreshing ---------- */
+document.addEventListener("submit", async (e) => {
   const form = e.target;
-  if (!form.classList.contains("like-form")){
-    console.log("not got the form")
-    return;
-  }
-  console.log("got the form");
-  e.preventDefault()
+  e.preventDefault();
 
-  const response = await fetch(form.action, {
-    method: "POST",
-    headers: {
-      "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value
+  // Like Form Logic
+  if (form.classList.contains("like-form")) {
+    const response = await fetch(form.action, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
+      },
+    });
+    const data = await response.json();
+    if (data.login_required) {
+      window.location.href = data.login_url;
+      return;
     }
-  });
-  const data = await response.json();
-  if(data.login_required) {
-    window.location.href = data.login_url;
+    if (!data.success) {
+      showToast(data.message);
+      return;
+    }
+    const btn = form.querySelector(".reaction");
+    const count = form.querySelector(".like-count");
+
+    if (data.liked) {
+      btn.classList.add("is-liked");
+    } else {
+      btn.classList.remove("is-liked");
+    }
+    if (data.likes_count == 0) {
+      count.textContent = `Like`;
+    } else if (data.likes_count == 1) {
+      count.textContent = `${data.likes_count} like`;
+    } else {
+      count.textContent = `${data.likes_count} likes`;
+    }
+
+  }
+
+  //  Save Form Logic
+  if (form.classList.contains("save-form")){
+
+    
+    const res = await fetch(form.action, {
+      method: "POST",
+      headers : {
+        "X-CSRFToken" : form.querySelector("[name=csrfmiddlewaretoken]").value,
+      },
+    });
+    const save_data = await res.json();
+    if (save_data.login_required) {
+      window.location.href = save_data.login_url;
+      return;
+    }
+
+    if (!save_data.success) {
+      showToast(save_data.message);
+      return;
+    }
+    const save_btn = form.querySelector(".save-btn");
+    if (save_data.saved) {
+      showToast(save_data.msg )
+      save_btn.innerHTML = `<i class="fa-solid fa-bookmark"></i> Unsave`;
+    } else {
+      showToast(save_data.msg);
+      save_btn.innerHTML = `<i class="fa-regular fa-bookmark"></i> Save`;
+    }
+
+  }
+
+  if (!form.classList.contains("like-form", "save-form")) {
     return;
   }
-  if (!data.success) {
-    showToast(data.message)
-    return;
-  }
-  const btn = form.querySelector(".reaction");
-  const count = form.querySelector(".like-count")
-
-  if (data.liked) {
-    btn.classList.add("is-liked");
-  } else {
-    btn.classList.remove("is-liked")
-  }
-  if (data.likes_count == 0){
-    count.textContent = `Like`;
-  } else if (data.likes_count == 1){
-    count.textContent = `${data.likes_count} like`;
-  } else {
-    count.textContent = `${data.likes_count} likes`;
-  }
-  
-
-})
+});
 
 /* ---------- Opening Comment Section ---------- */
 function toggleComments(btn) {
@@ -383,7 +413,6 @@ function closeConversation(btn) {
   const chat = btn.closest(".chat");
   if (chat) chat.classList.remove("is-chat-open");
 }
-
 
 /* ---------- Checking Request Button ---------- */
 try {
@@ -591,7 +620,9 @@ function initializePaymentDetails() {
 }
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializePaymentDetails, { once: true });
+  document.addEventListener("DOMContentLoaded", initializePaymentDetails, {
+    once: true,
+  });
 } else {
   initializePaymentDetails();
 }
@@ -632,7 +663,7 @@ function closeModal(slug) {
 // join request message modal open
 function openMsgModal(slug) {
   const modal = document.getElementById(`send-msg-modal-${slug}`);
-  console.log("got it")
+  console.log("got it");
   if (modal) {
     modal.style.display = "block";
   }
@@ -644,4 +675,16 @@ function closeMsgModal(slug) {
   if (modal) {
     modal.style.display = "none";
   }
+}
+
+function removeFromSaved(btn) {
+  const card = btn.closest(".spotlight-card");
+  if (!card) return;
+
+  card.style.transition = "opacity 0.2s, transform 0.2s";
+  card.style.opacity = "0";
+  card.style.transform = "scale(0.96)";
+
+  setTimeout(() => card.remove(), 200);
+  showToast("Removed from saved projects", "info");
 }

@@ -39,7 +39,6 @@ def signup(request):
     return render(request, "signup.html", context)
 
 
-
 # ======================
 #  Profile Completeion
 # ======================
@@ -131,7 +130,7 @@ def signin(request):
             messages.success(request, "Logged in successfully!")
             return redirect('dashboard')
         else:
-            messages.success(request, "Invalid username or password.")
+            messages.error(request, "Invalid username or password.")
        
     else:
         user_form = AuthenticationForm()
@@ -145,7 +144,7 @@ def signin(request):
 # ======================
 #     User  Profile
 # ======================
-def profile(request, username, ):
+def profile(request, username ):
 
     profile = get_object_or_404(Profile, user__username=username)
     user = profile.user

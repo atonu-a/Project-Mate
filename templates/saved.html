@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block main %}
+<main class="page-main page-main--wide">
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Saved Projects</h1>
+            <p class="page-subtitle">Projects you've bookmarked to check out or apply to later.</p>
+        </div>
+    </div>
+
+    <div class="spotlight-grid">
+        {% for project in saved_projects %}
+        <article class="spotlight-card" data-project-id="{{ project.id }}">
+            <button onclick="removeFromSaved(this)" class="spotlight-card__unsave" aria-label="Remove from saved">
+                <i data-lucide="bookmark-x" class="spotlight-card__unsave-icon"></i>
+            </button>
+
+            <div class="spotlight-card__body">
+                <div class="spotlight-card__meta">
+                    <span class="category-badge">{{ project.category }}</span>
+                    {% if project.deadline %}
+                    <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{
+                        project.deadline|date:"M d, Y" }}</span>
+                    {% endif %}
+                </div>
+                <h3 onclick="window.location.href=\" {% url 'project_detail' project.id %}\""
+                    class="spotlight-card__title">{{ project.title }}</h3>
+                <p class="spotlight-card__text">{{ project.tagline }}</p>
+                <div class="chips">
+                    {% for skill in project.skills.all %}
+                    <span class="chip">{{ skill.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="spotlight-card__footer">
+                <div class="author">
+                    {% if project.owner.profile.profile_pic %}
+                    <img src="{{ project.owner.profile.profile_pic.url }}" alt="{{ project.owner.first_name }}"
+                        class="author__avatar">
+                    {% endif %}
+                    <span class="author__name">{{ project.owner.first_name }} {{ project.owner.last_name }}</span>
+                </div>
+                <button onclick="window.location.href=\" {% url 'project_detail' project.id %}\"" class="btn-tonal">View
+                    Project</button>
+            </div>
+        </article>
+        {% empty %}
+        <div class="empty-state">
+            <div class="empty-state__icon"><i data-lucide="bookmark"></i></div>
+            <h3 class="empty-state__title">No saved projects yet</h3>
+            <p class="empty-state__text">When you find an interesting project in the feed, tap the bookmark icon to save
+                it here.</p>
+            <button onclick="window.location.href='{% url 'discover' %}'" class="btn-primary">
+                <i data-lucide="compass" class="btn-icon"></i>
+                <span>Explore Discover Feed</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+
+</main>
+
+<div id="toastContainer" class="toast-container"></div>
+<script src="js/app.js"></script>
+{% endblock main %}

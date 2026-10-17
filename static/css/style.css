@@ -27,7 +27,9 @@
                                  22  Onboarding / edit profile
                                  23  Spinner / loader
                                  24 Public profiles 
-                                 25 Search Results Page
+                                 25 
+                                 26 Search Results Page
+                                 27 Saved Page
    ========================================================================== */
 
 /* 1. Design tokens ------------------------------------------------------- */
@@ -2469,15 +2471,22 @@ textarea::placeholder {
   width: 150px;
   min-width: 100px;
 }
-.three-dot-dropdown a {
+.three-dot-dropdown a, form button {
   font-size: 14px;
   padding: 8px 12px;
   border-bottom: 1px solid var(--color-border);
+  text-align: left;
   color: var(--color-text-muted);
   transition: all ease-in-out 0.3s;
 }
-.three-dot-dropdown a:hover {
+.three-dot-dropdown a:hover,
+.three-dot-dropdown form button:hover {
   color: var(--color-primary);
+}
+[data-lucide="bookmark"],
+[data-lucide="bookmark-off"] {
+    width: 14px;
+    height: 14px;
 }
 
 /* Infinite-scroll indicator */
@@ -4933,9 +4942,9 @@ textarea::placeholder {
     padding: 16px 28px;
     font-size: 0.9375rem;
     border-radius: 28px;
+    border: 1px solid var(--color-primary);
 }
 .btn-secondary--lg{
-  border: 1px solid var(--color-primary);
   color: var(--color-primary);
 }
 .hero__visual {
@@ -5120,3 +5129,71 @@ textarea::placeholder {
 }
 
 
+/* 27. Saved Page */
+.spotlight-card {
+    position: relative;
+}
+
+.spotlight-card__unsave {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    color: var(--color-primary);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.spotlight-card__unsave:hover {
+    color: #fff;
+    background: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+.spotlight-card__unsave-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 64px 24px;
+    text-align: center;
+}
+
+.empty-state__icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    background: var(--primary-10);
+    border-radius: 16px;
+}
+
+.empty-state__icon i {
+    width: 26px;
+    height: 26px;
+}
+
+.empty-state__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.empty-state__text {
+    max-width: 24rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from accounts.views import signin
-from .models import JoinRequest, Follow, Like
+from .models import JoinRequest, Follow, Like, Save
 from projects.views import project_detail
 from projects.models import Project, ProjectMember
 from django.contrib.auth.decorators import login_required
@@ -177,3 +177,47 @@ def like_project(request, slug):
         "likes_count" : project.likes.count(),
         "is_liked" : is_liked
     })
+      
+
+# ===========================
+#   Save/Unsave a post
+# ===========================
+
+def save_project(request, slug):
+    user = request.user if request.user.is_authenticated else None
+    if not user:
+        return JsonResponse({
+            "success" : False,
+            "login_required" :True,
+            "login_url":f"/signin/?next={request.path}"
+        }, status = 401)
+        
+    if request.method == "POST":
+        project = get_object_or_404(Project, slug = slug)
+        
+        save, created = Save.objects.get_or_create(
+            project = project,
+            user = user
+        )
+        if created:
+            msg = "Project saved!"
+        
+        if not created:
+            save.delete()
+            msg="Project unsaved!"
+            
+        is_saved = project.saves.filter(user = user).exists()
+   
+    return JsonResponse({
+        "success" : True,
+        "saved" : created,
+        "is_saved" : is_saved,
+        "msg" : msg
+    })
+
+
+# ===========================
+#   View Saved Page
+# ===========================
+def saved_page(request,username ):
+    return render(request, "saved.html" ,{"username" : username})

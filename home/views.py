@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import Profile
 from projects.models import Project, ProjectMember
-from interactions.models import JoinRequest, Follow, Like
+from interactions.models import JoinRequest, Follow, Like, Save
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.db.models import Exists, OuterRef, Q, Count, Value, BooleanField
@@ -39,37 +39,45 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
             user = user
         )
         projects = projects.annotate(is_liked=Exists(liked_projects))
+        
+        saved_projects = Save.objects.filter(
+            project = OuterRef("pk"),
+            user = user
+        )
+        projects = projects.annotate(is_saved = Exists(saved_projects))
     return projects.order_by("-id")
 
 
 # feed Page
 def discover(request):  
-    suggested_users = User.objects.exclude(username = request.user.username)
+    user  = request.user if request.user.is_authenticated else None
+    suggested_users = User.objects.exclude(username = user)
     request_count = 0
     feed = request.GET.get("feed", "all")
+    
     if feed == "following":
-        projects = get_posts(following=request.user, user=request.user)
+        projects = get_posts(following=user, user=user)
     
     elif feed == "ai_matched":
-        projects = get_posts(user=request.user, ai_matched=None)
+        projects = get_posts(user=user, ai_matched=None)
     else:
-        projects = get_posts(user=request.user)
+        projects = get_posts(user=user)
     
-    if request.user.is_authenticated:
-        following_users = Follow.objects.filter(follower = request.user).values_list("following_id", flat=True)
-        suggested_users = User.objects.exclude(id__in = following_users).exclude(username = request.user.username).select_related("profile")
+    if user:
+        following_users = Follow.objects.filter(follower = user).values_list("following_id", flat=True)
+        suggested_users = User.objects.exclude(id__in = following_users).exclude(username = user).select_related("profile")
         
         
         project_ids = [project.id for project in projects]
         member_project_ids = set(ProjectMember.objects.filter(
             project_id__in = project_ids,
-            user = request.user
+            user = user
         ).values_list("project_id", flat=True))
         join_requests = {
             join_request.project_id: join_request
             for join_request in JoinRequest.objects.filter(
                 project_id__in = project_ids,
-                user = request.user
+                user = user
             ).order_by("-id")
         }
         for project in projects:
@@ -78,7 +86,7 @@ def discover(request):
 
             project.join_request = (join_requests.get(project.id))
         request_count = JoinRequest.objects.filter(
-            project__owner_name=request.user,
+            project__owner_name=user,
             status="Pending"
         ).count()        
     context = {
@@ -96,7 +104,7 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect("overview")
     else :
-        return redirect(discover)
+        return redirect("discover")
 
 
 # Search Results Page
