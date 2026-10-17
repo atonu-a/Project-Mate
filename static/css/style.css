@@ -2483,12 +2483,6 @@ textarea::placeholder {
 .three-dot-dropdown form button:hover {
   color: var(--color-primary);
 }
-[data-lucide="bookmark"],
-[data-lucide="bookmark-off"] {
-    width: 14px;
-    height: 14px;
-}
-
 /* Infinite-scroll indicator */
 .feed-loader {
   padding: 32px 0;
