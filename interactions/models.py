@@ -46,3 +46,7 @@ class Like(models.Model):
 class Save(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="saves")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="saved")
+    created_at =models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return f"{self.user.username} saved {self.project.title}"
