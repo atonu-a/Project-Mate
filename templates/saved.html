@@ -10,41 +10,127 @@
     </div>
 
     <div class="spotlight-grid">
-        {% for project in saved_projects %}
-        <article class="spotlight-card" data-project-id="{{ project.id }}">
-            <button onclick="removeFromSaved(this)" class="spotlight-card__unsave" aria-label="Remove from saved">
-                <i data-lucide="bookmark-x" class="spotlight-card__unsave-icon"></i>
+        {% for project in projects %}
+        <article class="post ">
+    <div class="post__head">
+        <div class="post__author">
+            <img src="{{ project.owner_name.profile.profile_pic_url }}" alt="{{ project.owner_name.username }}"
+                class="post__avatar" />
+            <div>
+                <div class="post__author-row">
+                    <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">
+                        {{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>
+                        
+                    <form method="post" action="{% url 'follow' project.owner_name.username %}">
+                        {% csrf_token %}
+                        
+                        {% if not project.is_following and project.owner_name != request.user %}
+                            <span class="post__author-name">&middot;</span>
+                            <button type="submit" class="post-follow" aria-label="Send connection request">Follow</button>
+                        {% else %}
+                            {% comment %} <button type="submit" class="post-following">Following</button> {% endcomment %}
+                        {% endif %}
+                        
+                    </form>
+
+                    {% comment %} <span class="role-badge">Owner</span> {% endcomment %}
+                </div>
+                <p class="post__meta">{{ project.category }} • {{ project.create_at }}</p>
+            </div>
+        </div>
+
+
+        <div class="post-more-container">
+            <button class="post__more relative " aria-label="More options"><i class="fa-solid fa-ellipsis"></i></i>
             </button>
 
-            <div class="spotlight-card__body">
-                <div class="spotlight-card__meta">
-                    <span class="category-badge">{{ project.category }}</span>
-                    {% if project.deadline %}
-                    <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{
-                        project.deadline|date:"M d, Y" }}</span>
-                    {% endif %}
-                </div>
-                <h3 onclick="window.location.href=\" {% url 'project_detail' project.id %}\""
-                    class="spotlight-card__title">{{ project.title }}</h3>
-                <p class="spotlight-card__text">{{ project.tagline }}</p>
-                <div class="chips">
-                    {% for skill in project.skills.all %}
-                    <span class="chip">{{ skill.name }}</span>
-                    {% endfor %}
-                </div>
+            <div class="three-dot-dropdown hide absolute">
+                <a href=""><i class="fa-solid fa-copy"></i> Copy Link</a>
+                
+                <form method="post" action="{% url 'save_project' project.slug %}" class="save-form">
+                    {% csrf_token %}
+                    <button class="save-btn" type="submit">
+                        {% if project.is_saved %}
+                        <i class="fa-solid fa-bookmark"></i> Unsave
+                        {% else %}
+                        <i class="fa-regular fa-bookmark"></i> Save
+                        {% endif %}</button>
+                </form>
+
+                {% if request.user == project.owner_name %}
+                    <a href="{% url 'edit_project' project.slug %}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                <a class="text-danger cursor-pointer" onclick="openModal('{{ project.slug }}')"><i class="fa-solid fa-trash"></i> Delete</a>
+                {% else %}
+                {% endif %}
+            </div> 
+
+        </div>
+    </div>
+
+    <div class="post__body">
+        <div>
+            <div class="badges flex flex-wrap gap-1">
+
+                <span class="category-badge"><i class="fa-solid fa-business-time"></i> {{ project.deadline }}</span>
+                <span class=" {% if project.compensation_type == " Unpaid" %} category-badge--secondary {% elif
+                    project.compensation_type=="Negotiable" %} nego-tag {% else %} status-badge {% endif %} ">{{ project.compensation_type }}</span>
+              {% if project.compensation_type == " Paid" %} <span class="status-badge">{{ project.payment_amount }}
+                    BDT</span>
+                {% else %}
+
+                {% endif %}
+
             </div>
-            <div class="spotlight-card__footer">
-                <div class="author">
-                    {% if project.owner.profile.profile_pic %}
-                    <img src="{{ project.owner.profile.profile_pic.url }}" alt="{{ project.owner.first_name }}"
-                        class="author__avatar">
-                    {% endif %}
-                    <span class="author__name">{{ project.owner.first_name }} {{ project.owner.last_name }}</span>
-                </div>
-                <button onclick="window.location.href=\" {% url 'project_detail' project.id %}\"" class="btn-tonal">View
-                    Project</button>
+
+            <h2 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="post__title">
+                {{ project.title }}</h2>
+            <p class="post__text">{{ project.desc }}</p>
+        </div>
+        
+        <a href="{% url 'project_detail' project.slug %}" class="btn-secondary">Check Details <i
+                class="fa-solid fa-arrow-right"></i></a>
+
+
+        <div class="post__tags-row">
+            <div class="post__tags">
+                {% for skill in project.required_skills.all|slice:':3' %}
+                <span class="tech-tag">{{ skill.name }}</span>
+                {% empty %}
+                <span class="tech-tag">General</span>
+                {% endfor %}
             </div>
-        </article>
+            <span class="status-badge">{{ project.members_count }}/{{ project.team_size }} Members</span>
+        </div>
+    </div>
+
+    <div class="post__actions">
+        <div class="post__reactions">
+
+            <form class="like-form" method="post" action="{% url 'like_project' project.slug %}">
+            {% csrf_token %}
+                <button type="submit" class="reaction {% if project.is_liked %}
+                    is-liked
+                {% else %}
+                {% endif %}">
+                    <i data-lucide="heart"
+                    class="reaction__icon"></i><span class="like-count">{% if project.likes_count == 0 %}
+                        Like
+                    {% elif project.likes_count == 1 %}
+                        {{ project.likes_count }} like
+                    {% else %}
+                        {{ project.likes_count }} likes
+                    {% endif %}</span>
+                </button>
+            </form>
+
+
+            <button onclick="toggleComments(this)" class="reaction reaction--comment"><i data-lucide="message-circle"
+                    class="reaction__icon"></i><span>7 Comments</span></button>
+        </div>
+        
+    </div>
+ 
+</article>
         {% empty %}
         <div class="empty-state">
             <div class="empty-state__icon"><i data-lucide="bookmark"></i></div>

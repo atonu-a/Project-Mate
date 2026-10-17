@@ -149,6 +149,13 @@ function showToast(message, type = "success") {
 /* ---------- Like, Save Post Without Page Refreshing ---------- */
 document.addEventListener("submit", async (e) => {
   const form = e.target;
+
+  if (
+    !form.classList.contains("like-form") &&
+    !form.classList.contains("save-form")
+  ) {
+    return;
+  }
   e.preventDefault();
 
   // Like Form Logic
@@ -216,10 +223,7 @@ document.addEventListener("submit", async (e) => {
     }
 
   }
-
-  if (!form.classList.contains("like-form", "save-form")) {
-    return;
-  }
+ 
 });
 
 /* ---------- Opening Comment Section ---------- */

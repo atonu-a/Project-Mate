@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from accounts.views import signin
+from home.views import get_posts
 from .models import JoinRequest, Follow, Like, Save
 from projects.views import project_detail
 from projects.models import Project, ProjectMember
@@ -182,7 +183,6 @@ def like_project(request, slug):
 # ===========================
 #   Save/Unsave a post
 # ===========================
-
 def save_project(request, slug):
     user = request.user if request.user.is_authenticated else None
     if not user:
@@ -219,5 +219,13 @@ def save_project(request, slug):
 # ===========================
 #   View Saved Page
 # ===========================
-def saved_page(request,username ):
-    return render(request, "saved.html" ,{"username" : username})
+@login_required(login_url="signin")
+def saved_page(request):
+    user = request.user if request.user.is_authenticated else None
+    if user:
+        projects = get_posts(user=user).filter(is_saved = True)
+        
+    context = {
+        "projects" : projects
+    }
+    return render(request, "saved.html" ,context)

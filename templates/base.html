@@ -178,6 +178,8 @@
           <span>Join Requests</span>
           <span class="sidebar__count sidebar__count--alert"> {{ request_count }} </span>
         </a>
+
+        <a href="{% url 'saved' %}" class="sidebar__link">Saved Projects</a>
         {% else %}
         <a href="{% url 'signin' %}" class=" sidebar__link">
           <i data-lucide="user-key" class="sidebar__link-icon"></i>

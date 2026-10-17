@@ -170,13 +170,6 @@ def search_results(request):
             "-rank"
         ).distinct()
 
-        for person in people:
-            print(
-            person.username,
-            person.is_following,
-            type(person.is_following)
-        )
-        
         
         projects_count = projects.count()
         people_count = people.count()
