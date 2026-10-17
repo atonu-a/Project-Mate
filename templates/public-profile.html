@@ -96,7 +96,7 @@
             {% if public_profile.profile.url %}
               <a class="public-profile__contact" href="{{ public_profile.profile.url }}" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-up-right-from-square"></i></i><span>Website</span></a>
             {% endif %}
-            <button type="button" class="btn-secondary" onclick="copyProfileLink(this)">
+            <button type="button" data-url="{{ request.path }}" class="btn-secondary copy-link-btn">
               <i data-lucide="share-2" class="btn-icon"></i>
               <span>Share</span>
             </button>

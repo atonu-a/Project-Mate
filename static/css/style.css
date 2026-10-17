@@ -2471,7 +2471,7 @@ textarea::placeholder {
   width: 150px;
   min-width: 100px;
 }
-.three-dot-dropdown a, form button {
+.three-dot-dropdown a, button, form button {
   font-size: 14px;
   padding: 8px 12px;
   border-bottom: 1px solid var(--color-border);
@@ -2480,6 +2480,7 @@ textarea::placeholder {
   transition: all ease-in-out 0.3s;
 }
 .three-dot-dropdown a:hover,
+.three-dot-dropdown button:hover,
 .three-dot-dropdown form button:hover {
   color: var(--color-primary);
 }

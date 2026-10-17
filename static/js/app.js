@@ -301,19 +301,19 @@ window.onload = function () {
 };
 
 // Preloader
-// window.addEventListener("load", () => {
-//   try {
-//     const preloader = document.getElementById("preloader");
+window.addEventListener("load", () => {
+  try {
+    const preloader = document.getElementById("preloader");
 
-//     // Add the hidden class to trigger the smooth CSS transition
-//     preloader.classList.add("preloader-hidden");
+    // Add the hidden class to trigger the smooth CSS transition
+    preloader.classList.add("preloader-hidden");
 
-//     // Optional: Completely remove the element from the DOM after the animation finishes
-//     setTimeout(() => {
-//       preloader.remove();
-//     }, 500);
-//   } catch {}
-// });
+    // Optional: Completely remove the element from the DOM after the animation finishes
+    setTimeout(() => {
+      preloader.remove();
+    }, 500);
+  } catch {}
+});
 
 // Loading buttons
 document.addEventListener("DOMContentLoaded", function () {
@@ -489,116 +489,6 @@ try {
     }
   }
 
-  // // Function to open crop modal (Accepts both File Object and URL String)
-  // function openCropModal(fileOrUrl, imgId) {
-  //   if (!fileOrUrl) return;
-
-  //   currentPreviewId = imgId;
-  //   const modal = document.getElementById("cropModal");
-  //   const imageToCrop = document.getElementById("imageToCrop");
-
-  //   if (!modal || !imageToCrop) return;
-
-  //   // Show modal first so dimensions are non-zero
-  //   modal.style.display = "flex";
-
-  //   const initCropperWithSrc = (src) => {
-  //     if (cropperInstance) {
-  //       cropperInstance.destroy();
-  //       cropperInstance = null;
-  //     }
-
-  //     imageToCrop.src = src;
-
-  //     // Calculate aspect ratio
-  //     let ratio = 1;
-  //     if (imgId === "editCoverPreview") {
-  //       const targetImg = document.getElementById(imgId);
-  //       if (targetImg && targetImg.clientHeight > 0) {
-  //         ratio = targetImg.clientWidth / targetImg.clientHeight;
-  //       } else {
-  //         ratio = 16 / 9;
-  //       }
-  //     }
-
-  //     cropperInstance = new Cropper(imageToCrop, {
-  //       aspectRatio: ratio,
-  //       viewMode: 1,
-  //       autoCropArea: 1,
-  //       responsive: true,
-  //       restore: false
-  //     });
-  //   };
-
-  //   if (typeof fileOrUrl === 'string') {
-  //     // If string URL (e.g., loaded from server after save/refresh)
-  //     initCropperWithSrc(fileOrUrl);
-  //   } else {
-  //     // If raw File Object (new upload)
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       initCropperWithSrc(e.target.result);
-  //     };
-  //     reader.readAsDataURL(fileOrUrl);
-  //   }
-  // }
-
-  // // Close Modal Helper
-  // function closeCropModal() {
-  //   const modal = document.getElementById("cropModal");
-  //   if (modal) {
-  //     modal.style.display = "none";
-  //   }
-  //   if (cropperInstance) {
-  //     cropperInstance.destroy();
-  //     cropperInstance = null;
-  //   }
-  // }
-
-  // // DOM Event Bindings
-  // document.addEventListener("DOMContentLoaded", () => {
-  //   // Preview Image Click Event Binding
-  //   ["editAvatarPreview", "editCoverPreview"].forEach((imgId) => {
-  //     const img = document.getElementById(imgId);
-  //     if (img) {
-  //       img.style.cursor = "pointer";
-
-  //       img.addEventListener("click", () => {
-  //         // Priority 1: User newly uploaded raw file
-  //         if (originalFiles[imgId]) {
-  //           openCropModal(originalFiles[imgId], imgId);
-  //         }
-  //         // Priority 2: Existing saved image URL from server
-  //         else if (img.src && !img.src.includes('data:image')) {
-  //           openCropModal(img.src, imgId);
-  //         }
-  //       });
-  //     }
-  //   });
-
-  //   // Crop Apply Button
-  //   const applyBtn = document.getElementById("applyCropBtn");
-  //   if (applyBtn) {
-  //     applyBtn.addEventListener("click", () => {
-  //       if (!cropperInstance || !currentPreviewId) return;
-
-  //       const canvas = cropperInstance.getCroppedCanvas();
-  //       if (canvas) {
-  //         const previewImg = document.getElementById(currentPreviewId);
-  //         if (previewImg) {
-  //           previewImg.src = canvas.toDataURL();
-  //         }
-  //       }
-  //       closeCropModal();
-  //     });
-  //   }
-
-  //   // Crop Cancel Button
-  //   const cancelBtn = document.getElementById("cancelCropBtn");
-  //   if (cancelBtn) {
-  //     cancelBtn.addEventListener("click", closeCropModal);
-  //   }
-  // });
 } catch (error) {}
 
 // Show and hide of payment details
@@ -692,3 +582,25 @@ function removeFromSaved(btn) {
   setTimeout(() => card.remove(), 200);
   showToast("Removed from saved projects", "info");
 }
+
+
+// Copy LInk
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".copy-link-btn");
+
+  if (!btn) return;
+
+  const url = btn.dataset.url;
+
+  try {
+    await navigator.clipboard.writeText(
+      new URL(url, window.location.origin).href,
+    );
+
+    showToast("Link copied to clipboard!");
+  } catch (error) {
+    showToast("Unable to copy link. Please try again.");
+    console.error("Clipboard error:", error);
+  }
+});
