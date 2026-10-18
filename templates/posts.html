@@ -95,7 +95,7 @@
 
         <div class="post__tags-row">
             <div class="post__tags">
-                {% for skill in project.required_skills.all|slice:':3' %}
+                {% for skill in project.required_skills.all %}
                 <span class="tech-tag">{{ skill.name }}</span>
                 {% empty %}
                 <span class="tech-tag">General</span>

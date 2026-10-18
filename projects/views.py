@@ -7,7 +7,7 @@ from accounts.models import Profile
 from accounts.views import signin
 from interactions.models import JoinRequest
 from home.views import discover
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef, Count
 
 
 
@@ -15,27 +15,41 @@ from django.db.models import Q
 #       Project Details
 # ======================
 def project_detail(request, slug):
-    project = get_object_or_404(Project, slug = slug)  
-    members = project.members.all()
-    join_request = None
-    is_member = False
+    user = request.user if request.user.is_authenticated else None
+    join_request = JoinRequest.objects.filter(
+        project=OuterRef("pk"),
+        user = user
+    ).order_by("-created_at") 
+    membership = ProjectMember.objects.filter(
+        project=OuterRef("pk"),
+        user=user
+    )
+    project = get_object_or_404(
+        (Project.objects.prefetch_related(
+            "members__user__profile", "required_skills"
+        ).annotate(
+            has__join__request = Exists(join_request),
+            is_member = Exists(membership),
+            members_count=Count("members", distinct=True),
+            likes_count=Count("likes", distinct=True),
+            comments_count=Count("comments", distinct=True)
+        )), slug=slug
+    )
+    
+    latest_join_request = None
 
-    if request.user.is_authenticated:
-        join_request = JoinRequest.objects.filter(
+    if user:
+        latest_join_request = JoinRequest.objects.filter(
             project=project,
             user=request.user
         ).order_by("-created_at").first()
 
-        is_member = ProjectMember.objects.filter(
-            project=project,
-            user=request.user
-        ).exists()
     
     context = {
-        "members" : members,
+        "members" : project.members.all(),
         "project" : project,
-        "join_request" : join_request,
-        "is_member" : is_member
+        "join_request" : latest_join_request,
+        "is_member" : project.is_member
         }
     return render(request, "project-detail.html",context)
 

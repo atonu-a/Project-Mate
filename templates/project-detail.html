@@ -19,8 +19,8 @@
           {% comment %}Join request{% endcomment %}
           {% if project.owner_name != request.user %}
             {% if is_member %}
-              <button class="btn-secondary" disabled>Already Joined</button>
-            {% elif project.members.count >= project.team_size %}
+              <button class="btn-secondary" disabled>Joined</button>
+            {% elif project.members_count >= project.team_size %}
               <button class="btn-secondary" disabled>Team Full</button>
             {% elif join_request %}
               {% if join_request.status == 'Pending' %}
@@ -28,20 +28,20 @@
               {% elif join_request.status == 'Rejected' %}
                 <form method="post" action="{% url 'send_request' project.slug %}">
                   {% csrf_token %}
-                  <button type="submit" class="post__join"><i class="fa-solid fa-arrow-rotate-left"></i> Request Again</button>
+                  <button type="submit" class="post__join"><i class="fa-solid fa-arrow-rotate-left"></i> Request</button>
                 </form>
               {% endif %}
             {% else %}
               <form method="post" action="{% url 'send_request' project.slug %}">
                 {% csrf_token %}
-                <button type="submit" class="post__join">Request to Join</button>
+                <button type="submit" class="btn-primary">Request</button>
               </form>
             {% endif %}
           {% endif %}
 
           <button onclick="window.location.href='{% url 'messages' %}'" class="btn-secondary">
             <i data-lucide="message-square" class="btn-icon btn-icon--accent"></i>
-            <span>Message Owner</span>
+            <span>Message</span>
           </button>
         </div>
       </div>
@@ -73,7 +73,7 @@
       <aside class="detail-side">
         <section class="detail-card">
           <h3 class="detail-card__side-title">Project Owner</h3>
-          <div class="owner-card">
+          <div class="owner-card cursor-pointer" onclick="window.location.href='{% url 'profile' project.owner_name %}'">
             <img src="{{ project.owner_name.profile.profile_pic_url }}" alt="{{ project.owner_name.username }}" class="owner-card__avatar" />
             <div>
               <h4 class="owner-card__name">{{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</h4>
@@ -83,11 +83,11 @@
         </section>
 
         <section class="detail-card">
-          <h3 class="detail-card__side-title">Current Team ({{ project.members.count }}/{{ project.team_size }})</h3>
+          <h3 class="detail-card__side-title">Current Team ({{ project.members_count }}/{{ project.team_size }})</h3>
           <div class="team-list">
             {% for member in members %}
-              <div class="member">
-                <img src="{{ member.user.profile.profile_pic_url }}" alt="Elena" class="member__avatar" />
+              <div class="member cursor-pointer" onclick="window.location.href='{% url 'profile' member.user %}'">
+                <img src="{{ member.user.profile.profile_pic_url }}" alt="" class="member__avatar" />
                 <div>
                   <h4 class="member__name">{{ member.user.first_name }} {{ member.user.last_name }}</h4>
                   <p class="member__role">{{ member.role }}</p>

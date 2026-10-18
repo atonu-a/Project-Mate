@@ -3122,9 +3122,10 @@ textarea::placeholder {
 
 .detail-hero__actions {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 12px;
   width: 100%;
+  width: fit-content;
 }
 
 .detail-layout {
