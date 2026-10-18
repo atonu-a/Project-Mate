@@ -151,42 +151,40 @@
         {% endif %}
         {% endif %}
 
-        <!-- Comments Panel -->
+    </div>
 
-        <div class="post__comments">
-            <form onsubmit="submitComment(event, this)" class="comment-composer">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-                    alt="You" class="comment-composer__avatar">
-                <input type="text" placeholder="Write a comment..." class="comment-composer__input" required>
-                <button type="submit" class="comment-composer__send" aria-label="Post comment">
-                    <i data-lucide="send" class="comment-composer__send-icon"></i>
-                </button>
-            </form>
-
-            <div class="comment-list">
-                <div class="comment">
-                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
-                        alt="Kaito Tanaka" class="comment__avatar">
-                    <div class="comment__body">
-                        <div class="comment__bubble">
-                            <h4 class="comment__name">Kaito Tanaka</h4>
-                            <p class="comment__text">This is exactly the kind of tool I've been wanting. How are you
-                                handling
-                                the embedding storage — pgvector or a dedicated vector DB?</p>
-                        </div>
-                        <div class="comment__meta">
-                            <button class="comment__action">Like</button>
-                            <button class="comment__action">Reply</button>
-                            <span class="comment__time">2h</span>
-                        </div>
+    <!-- Comments Panel -->
+    
+    <div class="post__comments">
+        <form onsubmit="submitComment(event, this)" class="comment-composer">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                alt="You" class="comment-composer__avatar">
+            <input type="text" placeholder="Write a comment..." class="comment-composer__input" required>
+            <button type="submit" class="comment-composer__send" aria-label="Post comment">
+                <i data-lucide="send" class="comment-composer__send-icon"></i>
+            </button>
+        </form>
+    
+        <div class="comment-list">
+            <div class="comment">
+                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
+                    alt="Kaito Tanaka" class="comment__avatar">
+                <div class="comment__body">
+                    <div class="comment__bubble">
+                        <h4 class="comment__name">Kaito Tanaka</h4>
+                        <p class="comment__text">This is exactly the kind of tool I've been wanting. How are you
+                            handling
+                            the embedding storage — pgvector or a dedicated vector DB?</p>
+                    </div>
+                    <div class="comment__meta">
+                        <button class="comment__action">Like</button>
+                        <button class="comment__action">Reply</button>
+                        <span class="comment__time">2h</span>
                     </div>
                 </div>
-
             </div>
+    
         </div>
-
-
-
     </div>
 
 </article>
