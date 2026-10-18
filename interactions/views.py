@@ -267,6 +267,7 @@ def create_comment(request, slug):
                 "profile_pic" : (
                     comment.user.profile.profile_pic_url
                 ),
+
                 "created_at" : comment.created_at.isoformat(),
                 
             }

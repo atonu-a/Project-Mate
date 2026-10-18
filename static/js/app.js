@@ -274,7 +274,7 @@ document.addEventListener("submit", async (e) => {
         </div>
         <div class="comment__meta">
 
-          <span class="comment__time">${formatCommentTime(commentData.created_at)}</span>
+          <span class="comment__time">${commentData.created_at}</span>
         </div>
       </div>
     `;
