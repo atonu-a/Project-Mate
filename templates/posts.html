@@ -158,8 +158,12 @@
     <div class="post__comments">
         <form action="{% url 'comment' project.slug %}" method="post" class="comment-composer comment-form ">
             {% csrf_token %}
-            <img src="{{ request.user.profile.profile_pic_url }}"
+            {% if request.user.is_authenticated %}
+                <img src="{{ request.user.profile.profile_pic_url }}"
                 alt="You" class="comment-composer__avatar">
+            {% else %}
+            {% endif %}
+            
             <input type="text" name="input_comment" placeholder="Write a comment..." class="comment-composer__input" required>
             <button type="submit" class="comment-composer__send" aria-label="Post comment">
                 <i data-lucide="send" class="comment-composer__send-icon"></i>

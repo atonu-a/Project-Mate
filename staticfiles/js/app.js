@@ -9,17 +9,10 @@ function toggleTheme() {
     localStorage.setItem("pp_theme", "dark");
   }
 }
-
-// Apply the stored theme on load
-(function () {
-  const savedTheme = localStorage.getItem("pp_theme");
-  if (savedTheme === "light") {
-    document.documentElement.classList.remove("dark");
-  } else {
-    document.documentElement.classList.add("dark");
-  }
-})();
-
+/* ---------- Icons ---------- */
+window.onload = function () {
+  if (typeof lucide !== "undefined") lucide.createIcons();
+};
 /* ---------- Menus ---------- */
 function toggleUserMenu() {
   const menu = document.getElementById("userDropdown");
@@ -34,6 +27,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
+/* ---------- Mobile Menu toggles ---------- */
 function toggleMobileMenu() {
   const menu = document.getElementById("mobileMenu");
   if (!menu) return;
@@ -43,6 +37,84 @@ function toggleMobileMenu() {
     "menu-open",
     menu.classList.contains("is-open"),
   );
+}
+
+/* ---------- Suggested Teammates Panel  ---------- */
+function toggleSuggestedTeammates() {
+  const panel = document.getElementById("suggestedTeammatesPanel");
+  const toggle = document.querySelector(".feed-suggestions-toggle");
+  if (!panel || !toggle) return;
+
+  const isOpen = panel.classList.toggle("is-open");
+  toggle.setAttribute("aria-expanded", String(isOpen));
+  document.body.classList.toggle("suggestions-open", isOpen);
+
+  if (isOpen) {
+    panel.querySelector(".suggest-panel__close")?.focus();
+  } else {
+    toggle.focus();
+  }
+}
+
+function closeSuggestedTeammates() {
+  const panel = document.getElementById("suggestedTeammatesPanel");
+  const toggle = document.querySelector(".feed-suggestions-toggle");
+  if (!panel || !toggle || !panel.classList.contains("is-open")) return;
+
+  panel.classList.remove("is-open");
+  toggle.setAttribute("aria-expanded", "false");
+  document.body.classList.remove("suggestions-open");
+  toggle.focus();
+}
+
+/* ---------- Opening Global Search Button ---------- */
+function openGlobalSearch() {
+  const header = document.querySelector(".site-header__inner");
+  const toggle = document.querySelector(".header-search__toggle");
+  const input = document.getElementById("globalSearchInput");
+  if (!header || !toggle || !input) return;
+
+  header.classList.add("is-search-open");
+  toggle.setAttribute("aria-expanded", "true");
+  input.focus();
+}
+
+/* ---------- Closing Global Search Button ---------- */
+function closeGlobalSearch() {
+  const header = document.querySelector(".site-header__inner");
+  const toggle = document.querySelector(".header-search__toggle");
+  const input = document.getElementById("globalSearchInput");
+  if (!header || !toggle || !input) return;
+
+  header.classList.remove("is-search-open");
+  toggle.setAttribute("aria-expanded", "false");
+  input.value = "";
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeGlobalSearch();
+    closeSuggestedTeammates();
+  }
+});
+
+function switchSearchTab(tabBtn, panelId) {
+  if (!tabBtn) return;
+  const tabsWrap = tabBtn.closest(".search-tabs");
+  const panelsWrap = tabsWrap ? tabsWrap.parentElement : document;
+
+  if (tabsWrap) {
+    tabsWrap
+      .querySelectorAll(".search-tab")
+      .forEach((t) => t.classList.remove("is-active"));
+  }
+  tabBtn.classList.add("is-active");
+
+  panelsWrap
+    .querySelectorAll(".search-panel")
+    .forEach((p) => p.classList.remove("is-active"));
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.add("is-active");
 }
 
 /* ---------- Toasts ---------- */
@@ -77,24 +149,203 @@ function showToast(message, type = "success") {
   }, 3500);
 }
 
-/* ---------- Feed actions ---------- */
-function toggleLike(btn) {
-  const label = btn.querySelector("span");
-  const count = parseInt(label.textContent, 10) || 0;
+/* ---------- Like, Save Post Without Page Refreshing ---------- */
+document.addEventListener("submit", async (e) => {
+  const form = e.target;
 
-  if (btn.classList.contains("is-liked")) {
-    btn.classList.remove("is-liked");
-    label.textContent = `${count - 1} Likes`;
-  } else {
-    btn.classList.add("is-liked");
-    label.textContent = `${count + 1} Likes`;
-    showToast("Project bookmarked & liked!");
+  if (
+    !form.classList.contains("like-form") &&
+    !form.classList.contains("save-form") &&
+    !form.classList.contains("comment-form")
+  ) {
+    return;
+  }
+  e.preventDefault();
+
+  // Like Form Logic
+  if (form.classList.contains("like-form")) {
+    const response = await fetch(form.action, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
+      },
+    });
+    const data = await response.json();
+    if (data.login_required) {
+      window.location.href = data.login_url;
+      return;
+    }
+    if (!data.success) {
+      showToast(data.message);
+      return;
+    }
+    const btn = form.querySelector(".reaction");
+    const count = form.querySelector(".like-count");
+
+    if (data.liked) {
+      btn.classList.add("is-liked");
+    } else {
+      btn.classList.remove("is-liked");
+    }
+    if (data.likes_count == 0) {
+      count.textContent = `Like`;
+    } else if (data.likes_count == 1) {
+      count.textContent = `${data.likes_count} like`;
+    } else {
+      count.textContent = `${data.likes_count} likes`;
+    }
+  }
+
+  //  Save Form Logic
+  if (form.classList.contains("save-form")) {
+    const res = await fetch(form.action, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
+      },
+    });
+    const save_data = await res.json();
+    if (save_data.login_required) {
+      window.location.href = save_data.login_url;
+      return;
+    }
+
+    if (!save_data.success) {
+      showToast(save_data.message);
+      return;
+    }
+    const save_btn = form.querySelector(".save-btn");
+    if (save_data.saved) {
+      showToast(save_data.msg);
+      save_btn.innerHTML = `<i class="fa-solid fa-bookmark"></i> Unsave`;
+    } else {
+      showToast(save_data.msg);
+      save_btn.innerHTML = `<i class="fa-regular fa-bookmark"></i> Save`;
+    }
+  }
+
+  // Comment Form Logic
+
+  if (form.classList.contains("comment-form")) {
+    const input = form.querySelector(".comment-composer__input");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
+        },
+        body: new FormData(form),
+      });
+
+      const data = await response.json();
+
+      if (data.login_required) {
+        window.location.href = data.login_url;
+        return;
+      }
+
+      if (!response.ok || !data.success) {
+        showToast(data.error || "Comment could not be submitted.");
+        return;
+      }
+
+      const commentData = data.comment;
+      const list = form.nextElementSibling;
+
+      if (!list) {
+        console.error("Comment list not found.");
+        return;
+      }
+
+      const comment = document.createElement("div");
+      comment.className = "comment";
+
+      comment.innerHTML = `
+      <img
+        src="${commentData.profile_pic || "/static/images/default-avatar.png"}"
+        alt="${commentData.full_name}"
+        class="comment__avatar"
+      >
+      <div class="comment__body">
+        <div class="comment__bubble">
+          <h4 class="comment__name"></h4>
+          <p class="comment__text"></p>
+        </div>
+        <div class="comment__meta">
+
+          <span class="comment__time">${commentData.created_at}</span>
+        </div>
+      </div>
+    `;
+
+      comment.querySelector(".comment__name").textContent =
+        commentData.full_name;
+
+      comment.querySelector(".comment__text").textContent =
+        commentData.commented_text;
+
+      list.prepend(comment);
+
+      input.value = "";
+    } catch (error) {
+      console.error("Comment submission failed:", error);
+      showToast("Something went wrong. Please try again.");
+    }
+  }
+});
+
+
+// Timestamp formatting for comments
+function formatCommentTime(timestamp) {
+  const createdAt = new Date(timestamp);
+  const now = new Date();
+
+  const diffMs = now - createdAt;
+  const diffHours = diffMs / (1000 * 60 * 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (Number.isNaN(createdAt.getTime()) || diffMs < 0) {
+    return "";
+  }
+
+  if (diffHours < 24) {
+    return createdAt.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  if (diffDays <= 7) {
+    return `${diffDays}d`;
+  }
+
+  return createdAt.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+  });
+}
+
+
+/* ---------- Opening Comment Section ---------- */
+function toggleComments(btn) {
+  const post = btn.closest(".post");
+  if (!post) return;
+  const panel = post.querySelector(".post__comments");
+  if (!panel) return;
+
+  panel.classList.toggle("is-open");
+
+  if (panel.classList.contains("is-open")) {
+    const input = panel.querySelector(".comment-composer__input");
+    if (input) input.focus();
   }
 }
 
-function toggleComments(btn) {
-  showToast("Comments panel opened", "info");
-}
 
 /* ---------- Join requests ---------- */
 // Called from the Accept / Reject buttons on requests.html
@@ -160,23 +411,7 @@ function toggleFieldChip(button) {
   document.getElementById("selectedFields").value = selectedFields.join(",");
 }
 
-// Live preview for the avatar file picker on the profile form
-function previewAvatar(input, imgId) {
-  const file = input.files && input.files[0];
-  if (!file) return;
-  const img = document.getElementById(imgId);
-  if (!img) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
 
-/* ---------- Icons ---------- */
-window.onload = function () {
-  if (typeof lucide !== "undefined") lucide.createIcons();
-};
 
 // Preloader
 window.addEventListener("load", () => {
@@ -192,7 +427,6 @@ window.addEventListener("load", () => {
     }, 500);
   } catch {}
 });
-
 
 // Loading buttons
 document.addEventListener("DOMContentLoaded", function () {
@@ -243,36 +477,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
 /* ---------- Messages (mobile list / conversation toggle) ---------- */
 // Tapping a conversation in the list: mark it active, reflect the person in
 // the open conversation's header, and (on phones) swap from the list view
 // to the conversation view.
 function openConversation(item) {
-    const chat = item.closest('.chat');
-    if (!chat) return;
- 
-    chat.querySelectorAll('.chat__item').forEach((i) => i.classList.remove('is-active'));
-    item.classList.add('is-active');
- 
-    const name = item.dataset.name;
-    const avatar = item.dataset.avatar;
-    const status = item.dataset.status;
- 
-    if (name) {
-        const nameEl = chat.querySelector('.chat__peer-name');
-        if (nameEl) nameEl.textContent = name;
-    }
-    if (avatar) {
-        chat.querySelectorAll('.chat__peer-avatar').forEach((img) => { img.src = avatar; });
-    }
-    if (status) {
-        const statusEl = chat.querySelector('.chat__peer-status');
-        // Keep the little status dot; only replace the trailing text node.
-        if (statusEl && statusEl.lastChild) statusEl.lastChild.textContent = status;
-    }
- 
-    chat.classList.add('is-chat-open');
+  const chat = item.closest(".chat");
+  if (!chat) return;
+
+  chat
+    .querySelectorAll(".chat__item")
+    .forEach((i) => i.classList.remove("is-active"));
+  item.classList.add("is-active");
+
+  const name = item.dataset.name;
+  const avatar = item.dataset.avatar;
+  const status = item.dataset.status;
+
+  if (name) {
+    const nameEl = chat.querySelector(".chat__peer-name");
+    if (nameEl) nameEl.textContent = name;
+  }
+  if (avatar) {
+    chat.querySelectorAll(".chat__peer-avatar").forEach((img) => {
+      img.src = avatar;
+    });
+  }
+  if (status) {
+    const statusEl = chat.querySelector(".chat__peer-status");
+    // Keep the little status dot; only replace the trailing text node.
+    if (statusEl && statusEl.lastChild) statusEl.lastChild.textContent = status;
+  }
+
+  chat.classList.add("is-chat-open");
 }
 // Message sending
 // try {
@@ -285,37 +522,196 @@ function openConversation(item) {
 //     },10000)
 //   })
 // } catch (error) {
-//   console.log(error)
+//
 // }
- 
+
 // Back button in the conversation header: return to the list on phones.
 function closeConversation(btn) {
-    const chat = btn.closest('.chat');
-    if (chat) chat.classList.remove('is-chat-open');
+  const chat = btn.closest(".chat");
+  if (chat) chat.classList.remove("is-chat-open");
 }
- 
 
-// User following
-try{
-  function toggleFollow(btn) {
-    const following = btn.classList.toggle('btn-secondary');
-    const icon = btn.querySelector('i');
-    const label = btn.querySelector('span');
-    if (icon) icon.setAttribute(
-      "data-lucide",
-      following ? "user-round-check" : "user-round-plus",
+/* ---------- Checking Request Button ---------- */
+try {
+  const btnDone = document.querySelectorAll(".btn-check");
+  btnDone.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const btnTxt = btn.dataset.text || btn.textContent.trim() || "";
+      const btnTxtDefault = btn.innerText;
+      btn.dataset.originalHtml = btn.innerHTML;
+      btn.classList.remove("btn-primary");
+      btn.classList.add("btn-secondary");
+
+      btn.innerHTML = `
+                   <i class="fa-solid fa-check"></i>
+                    ${btnTxt}
+                `;
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.classList.remove("btn-secondary");
+        btn.classList.add("btn-primary");
+        btn.innerHTML = btnTxtDefault;
+        btn.disabled = false;
+      }, 30000);
+    });
+  });
+} catch (error) {
+  console.log("not clicked");
+}
+
+// Profile buttons show-hide system (whatsapp ,linkedin etc)
+try {
+  const btnDown = document.getElementById("btn-down");
+  const extraItems = document.getElementById("extra-items");
+
+  btnDown.addEventListener("click", () => {
+    btnDown.classList.toggle("btn-up");
+    extraItems.classList.toggle("hide");
+  });
+} catch (error) {}
+
+// Profile image editing
+try {
+  // Cropper & Preview State
+  let cropperInstance = null;
+  let currentPreviewId = null;
+
+  // Original File Reference Storage
+  const originalFiles = {
+    editAvatarPreview: null,
+    editCoverPreview: null,
+  };
+
+  function previewAvatar(input, previewId) {
+    const file = input.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const preview = document.getElementById(previewId);
+        if (preview instanceof HTMLImageElement) {
+          preview.src = e.target.result;
+        } else if (preview) {
+          preview.style.backgroundImage = `url("${e.target.result}")`;
+          preview.style.backgroundSize = "cover";
+          preview.style.backgroundPosition =
+            preview.style.objectPosition || "center";
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+} catch (error) {}
+
+// Show and hide of payment details
+function toggleDetails() {
+  const compensation_type = document.getElementById("compensation").value;
+  const paymentBox = document.getElementById("payment-details-box");
+  const amount = document.getElementById("payment-details");
+
+  if (compensation_type == "Paid") {
+    paymentBox.style.display = "block";
+    amount.required = true;
+  } else {
+    paymentBox.style.display = "none";
+    amount.required = false;
+    amount.value = "";
+  }
+}
+
+function initializePaymentDetails() {
+  if (document.getElementById("compensation")) {
+    toggleDetails();
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializePaymentDetails, {
+    once: true,
+  });
+} else {
+  initializePaymentDetails();
+}
+
+// Project More Option
+try {
+  const containers = document.querySelectorAll(".post-more-container");
+
+  containers.forEach((container) => {
+    const btn = container.querySelector("button");
+    const dropdown = container.querySelector(".three-dot-dropdown");
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle("hide");
+    });
+
+    document.addEventListener("click", () => {
+      dropdown.classList.add("hide");
+    });
+  });
+} catch (error) {}
+
+// Project delete modal open
+function openModal(slug) {
+  const modal = document.getElementById(`delete-modal-${slug}`);
+  if (modal) {
+    modal.style.display = "block";
+  }
+}
+// Project delete modal close
+function closeModal(slug) {
+  const modal = document.getElementById(`delete-modal-${slug}`);
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+// join request message modal open
+function openMsgModal(slug) {
+  const modal = document.getElementById(`send-msg-modal-${slug}`);
+  console.log("got it");
+  if (modal) {
+    modal.style.display = "block";
+  }
+}
+
+// send request msg modal close
+function closeMsgModal(slug) {
+  const modal = document.getElementById(`send-msg-modal-${slug}`);
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+function removeFromSaved(btn) {
+  const card = btn.closest(".spotlight-card");
+  if (!card) return;
+
+  card.style.transition = "opacity 0.2s, transform 0.2s";
+  card.style.opacity = "0";
+  card.style.transform = "scale(0.96)";
+
+  setTimeout(() => card.remove(), 200);
+  showToast("Removed from saved projects", "info");
+}
+
+// Copy LInk
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".copy-link-btn");
+
+  if (!btn) return;
+
+  const url = btn.dataset.url;
+
+  try {
+    await navigator.clipboard.writeText(
+      new URL(url, window.location.origin).href,
     );
-    if (label) label.textContent = following ? 'Following' : 'Follow';
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-    showToast(following ? 'You are now following this user' : 'Unfollowed');
-}
 
-function copyProfileLink(btn) {
-    navigator.clipboard.writeText(window.location.href)
-        .then(() => showToast('Profile link copied!'))
-        .catch(() => showToast('Could not copy link', 'info'));
-}
-}
-catch(error){
-  console.log(error)
-}
+    showToast("Link copied to clipboard!");
+  } catch (error) {
+    showToast("Unable to copy link. Please try again.");
+    console.error("Clipboard error:", error);
+  }
+});
