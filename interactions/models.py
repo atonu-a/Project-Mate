@@ -42,7 +42,19 @@ class Like(models.Model):
     
     def __str__(self) -> str:
         return f"{self.user.username} liked {self.project.title}"
+  
+# Post Comment Model
+class Comment(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commented")
+    created_at = models.DateTimeField(default=timezone.now)
     
+    def __str__(self) -> str:
+        return f"{self.user.username} commented on {self.project.title}" 
+    
+    
+
+# Post Bookmark Model  
 class Save(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="saves")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="saved")

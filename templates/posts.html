@@ -156,8 +156,8 @@
     <!-- Comments Panel -->
     
     <div class="post__comments">
-        <form onsubmit="submitComment(event, this)" class="comment-composer">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+        <form onsubmit="submitComment(event, this)" action="" method="post" class="comment-composer">
+            <img src="{{ request.user.profile.profile_pic_url }}"
                 alt="You" class="comment-composer__avatar">
             <input type="text" placeholder="Write a comment..." class="comment-composer__input" required>
             <button type="submit" class="comment-composer__send" aria-label="Post comment">
