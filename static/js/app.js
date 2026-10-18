@@ -9,7 +9,10 @@ function toggleTheme() {
     localStorage.setItem("pp_theme", "dark");
   }
 }
-
+/* ---------- Icons ---------- */
+window.onload = function () {
+  if (typeof lucide !== "undefined") lucide.createIcons();
+};
 /* ---------- Menus ---------- */
 function toggleUserMenu() {
   const menu = document.getElementById("userDropdown");
@@ -408,10 +411,7 @@ function toggleFieldChip(button) {
   document.getElementById("selectedFields").value = selectedFields.join(",");
 }
 
-/* ---------- Icons ---------- */
-window.onload = function () {
-  if (typeof lucide !== "undefined") lucide.createIcons();
-};
+
 
 // Preloader
 window.addEventListener("load", () => {

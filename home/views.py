@@ -28,7 +28,8 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
         )
     ).annotate(
         members_count=Count("members", distinct=True),
-        likes_count=Count("likes", distinct=True)
+        likes_count=Count("likes", distinct=True),
+        comments_count=Count("comments", distinct=True)
     )
     if owner_name:
         projects =  projects.filter(owner_name=owner_name)

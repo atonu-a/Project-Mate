@@ -2591,6 +2591,7 @@ textarea::placeholder {
 
 .form-cancel,
 .form-submit {
+  text-align: center;
   padding: 12px 24px;
   font-size: 0.75rem;
   font-weight: 700;
