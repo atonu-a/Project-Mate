@@ -228,7 +228,55 @@ document.addEventListener("submit", async (e) => {
 
 /* ---------- Opening Comment Section ---------- */
 function toggleComments(btn) {
-  showToast("Comments panel opened", "info");
+  const post = btn.closest(".post");
+  if (!post) return;
+  const panel = post.querySelector(".post__comments");
+  if (!panel) return;
+
+  panel.classList.toggle("is-open");
+
+  if (panel.classList.contains("is-open")) {
+    const input = panel.querySelector(".comment-composer__input");
+    if (input) input.focus();
+  }
+}
+
+function submitComment(event, form) {
+  event.preventDefault();
+
+  const input = form.querySelector(".comment-composer__input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  const list = form.nextElementSibling;
+  const comment = document.createElement("div");
+  comment.className = "comment";
+  comment.innerHTML = `
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="You" class="comment__avatar">
+        <div class="comment__body">
+            <div class="comment__bubble">
+                <h4 class="comment__name">You</h4>
+                <p class="comment__text"></p>
+            </div>
+            <div class="comment__meta">
+                <button class="comment__action">Like</button>
+                <button class="comment__action">Reply</button>
+                <span class="comment__time">Just now</span>
+            </div>
+        </div>
+    `;
+  comment.querySelector(".comment__text").textContent = text;
+  list.prepend(comment);
+
+  const post = form.closest(".post");
+  const countEl = post ? post.querySelector(".reaction--comment span") : null;
+  if (countEl) {
+    const n = (parseInt(countEl.textContent, 10) || 0) + 1;
+    countEl.textContent = `${n} Comments`;
+  }
+
+  input.value = "";
+  if (typeof lucide !== "undefined") lucide.createIcons();
 }
 
 /* ---------- Join requests ---------- */

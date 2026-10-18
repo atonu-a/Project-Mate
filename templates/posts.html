@@ -8,17 +8,17 @@
                 <div class="post__author-row">
                     <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">
                         {{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>
-                        
+
                     <form method="post" action="{% url 'follow' project.owner_name.username %}">
                         {% csrf_token %}
-                        
+
                         {% if not project.is_following and project.owner_name != request.user %}
-                            <span class="post__author-name">&middot;</span>
-                            <button type="submit" class="post-follow" aria-label="Send connection request">Follow</button>
+                        <span class="post__author-name">&middot;</span>
+                        <button type="submit" class="post-follow" aria-label="Send connection request">Follow</button>
                         {% else %}
-                            {% comment %} <button type="submit" class="post-following">Following</button> {% endcomment %}
+                        {% comment %} <button type="submit" class="post-following">Following</button> {% endcomment %}
                         {% endif %}
-                        
+
                     </form>
 
                     {% comment %} <span class="role-badge">Owner</span> {% endcomment %}
@@ -33,8 +33,9 @@
             </button>
 
             <div class="three-dot-dropdown hide absolute">
-                <button class="copy-link-btn" data-url="{% url 'project_detail' project.slug %}" href=""><i class="fa-solid fa-copy"></i> Copy Link</button>
-                
+                <button class="copy-link-btn" data-url="{% url 'project_detail' project.slug %}" href=""><i
+                        class="fa-solid fa-copy"></i> Copy Link</button>
+
                 <form method="post" action="{% url 'save_project' project.slug %}" class="save-form">
                     {% csrf_token %}
                     <button class="save-btn" type="submit">
@@ -46,11 +47,12 @@
                 </form>
 
                 {% if request.user == project.owner_name %}
-                    <a href="{% url 'edit_project' project.slug %}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                <a class="text-danger cursor-pointer" onclick="openModal('{{ project.slug }}')"><i class="fa-solid fa-trash"></i> Delete</a>
+                <a href="{% url 'edit_project' project.slug %}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                <a class="text-danger cursor-pointer" onclick="openModal('{{ project.slug }}')"><i
+                        class="fa-solid fa-trash"></i> Delete</a>
                 {% else %}
                 {% endif %}
-            </div> 
+            </div>
 
         </div>
     </div>
@@ -107,19 +109,19 @@
         <div class="post__reactions">
 
             <form class="like-form" method="post" action="{% url 'like_project' project.slug %}">
-            {% csrf_token %}
+                {% csrf_token %}
                 <button type="submit" class="reaction {% if project.is_liked %}
                     is-liked
                 {% else %}
                 {% endif %}">
-                    <i data-lucide="heart"
-                    class="reaction__icon"></i><span class="like-count">{% if project.likes_count == 0 %}
+                    <i data-lucide="heart" class="reaction__icon"></i><span class="like-count">
+                        {% if project.likes_count == 0 %}
                         Like
-                    {% elif project.likes_count == 1 %}
+                        {% elif project.likes_count == 1 %}
                         {{ project.likes_count }} like
-                    {% else %}
+                        {% else %}
                         {{ project.likes_count }} likes
-                    {% endif %}</span>
+                        {% endif %}</span>
                 </button>
             </form>
 
@@ -128,28 +130,65 @@
                     class="reaction__icon"></i><span>7 Comments</span></button>
         </div>
 
-        {% comment %} Join Request status {% endcomment %}
+        <!-- Join Requests -->
         {% if project.owner_name != request.user %}
-            {% if project.is_member %}
-              <button class="btn-secondary" disabled>Already Joined</button>
-            {% elif project.members_count >= project.team_size %}
-              <button class="btn-secondary" disabled>Team Full</button>
-            {% elif project.join_request %}
-              {% if project.join_request.status == 'Pending' %}
-                <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
-              {% elif project.join_request.status == 'Rejected' %}
-                  <button type="submit" class="post__join" onclick="openMsgModal('{{ project.slug }}')"><i class="fa-solid fa-arrow-rotate-left"></i> Request Again</button>
+        {% if project.is_member %}
+        <button class="btn-secondary" disabled>Already Joined</button>
+        {% elif project.members_count >= project.team_size %}
+        <button class="btn-secondary" disabled>Team Full</button>
+        {% elif project.join_request %}
+        {% if project.join_request.status == 'Pending' %}
+        <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
+        {% elif project.join_request.status == 'Rejected' %}
+        <button type="submit" class="post__join" onclick="openMsgModal('{{ project.slug }}')"><i
+                class="fa-solid fa-arrow-rotate-left"></i> Request Again</button>
 
-              {% endif %}
-            {% else %}
-                <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                <button type="submit" onclick="openMsgModal('{{ project.slug }}')" class="post__join">Request to Join</button>
+        {% endif %}
+        {% else %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button type="submit" onclick="openMsgModal('{{ project.slug }}')" class="post__join">Request to Join</button>
 
-            {% endif %}
-          {% endif %}
-        
+        {% endif %}
+        {% endif %}
+
+        <!-- Comments Panel -->
+
+        <div class="post__comments">
+            <form onsubmit="submitComment(event, this)" class="comment-composer">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                    alt="You" class="comment-composer__avatar">
+                <input type="text" placeholder="Write a comment..." class="comment-composer__input" required>
+                <button type="submit" class="comment-composer__send" aria-label="Post comment">
+                    <i data-lucide="send" class="comment-composer__send-icon"></i>
+                </button>
+            </form>
+
+            <div class="comment-list">
+                <div class="comment">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
+                        alt="Kaito Tanaka" class="comment__avatar">
+                    <div class="comment__body">
+                        <div class="comment__bubble">
+                            <h4 class="comment__name">Kaito Tanaka</h4>
+                            <p class="comment__text">This is exactly the kind of tool I've been wanting. How are you
+                                handling
+                                the embedding storage — pgvector or a dedicated vector DB?</p>
+                        </div>
+                        <div class="comment__meta">
+                            <button class="comment__action">Like</button>
+                            <button class="comment__action">Reply</button>
+                            <span class="comment__time">2h</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
     </div>
- 
+
 </article>
 {% empty %}
 <div class="public-profile__empty">
@@ -167,7 +206,8 @@
 {% for project in projects %}
 <section id="delete-modal-{{ project.slug }}" class="modal">
     <div class="modal-content relative">
-        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeModal('{{project.slug}}')"><i class="fa-solid fa-xmark"></i></a>
+        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeModal('{{project.slug}}')"><i
+                class="fa-solid fa-xmark"></i></a>
 
         <h1 class="header">Confirmation</h1>
         <p class="msg text-danger">Are you sure you want to delete this project?</p>
@@ -183,18 +223,19 @@
 {% comment %} Sending Message During Join Request Modal {% endcomment %}
 {% for project in projects %}
 <section id="send-msg-modal-{{ project.slug }}" class="modal">
-    
+
     <div class="modal-content relative">
-        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeMsgModal('{{project.slug}}')"><i class="fa-solid fa-xmark"></i></a>
+        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeMsgModal('{{project.slug}}')"><i
+                class="fa-solid fa-xmark"></i></a>
         <h1 class="header">
             Want to Send Message?
         </h1>
-            
+
         <div class="chat__composer msg ">
             <form method="post" action="{% url 'send_request' project.slug %}" class="chat__form">
                 {% csrf_token %}
                 <textarea required type="text" placeholder="Type a message to your teammate..." class="chat__input"
-                aria-label="Message" name="msg"></textarea>
+                    aria-label="Message" name="msg"></textarea>
                 <button type="submit" id="send-msg" class="mobile-menu__link-icon">
                     <i data-lucide="send-horizontal" class=""></i>
                 </button>
@@ -207,7 +248,7 @@
                 <button type="submit" class="btn-secondary">Request Without Message</button>
             </form>
         </div>
-            
+
     </div>
 </section>
 {% endfor %}
