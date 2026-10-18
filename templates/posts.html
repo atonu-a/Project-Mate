@@ -170,8 +170,8 @@
             {% for comment in project.prefetched_comments %}
                   
             <div class="comment">
-                <img src="{{comment.user.profile.profile_pic_url}}"
-                    alt="Kaito Tanaka" class="comment__avatar">
+                <img onclick="window.location.href='{% url 'profile' comment.user.username  %}'" src="{{comment.user.profile.profile_pic_url}}"
+                    alt="Kaito Tanaka" class="comment__avatar cursor-pointer">
                 <div class="comment__body">
                     <div class="comment__bubble">
                         <h4 class="comment__name">{{comment.user.first_name}} {{ comment.user.last_name }}</h4>
