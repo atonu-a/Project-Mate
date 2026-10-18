@@ -156,33 +156,37 @@
     <!-- Comments Panel -->
     
     <div class="post__comments">
-        <form onsubmit="submitComment(event, this)" action="" method="post" class="comment-composer">
+        <form action="{% url 'comment' project.slug %}" method="post" class="comment-composer comment-form ">
+            {% csrf_token %}
             <img src="{{ request.user.profile.profile_pic_url }}"
                 alt="You" class="comment-composer__avatar">
-            <input type="text" placeholder="Write a comment..." class="comment-composer__input" required>
+            <input type="text" name="input_comment" placeholder="Write a comment..." class="comment-composer__input" required>
             <button type="submit" class="comment-composer__send" aria-label="Post comment">
                 <i data-lucide="send" class="comment-composer__send-icon"></i>
             </button>
         </form>
     
         <div class="comment-list">
+            {% for comment in project.prefetched_comments %}
+                  
             <div class="comment">
-                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
+                <img src="{{comment.user.profile.profile_pic_url}}"
                     alt="Kaito Tanaka" class="comment__avatar">
                 <div class="comment__body">
                     <div class="comment__bubble">
-                        <h4 class="comment__name">Kaito Tanaka</h4>
-                        <p class="comment__text">This is exactly the kind of tool I've been wanting. How are you
-                            handling
-                            the embedding storage — pgvector or a dedicated vector DB?</p>
+                        <h4 class="comment__name">{{comment.user.first_name}} {{ comment.user.last_name }}</h4>
+                        <p class="comment__text">{{ comment.commented_text }}</p>
                     </div>
                     <div class="comment__meta">
-                        <button class="comment__action">Like</button>
-                        <button class="comment__action">Reply</button>
-                        <span class="comment__time">2h</span>
+                        {% comment %} <button class="comment__action">Like</button>
+                        <button class="comment__action">Reply</button> {% endcomment %}
+                        <span class="comment__time">
+                            {{ comment.created_at|date:"g:i A" }}
+                        </span>
                     </div>
                 </div>
             </div>
+            {% endfor %}
     
         </div>
     </div>

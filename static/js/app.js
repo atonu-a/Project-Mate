@@ -152,7 +152,8 @@ document.addEventListener("submit", async (e) => {
 
   if (
     !form.classList.contains("like-form") &&
-    !form.classList.contains("save-form")
+    !form.classList.contains("save-form") &&
+    !form.classList.contains("comment-form")
   ) {
     return;
   }
@@ -190,17 +191,14 @@ document.addEventListener("submit", async (e) => {
     } else {
       count.textContent = `${data.likes_count} likes`;
     }
-
   }
 
   //  Save Form Logic
-  if (form.classList.contains("save-form")){
-
-    
+  if (form.classList.contains("save-form")) {
     const res = await fetch(form.action, {
       method: "POST",
-      headers : {
-        "X-CSRFToken" : form.querySelector("[name=csrfmiddlewaretoken]").value,
+      headers: {
+        "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
       },
     });
     const save_data = await res.json();
@@ -215,16 +213,120 @@ document.addEventListener("submit", async (e) => {
     }
     const save_btn = form.querySelector(".save-btn");
     if (save_data.saved) {
-      showToast(save_data.msg )
+      showToast(save_data.msg);
       save_btn.innerHTML = `<i class="fa-solid fa-bookmark"></i> Unsave`;
     } else {
       showToast(save_data.msg);
       save_btn.innerHTML = `<i class="fa-regular fa-bookmark"></i> Save`;
     }
-
   }
- 
+
+  // Comment Form Logic
+
+  if (form.classList.contains("comment-form")) {
+    const input = form.querySelector(".comment-composer__input");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
+        },
+        body: new FormData(form),
+      });
+
+      const data = await response.json();
+
+      if (data.login_required) {
+        window.location.href = data.login_url;
+        return;
+      }
+
+      if (!response.ok || !data.success) {
+        showToast(data.error || "Comment could not be submitted.");
+        return;
+      }
+
+      const commentData = data.comment;
+      const list = form.nextElementSibling;
+
+      if (!list) {
+        console.error("Comment list not found.");
+        return;
+      }
+
+      const comment = document.createElement("div");
+      comment.className = "comment";
+
+      comment.innerHTML = `
+      <img
+        src="${commentData.profile_pic || "/static/images/default-avatar.png"}"
+        alt="${commentData.full_name}"
+        class="comment__avatar"
+      >
+      <div class="comment__body">
+        <div class="comment__bubble">
+          <h4 class="comment__name"></h4>
+          <p class="comment__text"></p>
+        </div>
+        <div class="comment__meta">
+
+          <span class="comment__time">${formatCommentTime(commentData.created_at)}</span>
+        </div>
+      </div>
+    `;
+
+      comment.querySelector(".comment__name").textContent =
+        commentData.full_name;
+
+      comment.querySelector(".comment__text").textContent =
+        commentData.commented_text;
+
+      list.prepend(comment);
+
+      input.value = "";
+    } catch (error) {
+      console.error("Comment submission failed:", error);
+      showToast("Something went wrong. Please try again.");
+    }
+  }
 });
+
+
+// Timestamp formatting for comments
+function formatCommentTime(timestamp) {
+  const createdAt = new Date(timestamp);
+  const now = new Date();
+
+  const diffMs = now - createdAt;
+  const diffHours = diffMs / (1000 * 60 * 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (Number.isNaN(createdAt.getTime()) || diffMs < 0) {
+    return "";
+  }
+
+  if (diffHours < 24) {
+    return createdAt.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  if (diffDays <= 7) {
+    return `${diffDays}d`;
+  }
+
+  return createdAt.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+  });
+}
+
 
 /* ---------- Opening Comment Section ---------- */
 function toggleComments(btn) {
@@ -241,43 +343,6 @@ function toggleComments(btn) {
   }
 }
 
-function submitComment(event, form) {
-  event.preventDefault();
-
-  const input = form.querySelector(".comment-composer__input");
-  const text = input.value.trim();
-  if (!text) return;
-
-  const list = form.nextElementSibling;
-  const comment = document.createElement("div");
-  comment.className = "comment";
-  comment.innerHTML = `
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="You" class="comment__avatar">
-        <div class="comment__body">
-            <div class="comment__bubble">
-                <h4 class="comment__name">You</h4>
-                <p class="comment__text"></p>
-            </div>
-            <div class="comment__meta">
-                <button class="comment__action">Like</button>
-                <button class="comment__action">Reply</button>
-                <span class="comment__time">Just now</span>
-            </div>
-        </div>
-    `;
-  comment.querySelector(".comment__text").textContent = text;
-  list.prepend(comment);
-
-  const post = form.closest(".post");
-  const countEl = post ? post.querySelector(".reaction--comment span") : null;
-  if (countEl) {
-    const n = (parseInt(countEl.textContent, 10) || 0) + 1;
-    countEl.textContent = `${n} Comments`;
-  }
-
-  input.value = "";
-  if (typeof lucide !== "undefined") lucide.createIcons();
-}
 
 /* ---------- Join requests ---------- */
 // Called from the Accept / Reject buttons on requests.html
@@ -536,7 +601,6 @@ try {
       reader.readAsDataURL(file);
     }
   }
-
 } catch (error) {}
 
 // Show and hide of payment details
@@ -630,7 +694,6 @@ function removeFromSaved(btn) {
   setTimeout(() => card.remove(), 200);
   showToast("Removed from saved projects", "info");
 }
-
 
 // Copy LInk
 

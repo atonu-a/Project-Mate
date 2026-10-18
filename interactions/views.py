@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from accounts.views import signin
 from home.views import get_posts
-from .models import JoinRequest, Follow, Like, Save
+from .models import JoinRequest, Follow, Like, Save, Comment
 from projects.views import project_detail
 from projects.models import Project, ProjectMember
 from django.contrib.auth.decorators import login_required
@@ -10,8 +10,6 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
-
-# Create your views here.
 
 # ===========================
 #   Join Request Sending
@@ -181,7 +179,7 @@ def like_project(request, slug):
       
 
 # ===========================
-#   Save/Unsave a post
+#   Save/Unsave a Post
 # ===========================
 def save_project(request, slug):
     user = request.user if request.user.is_authenticated else None
@@ -229,3 +227,49 @@ def saved_page(request):
         "projects" : projects
     }
     return render(request, "saved.html" ,context)
+
+
+
+# ===========================
+#   Comment on a Post
+# ===========================
+
+def create_comment(request, slug):
+    user = request.user if request.user.is_authenticated else None
+    
+    if not user:
+        return JsonResponse({
+            "success" : False,
+            "login_required" : True,
+            "login_url" : f"/signin/?next={request.path}"
+        }, status=401)
+        
+    if request.method == "POST":
+        project = get_object_or_404(Project, slug = slug)
+        input_comment = request.POST.get("input_comment", "").strip()
+        
+        comment = Comment.objects.create(
+            user = user,
+            project = project,
+            commented_text = input_comment
+        )
+        
+        return JsonResponse({
+            "success" : True,
+            "comment" : {
+                "id" : comment.id,
+                "commented_text" : comment.commented_text,
+                "project": comment.project.slug,
+                "full_name": (
+                    f"{comment.user.first_name} "
+                    f"{comment.user.last_name}"
+                ).strip(),
+                "profile_pic" : (
+                    comment.user.profile.profile_pic_url
+                ),
+                "created_at" : comment.created_at.isoformat(),
+                
+            }
+        }, status=201)
+        
+        

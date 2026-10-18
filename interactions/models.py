@@ -48,6 +48,7 @@ class Comment(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commented")
     created_at = models.DateTimeField(default=timezone.now)
+    commented_text = models.TextField()
     
     def __str__(self) -> str:
         return f"{self.user.username} commented on {self.project.title}" 

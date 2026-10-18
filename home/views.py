@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import Profile
 from projects.models import Project, ProjectMember
-from interactions.models import JoinRequest, Follow, Like, Save
+from interactions.models import JoinRequest, Follow, Like, Save, Comment
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
-from django.db.models import Exists, OuterRef, Q, Count, Value, BooleanField
+from django.db.models import Exists, OuterRef, Q, Count, Value, BooleanField, Prefetch
 
 
 # Landing Page
@@ -17,7 +17,15 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
     projects = Project.objects.select_related(
         "owner_name", "owner_name__profile"
     ).prefetch_related(
-        "required_skills"
+        "required_skills",
+        Prefetch(
+            "comments",
+            queryset=Comment.objects.select_related(
+                "user",
+                "user__profile"
+            ).order_by("-created_at"),
+            to_attr="prefetched_comments"
+        )
     ).annotate(
         members_count=Count("members", distinct=True),
         likes_count=Count("likes", distinct=True)

@@ -11,5 +11,7 @@ urlpatterns = [
     path("<str:slug>/save/", views.save_project, name="save_project"),
     path("profile/saved/", views.saved_page, name="saved"),
     path("profile/<str:username>/follow/", views.toggle_follow, name="follow"),
+    path("project/<str:slug>/comment/", views.create_comment, name="comment"),
     path("project/<str:slug>/like", views.like_project, name="like_project"),
+    
 ]
