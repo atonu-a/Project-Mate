@@ -142,8 +142,8 @@
       <div class="sidebar__card">
         <div class="sidebar__heading">Main Menu</div>
 
-        <a href="{% url 'home' %}" class="sidebar__link 
-          {% if request.path == '/' %}
+        <a href="{% url 'discover' %}" class="sidebar__link 
+          {% if request.path == '/feed/' %}
             is-active
           {% endif %} ">
           <i data-lucide="compass" class="sidebar__link-icon"></i>
