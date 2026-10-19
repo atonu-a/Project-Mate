@@ -71,16 +71,18 @@
                 {% endif %}
 
                 {% if project.skill_match %}
-    {% if project.skill_match <= 70 %}
-        <span class="nego-tag">
-            {{ project.skill_match }}% Skill Matched
-        </span>
-    {% else %}
-        <span class="status-badge">
-            {{ project.skill_match }}% Skill Matched
-        </span>
-    {% endif %}
-{% endif %}
+                    {% if  project.owner_name == request.user %}
+
+                    {% elif project.skill_match <= 70  %}
+                        <span class="nego-tag">
+                            {{ project.skill_match }}% Skill Matched
+                        </span>
+                    {% else %}
+                        <span class="status-badge">
+                            {{ project.skill_match }}% Skill Matched
+                        </span>
+                    {% endif %}
+                {% endif %}
 
             </div>
 

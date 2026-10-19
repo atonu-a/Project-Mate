@@ -13,7 +13,7 @@ def landing_page(request):
 
 
 # get posts
-def get_posts(owner_name = None, following = None, recommended = None, limit = None, user = None):
+def get_posts(owner_name = None, following = None, recommended = None, limit = None, user = None,exclude_own=False,):
     projects = Project.objects.select_related(
         "owner_name", "owner_name__profile"
     ).prefetch_related(
@@ -31,6 +31,8 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
         likes_count=Count("likes", distinct=True),
         comments_count=Count("comments", distinct=True)
     )
+    if user and exclude_own:
+        projects = projects.exclude(owner_name=user)
     if owner_name:
         projects =  projects.filter(owner_name=owner_name).order_by("-id")
 
@@ -97,10 +99,10 @@ def discover(request):
     feed = request.GET.get("feed", "all")
     
     if feed == "following":
-        projects = get_posts(following=user, user=user)
+        projects = get_posts(following=user, user=user, recommended=recommended)
     
     elif feed == "recommended":
-        projects = get_posts(user=user, recommended=recommended)
+        projects = get_posts(user=user, recommended=recommended, exclude_own=True)
     else:
         projects = get_posts(user=user, recommended=recommended)
     
@@ -152,6 +154,7 @@ def home(request):
 def search_results(request):
     q = request.GET.get('q')
     user = request.user if request.user.is_authenticated else None
+    recommended = True if request.user.is_authenticated else None
     if user:
         followed_users = Follow.objects.filter(
             follower = user,
