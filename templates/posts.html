@@ -62,13 +62,25 @@
             <div class="badges flex flex-wrap gap-1">
 
                 <span class="category-badge"><i class="fa-solid fa-business-time"></i> {{ project.deadline }}</span>
-                <span class=" {% if project.compensation_type == " Unpaid" %} category-badge--secondary {% elif
+                <span class=" {% if project.compensation_type == "Unpaid" %} category-badge--secondary {% elif
                     project.compensation_type=="Negotiable" %} nego-tag {% else %} status-badge {% endif %} ">{{ project.compensation_type }}</span>
-              {% if project.compensation_type == " Paid" %} <span class="status-badge">{{ project.payment_amount }}
+                {% if project.compensation_type == "Paid" %} <span class="status-badge">{{ project.payment_amount }}
                     BDT</span>
                 {% else %}
 
                 {% endif %}
+
+                {% if project.skill_match %}
+    {% if project.skill_match <= 70 %}
+        <span class="nego-tag">
+            {{ project.skill_match }}% Skill Matched
+        </span>
+    {% else %}
+        <span class="status-badge">
+            {{ project.skill_match }}% Skill Matched
+        </span>
+    {% endif %}
+{% endif %}
 
             </div>
 

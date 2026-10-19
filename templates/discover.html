@@ -12,10 +12,10 @@
 
 
       {% if request.user.is_authenticated %}
-      <a href="?feed=ai-matched" class="field-chip {% if feed == 'ai-matched' %}
+      <a href="?feed=recommended" class="field-chip {% if feed == 'recommended' %}
                 is-selected
                 {% else %}
-                {% endif %}">Recommendated</a>
+                {% endif %}">Recommended</a>
       <a href="?feed=following" class="field-chip {% if feed == 'following' %}
         is-selected
         {% else %}

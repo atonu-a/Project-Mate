@@ -13,7 +13,7 @@ def landing_page(request):
 
 
 # get posts
-def get_posts(owner_name = None, following = None, ai_matched = None, limit = None, user = None):
+def get_posts(owner_name = None, following = None, recommended = None, limit = None, user = None):
     projects = Project.objects.select_related(
         "owner_name", "owner_name__profile"
     ).prefetch_related(
@@ -56,14 +56,14 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
         )
         projects = projects.annotate(is_saved = Exists(saved_projects)).order_by("-id")
         
-    if ai_matched and user:
-        user_skill_ids = user.profile.skills.values_lists(
+    if recommended and user:
+        user_skill_ids = user.profile.skills.values_list(
             "id", flat = True
         )
         projects = projects.annotate(
             matched_skills = Count(
                 'required_skills', filter=Q(
-                    required_skills_id_in = user_skill_ids
+                    required_skills__id__in = user_skill_ids
                 ), distinct=True
             ),
             total_required_skills = Count(
@@ -80,7 +80,7 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
                 )
             else :
                 project.skill_match = 0
-        project.sort(
+        projects.sort(
             key=lambda p:p.skill_match, reverse=True
         )
         
@@ -90,6 +90,8 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
 # feed Page
 def discover(request):  
     user  = request.user if request.user.is_authenticated else None
+    recommended = True if request.user.is_authenticated else None
+
     suggested_users = User.objects.exclude(username = user)
     request_count = 0
     feed = request.GET.get("feed", "all")
@@ -97,10 +99,10 @@ def discover(request):
     if feed == "following":
         projects = get_posts(following=user, user=user)
     
-    elif feed == "ai_matched":
-        projects = get_posts(user=user, ai_matched=None)
+    elif feed == "recommended":
+        projects = get_posts(user=user, recommended=recommended)
     else:
-        projects = get_posts(user=user)
+        projects = get_posts(user=user, recommended=recommended)
     
     if user:
         following_users = Follow.objects.filter(follower = user).values_list("following_id", flat=True)
