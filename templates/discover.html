@@ -1,72 +1,82 @@
 {% extends 'base.html' %}
 {% block main %}
-  <!-- Centre column: one post per row -->
-  <main class="feed" id="socialFeedContainer">
-    <!-- Filter bar -->
-    <div class="feed-toolbar">
-      <div class="feed-tabs">
-        <a href="?feed=all" class="feed-tab {% if feed == 'all' %}
-        is-active
+<!-- Centre column: one post per row -->
+<main class="feed" id="socialFeedContainer">
+  <!-- Filter bar -->
+  <div class="feed-toolbar">
+    <div class="feed-tabs">
+      <a href="?feed=all" class="field-chip {% if feed == 'all' %}
+        is-selected
         {% else %}
-        {% endif %} ">All Projects</a>
-        {% if request.user.is_authenticate %}
-        
-        
-        <a href="?feed=following" class="feed-tab {% if feed == 'following' %}
-        is-active
+        {% endif %} ">All</a>
+
+
+      {% if request.user.is_authenticated %}
+      <a href="?feed=ai-matched" class="field-chip {% if feed == 'ai-matched' %}
+                is-selected
+                {% else %}
+                {% endif %}">Recommendated</a>
+      <a href="?feed=following" class="field-chip {% if feed == 'following' %}
+        is-selected
         {% else %}
-        {% endif %}">Following</a href="">
-        <!-- <a href="?ai_matched" class="feed-tab">AI Matched</a href=""> -->
-        {% else %}
-        {% endif %}
-      </div>
-      <button type="button" class="feed-post-btn feed-suggestions-toggle" onclick="toggleSuggestedTeammates()" aria-controls="suggestedTeammatesPanel" aria-expanded="false" aria-label="Open suggested teammates">
-        <i data-lucide="users" class="feed-post-btn__icon" aria-hidden="true"></i>
+        {% endif %}">Following</a>
+
+      {% else %}
+      {% endif %}
+    </div>
+    <button type="button" class="feed-post-btn feed-suggestions-toggle" onclick="toggleSuggestedTeammates()"
+      aria-controls="suggestedTeammatesPanel" aria-expanded="false" aria-label="Open suggested teammates">
+      <i data-lucide="users" class="feed-post-btn__icon" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <!-- Posts -->
+  {% include "posts.html" %}
+
+  <!-- Infinite-scroll indicator -->
+  <div id="infiniteLoader" class="feed-loader">
+    <div class="feed-loader__spinner"></div>
+    <p class="feed-loader__text">Loading more project opportunities...</p>
+  </div>
+</main>
+
+<!-- Right column: suggested teammates (wide desktop) -->
+<aside class="feed-aside" id="suggestedTeammatesPanel" aria-label="Suggested teammates">
+  <button type="button" class="feed-aside__backdrop" onclick="closeSuggestedTeammates()"
+    aria-label="Close suggested teammates"></button>
+  <div class="suggest-panel">
+    <div class="suggest-panel__header">
+      <h3 class="suggest-panel__title">Suggested Teammates</h3>
+      <button type="button" class="suggest-panel__close" onclick="closeSuggestedTeammates()"
+        aria-label="Close suggested teammates">
+        <i data-lucide="x" aria-hidden="true"></i>
       </button>
     </div>
+    <div class="suggest-panel__list">
+      {% for teammates in suggested_users %}
 
-    <!-- Posts -->
-     {% include "posts.html" %}
 
-    <!-- Infinite-scroll indicator -->
-    <div id="infiniteLoader" class="feed-loader">
-      <div class="feed-loader__spinner"></div>
-      <p class="feed-loader__text">Loading more project opportunities...</p>
-    </div>
-  </main>
-
-  <!-- Right column: suggested teammates (wide desktop) -->
-  <aside class="feed-aside" id="suggestedTeammatesPanel" aria-label="Suggested teammates">
-    <button type="button" class="feed-aside__backdrop" onclick="closeSuggestedTeammates()" aria-label="Close suggested teammates"></button>
-    <div class="suggest-panel">
-      <div class="suggest-panel__header">
-        <h3 class="suggest-panel__title">Suggested Teammates</h3>
-        <button type="button" class="suggest-panel__close" onclick="closeSuggestedTeammates()" aria-label="Close suggested teammates">
-          <i data-lucide="x" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="suggest-panel__list">
-        {% for teammates in suggested_users %}
-        
-        
-        <div class="suggest-row">
-          <div class="suggest-row__person cursor-pointer" onclick="location.href='{% url 'profile' teammates.username %}'">
-            <img src="{{ teammates.profile.profile_pic_url }}" alt="{{ teammates.username }}" class="suggest-row__avatar" />
-            <div>
-              <h4 class="suggest-row__name">{{ teammates.first_name }} {{ teammates.last_name }}</h4>
-              <p class="suggest-row__role">{{ teammates.profile.headline }}</p>
-            </div>
+      <div class="suggest-row">
+        <div class="suggest-row__person cursor-pointer"
+          onclick="location.href='{% url 'profile' teammates.username %}'">
+          <img src="{{ teammates.profile.profile_pic_url }}" alt="{{ teammates.username }}"
+            class="suggest-row__avatar" />
+          <div>
+            <h4 class="suggest-row__name">{{ teammates.first_name }} {{ teammates.last_name }}</h4>
+            <p class="suggest-row__role">{{ teammates.profile.headline }}</p>
           </div>
-          <form method="post" action="{% url 'follow' teammates.username %}">
-            {% csrf_token %}
-            <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
-          </form>
         </div>
-        {% empty %}
-          <strong class="text-[var(--color-primary)] text-center">No recommendations yet</strong>
-        {% endfor %}
-
+        <form method="post" action="{% url 'follow' teammates.username %}">
+          {% csrf_token %}
+          <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i
+              data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
+        </form>
       </div>
+      {% empty %}
+      <strong class="text-[var(--color-primary)] text-center">No recommendations yet</strong>
+      {% endfor %}
+
     </div>
-  </aside>
+  </div>
+</aside>
 {% endblock %}

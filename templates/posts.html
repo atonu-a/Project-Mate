@@ -133,7 +133,7 @@
         <!-- Join Requests -->
         {% if project.owner_name != request.user %}
         {% if project.is_member %}
-        <button class="btn-secondary" disabled>Already Joined</button>
+        <button class="btn-secondary" disabled>Joined</button>
         {% elif project.members_count >= project.team_size %}
         <button class="btn-secondary" disabled>Team Full</button>
         {% elif project.join_request %}
@@ -141,12 +141,12 @@
         <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
         {% elif project.join_request.status == 'Rejected' %}
         <button type="submit" class="post__join" onclick="openMsgModal('{{ project.slug }}')"><i
-                class="fa-solid fa-arrow-rotate-left"></i> Request Again</button>
+                class="fa-solid fa-arrow-rotate-left"></i> Request</button>
 
         {% endif %}
         {% else %}
         <input type="hidden" name="next" value="{{ request.get_full_path }}">
-        <button type="submit" onclick="openMsgModal('{{ project.slug }}')" class="post__join">Request to Join</button>
+        <button type="submit" onclick="openMsgModal('{{ project.slug }}')" class="post__join">Request</button>
 
         {% endif %}
         {% endif %}

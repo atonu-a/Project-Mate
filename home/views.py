@@ -32,10 +32,11 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
         comments_count=Count("comments", distinct=True)
     )
     if owner_name:
-        projects =  projects.filter(owner_name=owner_name)
+        projects =  projects.filter(owner_name=owner_name).order_by("-id")
 
     if following:
-        projects = projects.filter(owner_name__followers__follower = following)
+        projects = projects.filter(owner_name__followers__follower = following).order_by("-id")
+    
         
     if user:
         followed_users = Follow.objects.filter(
@@ -47,14 +48,43 @@ def get_posts(owner_name = None, following = None, ai_matched = None, limit = No
             project = OuterRef("pk"),
             user = user
         )
-        projects = projects.annotate(is_liked=Exists(liked_projects))
+        projects = projects.annotate(is_liked=Exists(liked_projects)).order_by("-id")
         
         saved_projects = Save.objects.filter(
             project = OuterRef("pk"),
             user = user
         )
-        projects = projects.annotate(is_saved = Exists(saved_projects))
-    return projects.order_by("-id")
+        projects = projects.annotate(is_saved = Exists(saved_projects)).order_by("-id")
+        
+    if ai_matched and user:
+        user_skill_ids = user.profile.skills.values_lists(
+            "id", flat = True
+        )
+        projects = projects.annotate(
+            matched_skills = Count(
+                'required_skills', filter=Q(
+                    required_skills_id_in = user_skill_ids
+                ), distinct=True
+            ),
+            total_required_skills = Count(
+                'required_skills',
+                distinct=True
+            )
+        )
+        projects = list(projects)
+        
+        for project in projects:
+            if project.total_required_skills:
+                project.skill_match = round(
+                    project.matched_skills / project.total_required_skills *100
+                )
+            else :
+                project.skill_match = 0
+        project.sort(
+            key=lambda p:p.skill_match, reverse=True
+        )
+        
+    return projects
 
 
 # feed Page
@@ -155,8 +185,8 @@ def search_results(request):
             " & ".join(f"{term}:*" for term in terms),
             search_type="raw"
         )
-
-        projects = get_posts(following=user, user=user).annotate(
+        
+        projects = get_posts(user=user).annotate(
             rank=SearchRank(
                 project_vector, 
                 query
