@@ -31,6 +31,7 @@
                                  26 Search Results Page
                                  27 Saved Page
                                  28 Comments Page
+                                 29 About Page
    ========================================================================== */
 
 /* 1. Design tokens ------------------------------------------------------- */
@@ -5334,4 +5335,195 @@ textarea::placeholder {
 .comment__time {
     font-size: 0.6875rem;
     color: var(--color-text-muted);
+}
+
+
+
+/* 29. About Page */
+.about-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0 8px;
+    text-align: center;
+}
+
+.about-hero__text {
+    max-width: 42rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+}
+
+.about-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.about-section__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.375rem;
+    font-weight: 800;
+}
+
+.about-section__icon {
+    --tone: var(--color-primary);
+    width: 24px;
+    height: 24px;
+    color: var(--tone);
+}
+
+.about-section__icon--secondary { --tone: var(--color-secondary); }
+
+.about-section__text {
+    max-width: 48rem;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+}
+
+.steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.step-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+}
+
+.step-card__number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9375rem;
+    font-weight: 800;
+    color: #fff;
+    background: var(--color-primary);
+    border-radius: 10px;
+}
+
+.step-card__title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+}
+
+.step-card__text {
+    margin-top: 4px;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 28rem;
+}
+
+.team-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    text-align: center;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+}
+
+.team-card__avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.team-card__name {
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.team-card__role {
+    font-size: 0.75rem;
+    color: var(--color-primary);
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.faq-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.faq-item__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.faq-item__icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform 0.2s;
+}
+
+.faq-item.is-open .faq-item__icon {
+    color: var(--color-primary);
+    transform: rotate(180deg);
+}
+
+.faq-item__answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    padding: 0 16px;
+    transition: grid-template-rows 0.2s ease, padding 0.2s ease;
+}
+
+.faq-item__answer > p {
+    overflow: hidden;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+}
+
+.faq-item.is-open .faq-item__answer {
+    grid-template-rows: 1fr;
+    padding: 0 16px 16px;
+}
+
+@media (min-width: 768px) {
+    .about-hero { padding: 24px 0 8px; }
+    .about-section { padding: 32px 0; }
 }

@@ -298,7 +298,6 @@ document.addEventListener("submit", async (e) => {
   }
 });
 
-
 // Timestamp formatting for comments
 function formatCommentTime(timestamp) {
   const createdAt = new Date(timestamp);
@@ -330,7 +329,6 @@ function formatCommentTime(timestamp) {
   });
 }
 
-
 /* ---------- Opening Comment Section ---------- */
 function toggleComments(btn) {
   const post = btn.closest(".post");
@@ -345,7 +343,6 @@ function toggleComments(btn) {
     if (input) input.focus();
   }
 }
-
 
 /* ---------- Join requests ---------- */
 // Called from the Accept / Reject buttons on requests.html
@@ -410,8 +407,6 @@ function toggleFieldChip(button) {
 
   document.getElementById("selectedFields").value = selectedFields.join(",");
 }
-
-
 
 // Preloader
 window.addEventListener("load", () => {
@@ -715,3 +710,8 @@ document.addEventListener("click", async (e) => {
     console.error("Clipboard error:", error);
   }
 });
+
+function toggleFaq(btn) {
+  const item = btn.closest(".faq-item");
+  if (item) item.classList.toggle("is-open");
+}

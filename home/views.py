@@ -236,6 +236,9 @@ def search_results(request):
     return render(request, 'search-results.html', context)
     
 
+
+def about(request):
+    return render(request, "about.html")
 #Dashboard Page
 def dashboard(request):
     return render(request, "index.html")
