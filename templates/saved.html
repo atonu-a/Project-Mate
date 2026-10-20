@@ -45,7 +45,8 @@
             </button>
 
             <div class="three-dot-dropdown hide absolute">
-                <a href=""><i class="fa-solid fa-copy"></i> Copy Link</a>
+                <button class="copy-link-btn" data-url="{% url 'project_detail' project.slug %}" href=""><i
+                        class="fa-solid fa-copy"></i> Copy Link</button>
                 
                 <form method="post" action="{% url 'save_project' project.slug %}" class="save-form">
                     {% csrf_token %}
