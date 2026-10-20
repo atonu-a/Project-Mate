@@ -27,9 +27,9 @@
 </head>
 
 <body>
-  <div id="preloader" class="w-screen h-screen fixed top-0 z-999 flex items-center justify-center">
+  <!-- <div id="preloader" class="w-screen h-screen fixed top-0 z-999 flex items-center justify-center">
     <div class="spinner spinner--xl"></div>
-  </div>
+  </div> -->
 
 
   <!-- Top navigation -->
@@ -150,6 +150,14 @@
           <i data-lucide="compass" class="sidebar__link-icon"></i>
           <span>Discover Feed</span>
         </a>
+
+        <a href="{% url 'about' %}" class="sidebar__link 
+          {% if request.path == '/about/' %}
+            is-active
+          {% endif %} ">
+          <i data-lucide="info" class="sidebar__link-icon"></i>
+          <span>About</span>
+        </a>
         {% if request.user.is_authenticated %}
 
 
@@ -249,7 +257,7 @@
     </div>
     <nav class="mobile-menu__list">
       <a href="{% url 'home' %}" class="mobile-menu__link">
-        <i data-lucide="compass" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
+        <i data-lucide="compass" class="mobile-menu__link-icon"></i>
         <span>Discover Feed</span>
       </a>
       {% if request.user.is_authenticated %}
@@ -260,19 +268,19 @@
         <span>Dashboard</span>
       </a>
       <a href="{% url 'create' %}" class="mobile-menu__link">
-        <i data-lucide="plus-circle" class="mobile-menu__link-icon mobile-menu__link-icon--accent"></i>
+        <i data-lucide="plus-circle" class="mobile-menu__link-icon"></i>
         <span>Create New Project</span>
       </a>
       <a href="{% url 'my_projects' %}" class="mobile-menu__link">
-        <i data-lucide="folder-kanban" class="mobile-menu__link-icon mobile-menu__link-icon--success"></i>
+        <i data-lucide="folder-kanban" class="mobile-menu__link-icon"></i>
         <span>My Projects</span>
       </a>
       <a href="{% url 'requests' %}" class="mobile-menu__link">
-        <i data-lucide="git-pull-request" class="mobile-menu__link-icon mobile-menu__link-icon--warning"></i>
+        <i data-lucide="git-pull-request" class="mobile-menu__link-icon"></i>
         <span>Join Requests</span>
       </a>
       <a href="{% url 'saved' %}" class="mobile-menu__link">
-        <i data-lucide="bookmark" class="mobile-menu__link-icon mobile-menu__link-icon--accent"></i>
+        <i data-lucide="bookmark" class="mobile-menu__link-icon"></i>
         <span>Saved Project</span>
       </a>
       <!-- <a href="{% url 'messages' %}" class="mobile-menu__link">
@@ -284,15 +292,19 @@
         <span>Notifications</span>
       </a> -->
       <a href="{% url 'profile' request.user.username %}" class="mobile-menu__link">
-        <i data-lucide="user-circle" class="mobile-menu__link-icon mobile-menu__link-icon--secondary"></i>
+        <i data-lucide="user-circle" class="mobile-menu__link-icon"></i>
         <span>My Profile</span>
       </a>
       {% else %}
       <a href="{% url 'signin' %}" class="mobile-menu__link">
-        <i data-lucide="log-in" class="mobile-menu__link-icon mobile-menu__link-icon--primary"></i>
+        <i data-lucide="log-in" class="mobile-menu__link-icon"></i>
         <span>Sign In</span>
       </a>
       {% endif %}
+      <a href="{% url 'about' %}" class="mobile-menu__link">
+        <i data-lucide="info" class="mobile-menu__link-icon"></i>
+        <span>About</span>
+      </a>
       <button onclick="toggleTheme()" id="themeToggleBtn" class="mobile-menu__link" title="Toggle Theme"
         aria-label="Toggle theme">
         <i data-lucide="sun-moon" class="mobile-menu__link-icon mobile-menu__link-icon--success"></i>

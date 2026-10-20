@@ -4887,6 +4887,11 @@ textarea::placeholder {
 
 
 /* 27. Default Landing page */
+.landing-header-btn:hover {
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
 .hero {
     padding: 32px 0 16px;
 }
@@ -5524,7 +5529,16 @@ textarea::placeholder {
     grid-template-rows: 1fr;
     padding: 0 16px 16px;
 }
-
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+.contact-form button {
+  width: fit-content;
+  align-self: center;
+}
 @media (min-width: 768px) {
     .about-hero { padding: 24px 0 8px; }
     .about-section { padding: 32px 0; }

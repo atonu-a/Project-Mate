@@ -9,6 +9,11 @@
         </div>
         <span class="brand__name">TeamNest</span>
       </div>
+      <div class="landing-page-actions flex gap-4">
+        <a href="{% url 'discover' %}" class="landing-header-btn">Projects</a>
+        <a href="{% url 'about' %}" class="landing-header-btn">About Us</a>
+        <a href="#faq" class="landing-header-btn">FAQ</a>
+      </div>
       <div class="header-actions">
         <button onclick="toggleTheme()" class="icon-button" aria-label="Toggle theme">
           <i data-lucide="sun" class="theme-icon-sun"></i>
@@ -21,6 +26,7 @@
   </header>
 {% endblock %}
 {% block sidebar %}
+
 {% endblock %}
 
 {% block main %}
@@ -42,7 +48,8 @@
             </button>
             <button onclick="window.location.href='{% url 'discover' %}'" class="btn-secondary btn-secondary--lg">
               <i data-lucide="compass" class="btn-icon"></i>
-              <span>Explore Feed</span></button>
+              <span>Explore Feed</span>
+            </button>
           </div>
         </div>
 
@@ -76,6 +83,16 @@
         <p class="feature-card__text">Message teammates, track join requests, and manage every project from one dashboard.</p>
       </div>
     </section>
+
+    <section id="about" class="about-section">
+      <h2 class="about-section__title">
+        <i data-lucide="lightbulb" class="about-section__icon"></i>
+        <span>Why TeamNest</span>
+      </h2>
+      <p class="about-section__text">Most "find a co-founder" or "find a collaborator" platforms are built with developers in mind — everyone else gets left out. But building something real almost always takes more than one skill set. TeamNest exists so that a designer with no one to code for them, or a developer with no one to design for them, can post what they're working on and find people across every field who want to build it with them.</p>
+    </section>
+
+    {% include "about/faq.html" %}
 
     <section class="final-cta">
       <h2 class="final-cta__title">Ready to build something together?</h2>
