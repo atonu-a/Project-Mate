@@ -27,9 +27,9 @@
 </head>
 
 <body>
-  <!-- <div id="preloader" class="w-screen h-screen fixed top-0 z-999 flex items-center justify-center">
+  <div id="preloader" class="w-screen h-screen fixed top-0 z-999 flex items-center justify-center">
     <div class="spinner spinner--xl"></div>
-  </div> -->
+  </div>
 
 
   <!-- Top navigation -->
@@ -50,9 +50,10 @@
         <i data-lucide="search" class="header-search__icon" aria-hidden="true"></i>
         <input type="text" id="globalSearchInput" name="q" placeholder="Search projects, skills, teammates..."
           class="header-search__input" value="{{ q }}" />
-        <button type="submit" class="header-search__submit" style="color: var(--color-primary); font-weight: 800;" aria-label="Search">
+        <button type="submit" class="header-search__submit" style="color: var(--color-primary); font-weight: 800;"
+          aria-label="Search">
           <!-- <i data-lucide="search" aria-hidden="true"></i> -->
-           Go
+          Go
         </button>
         <button type="button" class="header-search__close" onclick="closeGlobalSearch()" aria-label="Cancel search">
           <i data-lucide="x" aria-hidden="true"></i>
@@ -60,8 +61,8 @@
       </form>
 
       <div class="header-actions">
-        <button type="button" class="icon-button header-search__toggle" onclick="openGlobalSearch()" aria-label="Open search"
-          aria-expanded="false">
+        <button type="button" class="icon-button header-search__toggle" onclick="openGlobalSearch()"
+          aria-label="Open search" aria-expanded="false">
           <i data-lucide="search" aria-hidden="true"></i>
         </button>
         <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button icon-button--optional"
@@ -311,6 +312,28 @@
     {% endfor %}
   </div>
   {% endif %}
+
+
+  <!-- Footer Sectioin -->
+  <footer class="site-footer">
+    <div class="footer__inner">
+      <div class="brand">
+        <div class="brand__logo">
+          <i class="fa-solid fa-users brand__logo-icon"></i>
+        </div>
+        <span class="brand__name">TeamNest</span>
+      </div>
+  
+      <div class="footer__right">
+        <nav class="footer__links">
+          <!-- <a href="#" class="footer__link">Privacy Policy</a>
+          <a href="{% url 'about' %}#faq" class="footer__link">FAQ</a>
+          <a href="#" class="footer__link">Terms of Service</a> -->
+        </nav>
+        <p class="footer__copyright">Copyright © 2026 TeamNest. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
   <script src="{% static 'js/app.js' %}"></script>

@@ -4946,6 +4946,7 @@ textarea::placeholder {
 }
 .btn-secondary--lg{
   color: var(--color-primary);
+
 }
 .hero__visual {
     position: relative;

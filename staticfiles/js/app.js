@@ -424,7 +424,7 @@ window.addEventListener("load", () => {
     // Optional: Completely remove the element from the DOM after the animation finishes
     setTimeout(() => {
       preloader.remove();
-    }, 500);
+    }, 200);
   } catch {}
 });
 
