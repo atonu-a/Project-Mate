@@ -5472,7 +5472,6 @@ textarea::placeholder {
     font-size: 0.75rem;
     color: var(--color-primary);
 }
-
 .faq-list {
     display: flex;
     flex-direction: column;
