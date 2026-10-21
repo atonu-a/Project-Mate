@@ -120,6 +120,16 @@ def reject_request(request, request_id):
     return redirect("requests")
 
 
+
+
+# ===========================
+#   Remove a Member
+# ===========================
+def remove_member(request, slug):
+    return redirect("project_detail")
+
+
+
 # ===========================
 #   Following an User
 # ===========================
