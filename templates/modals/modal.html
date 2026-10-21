@@ -57,4 +57,19 @@
     </div>
 </section>
 
+<!-- Teammate Remove Modal -->
+<section id="remove-modal-{{ project.slug }}" class="modal">
+    <div class="modal-content relative">
+        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeRemoveModal('{{ project.slug }}')"><i
+                class="fa-solid fa-xmark"></i></a>
+
+        <h1 class="header">Confirmation</h1>
+        <p class="msg text-danger">Are you sure you want to remove this teammate?</p>
+        <div class="btns">
+            <a class="btn-cancel" onclick="closeRemoveModal('{{ project.slug }}')">Cancel</a>
+            <a class="btn-danger" href="{% url 'leave' project.slug %}">Remove</a>
+        </div>
+    </div>
+</section>
+
 

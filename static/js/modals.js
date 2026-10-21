@@ -55,3 +55,23 @@ function closeLeaveModal(slug) {
     console.log("modal not found");
   }
 }
+
+
+// Teammate remove modal open
+function openRemoveModal(slug) {
+  const modal = document.getElementById(`remove-modal-${slug}`);
+  if (modal) {
+    modal.style.display = "block";
+  }
+}
+// Teammate remove modal close
+function closeRemoveModal(slug) {
+  const modal = document.getElementById(`remove-modal-${slug}`);
+    console.log("got it");
+  if (modal) {
+    modal.style.display = "none";
+        console.log("modal opened");
+  } else {
+    console.log("modal not found");
+  }
+}

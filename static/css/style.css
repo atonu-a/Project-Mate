@@ -1041,6 +1041,9 @@ textarea::placeholder {
 .btn-icon--accent {
   color: var(--color-accent);
 }
+.btn-icon--danger {
+  color: var(--color-danger);
+}
 
 .btn-tonal {
   display: inline-flex;

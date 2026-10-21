@@ -143,7 +143,7 @@ def leave_project(request, slug):
 
         if is_member:
             if is_owner:
-                messages.error(request, "You can't leave from your own project!")
+                messages.error(request, "You cannot leave from your own project!")
                 return redirect("project_detail", slug)
 
             else :

@@ -80,12 +80,20 @@
           <h3 class="detail-card__side-title">Current Team ({{ project.members_count }}/{{ project.team_size }})</h3>
           <div class="team-list">
             {% for member in members %}
-              <div class="member cursor-pointer" onclick="window.location.href='{% url 'profile' member.user %}'">
-                <img src="{{ member.user.profile.profile_pic_url }}" alt="" class="member__avatar" />
-                <div>
-                  <h4 class="member__name">{{ member.user.first_name }} {{ member.user.last_name }}</h4>
-                  <p class="member__role">{{ member.role }}</p>
+              <div class=" member justify-between" >
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='{% url 'profile' member.user %}'">
+                  <img src="{{ member.user.profile.profile_pic_url }}" alt="" class="member__avatar" />
+                  <div>
+                    <h4 class="member__name">{{ member.user.first_name }} {{ member.user.last_name }}</h4>
+                    <p class="member__role">{{ member.role }}</p>
+                  </div>
+                  
                 </div>
+                {% if member.user != project.owner_name %}
+                  <button class="" onclick="openRemoveModal('{{ project.slug }}')"><i data-lucide="circle-x" class="btn-icon btn-icon--danger"></i></button>
+                {% else %}
+                {% endif %}
+                
               </div>
             {% endfor %}
           </div>
@@ -93,7 +101,5 @@
       </aside>
     </div>
   </main>
-  {% include "modals/modal.html" %}
+  {% include 'modals/modal.html' %}
 {% endblock %}
-
-
