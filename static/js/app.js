@@ -646,37 +646,6 @@ try {
   });
 } catch (error) {}
 
-// Project delete modal open
-function openModal(slug) {
-  const modal = document.getElementById(`delete-modal-${slug}`);
-  if (modal) {
-    modal.style.display = "block";
-  }
-}
-// Project delete modal close
-function closeModal(slug) {
-  const modal = document.getElementById(`delete-modal-${slug}`);
-  if (modal) {
-    modal.style.display = "none";
-  }
-}
-
-// join request message modal open
-function openMsgModal(slug) {
-  const modal = document.getElementById(`send-msg-modal-${slug}`);
-  console.log("got it");
-  if (modal) {
-    modal.style.display = "block";
-  }
-}
-
-// send request msg modal close
-function closeMsgModal(slug) {
-  const modal = document.getElementById(`send-msg-modal-${slug}`);
-  if (modal) {
-    modal.style.display = "none";
-  }
-}
 
 function removeFromSaved(btn) {
   const card = btn.closest(".spotlight-card");

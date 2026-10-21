@@ -15,7 +15,7 @@ from django.db.models import Q, Exists, OuterRef, Count
 #       Project Details
 # ======================
 def project_detail(request, slug):
-    user = request.user if request.user.is_authenticated else None
+    user = request.user if request.user.is_authenticated else False
     join_request = JoinRequest.objects.filter(
         project=OuterRef("pk"),
         user = user
@@ -48,6 +48,7 @@ def project_detail(request, slug):
     context = {
         "members" : project.members.all(),
         "project" : project,
+        "projects" : [project],
         "join_request" : latest_join_request,
         "is_member" : project.is_member
         }

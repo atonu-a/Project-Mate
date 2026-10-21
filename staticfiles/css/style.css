@@ -978,7 +978,8 @@ textarea::placeholder {
 
 .btn-primary,
 .btn-secondary,
-.btn-success {
+.btn-success,
+.btn-danger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1009,6 +1010,13 @@ textarea::placeholder {
 }
 .btn-success {
   background: var(--color-success);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: background 0.2s;
+}
+
+.btn-danger{
+  background: var(--color-danger);
   border: 1px solid var(--color-border);
   color: var(--color-text);
   transition: background 0.2s;

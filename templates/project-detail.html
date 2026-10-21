@@ -19,23 +19,17 @@
           {% comment %}Join request{% endcomment %}
           {% if project.owner_name != request.user %}
             {% if is_member %}
-              <button class="btn-secondary" disabled>Joined</button>
+              <button class="btn-danger" onclick="openLeaveModal('{{ project.slug }}')"><i data-lucide="circle-x" class="btn-icon btn-icon"></i> Leave</button>
             {% elif project.members_count >= project.team_size %}
               <button class="btn-secondary" disabled>Team Full</button>
             {% elif join_request %}
               {% if join_request.status == 'Pending' %}
                 <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
-              {% elif join_request.status == 'Rejected' %}
-                <form method="post" action="{% url 'send_request' project.slug %}">
-                  {% csrf_token %}
-                  <button type="submit" class="post__join"><i class="fa-solid fa-arrow-rotate-left"></i> Request</button>
-                </form>
+              {% else %}
+                <button class="post__join" onclick="openMsgModal('{{ project.slug }}')"><i class="fa-solid fa-arrow-rotate-left"></i> Request</button>
               {% endif %}
             {% else %}
-              <form method="post" action="{% url 'send_request' project.slug %}">
-                {% csrf_token %}
-                <button type="submit" class="btn-primary">Request</button>
-              </form>
+              <button class="post__join" onclick="openMsgModal('{{ project.slug }}')"><i class="fa-solid fa-arrow-rotate-left"></i> Request</button>
             {% endif %}
           {% endif %}
 
@@ -99,4 +93,7 @@
       </aside>
     </div>
   </main>
+  {% include "modals/modal.html" %}
 {% endblock %}
+
+

@@ -979,7 +979,8 @@ textarea::placeholder {
 
 .btn-primary,
 .btn-secondary,
-.btn-success {
+.btn-success,
+.btn-danger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1013,6 +1014,19 @@ textarea::placeholder {
   border: 1px solid var(--color-border);
   color: var(--color-text);
   transition: background 0.2s;
+}
+.btn-danger {
+  background: var(--color-danger);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: background 0.2s;
+  box-sizing: border-box;
+}
+.btn-danger:hover {
+  background-color: transparent;
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  box-sizing: border-box;
 }
 
 .btn-secondary:hover {

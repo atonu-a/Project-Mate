@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.db.models import Exists
 from accounts.views import signin
 from home.views import get_posts
 from .models import JoinRequest, Follow, Like, Save, Comment
@@ -129,7 +130,39 @@ def remove_member(request, slug):
     return redirect("project_detail")
 
 
+@login_required(login_url="signin")
+def leave_project(request, slug):
+    # if request.method == "POST":
+        user = request.user
+        project = get_object_or_404(Project, slug=slug)
+        is_owner = project.owner_name == user
+        is_member = ProjectMember.objects.filter(
+            project=project,
+            user= user
+        ).exists()
 
+        if is_member:
+            if is_owner:
+                messages.error(request, "You can't leave from your own project!")
+                return redirect("project_detail", slug)
+
+            else :
+                project.members.get(user=user).delete()
+                JoinRequest.objects.filter(
+                    project = project,
+                    user = user,
+                    status = "Accepted"
+                    ).update(status = "Cancelled")
+                messages.success(request, "You left the team!")
+                return redirect("project_detail", slug)
+        
+        else :
+            messages.error(request,"You are not member of this project!")
+        
+        return redirect("project_detail", slug)
+
+    
+    
 # ===========================
 #   Following an User
 # ===========================
