@@ -1,0 +1,17 @@
+<!-- Teammate Remove Modal -->
+<section id="remove-modal-{{ project.slug }}-{{ member.user.username }}" class="modal">
+    <div class="modal-content relative">
+        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeRemoveModal('{{ project.slug }}-{{ member.user.username }}')"><i
+                class="fa-solid fa-xmark"></i></a>
+
+        <h1 class="header">Confirmation</h1>
+        <p class="msg text-danger">Are you sure you want to remove this teammate?</p>
+        <div class="btns">
+            <a class="btn-cancel" onclick="closeRemoveModal('{{ project.slug }}-{{ member.user.username }}')">Cancel</a>
+            <form method="post" action="{% url 'remove' project.slug member.user.username %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Remove</button>
+            </form>
+        </div>
+    </div>
+</section>

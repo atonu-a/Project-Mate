@@ -127,8 +127,28 @@ def reject_request(request, request_id):
 #   Remove a Member
 # ===========================
 def remove_member(request, slug, username):
-    
-    return redirect("project_detail")
+    if request.method == "POST":
+        project = get_object_or_404(Project, slug=slug)
+
+        member = get_object_or_404(ProjectMember, project=project, user__username = username)
+
+        is_owner = project.owner_name == request.user 
+        if not is_owner:
+            messages.error(request, "You are not authorized to remove anyone from a project.")
+            return redirect("project_detail", slug=project.slug)
+        if member.user == project.owner_name:
+            messages.error(request, "You cannot leave from your own project.")
+            return redirect("project_detail", slug=project.slug)
+        member.delete()
+        JoinRequest.objects.filter(
+            project = project,
+            user = member.user,
+            status = "Accepted"
+        ).update(status = "Cancelled")
+        
+        messages.success(request, f"You have successfully removed {member.user.username}")
+
+    return redirect("project_detail", slug=project.slug)
 
 
 @login_required(login_url="signin")
@@ -160,7 +180,7 @@ def leave_project(request, slug):
         else :
             messages.error(request,"You are not member of this project!")
         
-        return redirect("project_detail", slug)
+    return redirect("project_detail", slug)
 
     
     

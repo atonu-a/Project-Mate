@@ -90,11 +90,13 @@
                   
                 </div>
                 {% if member.user != project.owner_name %}
-                  <button class="" onclick="openRemoveModal('{{ project.slug }}')"><i data-lucide="circle-x" class="btn-icon btn-icon--danger"></i></button>
+                  <button class="" onclick="openRemoveModal('{{ project.slug }}-{{ member.user.username }}')"><i data-lucide="circle-x" class="btn-icon btn-icon--danger"></i></button>
                 {% else %}
                 {% endif %}
                 
               </div>
+
+              {% include "modals/teammate-remove-modal.html" %}
             {% endfor %}
           </div>
         </section>

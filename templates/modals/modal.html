@@ -9,7 +9,11 @@
         <p class="msg text-danger">Are you sure you want to delete this project?</p>
         <div class="btns">
             <a class="btn-cancel" onclick="closeModal('{{ project.slug }}')">Cancel</a>
-            <a class="btn-danger" href="{% url 'delete_project' project.slug %}">Delete</a>
+            <form method="post" action="{% url 'delete_project' project.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Delete</button>
+            </form>
+            
         </div>
     </div>
 </section>
@@ -52,22 +56,11 @@
         <p class="msg text-danger">Are you sure you want to leave this project?</p>
         <div class="btns">
             <a class="btn-cancel" onclick="closeLeaveModal('{{ project.slug }}')">Cancel</a>
-            <a class="btn-danger" href="{% url 'leave' project.slug %}">Leave</a>
-        </div>
-    </div>
-</section>
-
-<!-- Teammate Remove Modal -->
-<section id="remove-modal-{{ project.slug }}" class="modal">
-    <div class="modal-content relative">
-        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeRemoveModal('{{ project.slug }}')"><i
-                class="fa-solid fa-xmark"></i></a>
-
-        <h1 class="header">Confirmation</h1>
-        <p class="msg text-danger">Are you sure you want to remove this teammate?</p>
-        <div class="btns">
-            <a class="btn-cancel" onclick="closeRemoveModal('{{ project.slug }}')">Cancel</a>
-            <a class="btn-danger" href="{% url 'leave' project.slug %}">Remove</a>
+            <form method="post" action="{% url 'leave' project.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Leave</button>
+            </form>
+            
         </div>
     </div>
 </section>

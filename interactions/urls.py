@@ -9,6 +9,7 @@ urlpatterns = [
     path("<int:request_id>/reject/", views.reject_request, name = "reject_request"),
     path('requests/', views.join_requests, name="requests"),
     path("<str:slug>/leave/", views.leave_project, name="leave"),
+    path("<str:slug>/remove/<str:username>/", views.remove_member, name="remove"),
     path("<str:slug>/save/", views.save_project, name="save_project"),
     path("profile/saved/", views.saved_page, name="saved"),
     path("profile/<str:username>/follow/", views.toggle_follow, name="follow"),
