@@ -6,8 +6,12 @@
                 class="post__avatar" />
             <div>
                 <div class="post__author-row">
+                    <div class="flex">
                     <a href="{% url 'public_profile' project.owner_name.username %}" class="post__author-name">
                         {{ project.owner_name.first_name }} {{ project.owner_name.last_name }}</a>
+                        {% comment %} {% if project.owner_name.is_staff %}<i class="post__author-name" data-lucide="badge-check" style="margin-top: 6px; color: #FFD700; height:18px; width: 18px;"></i>
+                        {% endif %} {% endcomment %}
+                    </div>
 
                     <form method="post" action="{% url 'follow' project.owner_name.username %}">
                         {% csrf_token %}

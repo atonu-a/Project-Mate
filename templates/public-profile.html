@@ -19,7 +19,11 @@
         <div class="public-profile__identity">
           <div class="public-profile__heading">
             <div class="public-profile__name-block">
-              <h1 class="public-profile__name">{{ public_profile.get_full_name|default:public_profile.username }}</h1>
+              <div class="flex">
+                <h1 class="public-profile__name">{{ public_profile.get_full_name|default:public_profile.username }}</h1>
+                {% if public_profile.is_staff %}<i data-lucide="badge-check" style="margin-top: 6px; color: #FFD700;"></i>
+                {% endif %}
+              </div>
               <p class="public-profile__stat">@{{ public_profile.username}}</p>
               <div class="public-profile__stats">
 

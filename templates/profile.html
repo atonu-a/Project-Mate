@@ -18,6 +18,8 @@
             <div class="public-profile__name-block">
               <div class="flex">
                 <h1 class="public-profile__name">{{ request.user.get_full_name|default:'request.user.username ' }}</h1>
+                  {% if public_profile.is_staff %}<i data-lucide="badge-check" style="margin-top: 6px; color: #FFD700;"></i>
+                  {% endif %}
                 <a class="" href="{% url 'edit_profile' %}" style="margin-top: 4px; color: var(--text-primary);"><i data-lucide="pencil" style="color: #ff5a36"></i></a>
               </div>
               <p class="public-profile__stat">@{{ request.user.username }}</p>
