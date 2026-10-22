@@ -126,13 +126,14 @@ def reject_request(request, request_id):
 # ===========================
 #   Remove a Member
 # ===========================
-def remove_member(request, slug):
+def remove_member(request, slug, username):
+    
     return redirect("project_detail")
 
 
 @login_required(login_url="signin")
 def leave_project(request, slug):
-    # if request.method == "POST":
+    if request.method == "POST":
         user = request.user
         project = get_object_or_404(Project, slug=slug)
         is_owner = project.owner_name == user
