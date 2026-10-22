@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block main %}
-   <main class="page-main page-main--wide">
+  <main class="page-main page-main--wide">
     <button onclick="window.history.back()" class="back-link"><i data-lucide="arrow-left" class="back-link__icon"></i><span>Back</span></button>
 
     <section class="detail-hero">
@@ -17,13 +17,16 @@
         </div>
         <div class="detail-hero__actions">
           {% comment %}Join request{% endcomment %}
+          
           {% if project.owner_name != request.user %}
             {% if is_member %}
               <button class="btn-danger" onclick="openLeaveModal('{{ project.slug }}')"><i data-lucide="circle-x" class="btn-icon btn-icon"></i> Leave</button>
             {% elif project.members_count >= project.team_size %}
               <button class="btn-secondary" disabled>Team Full</button>
             {% elif join_request %}
+
               {% if join_request.status == 'Pending' %}
+                
                 <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
               {% else %}
                 <button class="post__join" onclick="openMsgModal('{{ project.slug }}')"><i class="fa-solid fa-arrow-rotate-left"></i> Request</button>
@@ -80,23 +83,20 @@
           <h3 class="detail-card__side-title">Current Team ({{ project.members_count }}/{{ project.team_size }})</h3>
           <div class="team-list">
             {% for member in members %}
-              <div class=" member justify-between" >
+              <div class="member justify-between">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='{% url 'profile' member.user %}'">
                   <img src="{{ member.user.profile.profile_pic_url }}" alt="" class="member__avatar" />
                   <div>
                     <h4 class="member__name">{{ member.user.first_name }} {{ member.user.last_name }}</h4>
                     <p class="member__role">{{ member.role }}</p>
                   </div>
-                  
                 </div>
                 {% if member.user != project.owner_name %}
                   <button class="" onclick="openRemoveModal('{{ project.slug }}-{{ member.user.username }}')"><i data-lucide="circle-x" class="btn-icon btn-icon--danger"></i></button>
                 {% else %}
-                {% endif %}
-                
-              </div>
 
-              {% include "modals/teammate-remove-modal.html" %}
+                {% endif %}
+              </div>
             {% endfor %}
           </div>
         </section>
@@ -104,4 +104,7 @@
     </div>
   </main>
   {% include 'modals/modal.html' %}
+  {% for member in members %}
+    {% include 'modals/teammate-remove-modal.html' %}
+  {% endfor %}
 {% endblock %}

@@ -116,13 +116,13 @@ def discover(request):
             project_id__in = project_ids,
             user = user
         ).values_list("project_id", flat=True))
-        join_requests = {
-            join_request.project_id: join_request
-            for join_request in JoinRequest.objects.filter(
-                project_id__in = project_ids,
-                user = user
-            ).order_by("-id")
-        }
+        join_requests = {}
+
+        for jr in JoinRequest.objects.filter(
+            project_id__in=project_ids,
+            user=user
+        ).order_by("-id"):
+            join_requests.setdefault(jr.project_id, jr)
         for project in projects:
             project.is_following = project.owner_name_id in following_users
             project.is_member = (project.id in member_project_ids)
