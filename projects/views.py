@@ -157,7 +157,7 @@ def edit_project(request, slug):
         
         if selected_comp == "Paid" and not payment_details:
             messages.error(request, "Please enter payment details!")
-            return render(request, "create-project.html")
+            return render(request, "edit-project.html")
             
         if selected_comp != "Paid":
             payment_details = 0
@@ -202,7 +202,7 @@ def edit_project(request, slug):
 # ======================
 #   Project Deletion
 # ======================
-@login_required(login_url="sigin")
+@login_required(login_url="signin")
 def delete_project(request, slug):
     project = Project.objects.get(slug=slug)
     previous_page = request.META.get('HTTP_REFERER', 'home')
