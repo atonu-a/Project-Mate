@@ -218,6 +218,7 @@ def delete_project(request, slug):
 # ======================
 #   My Projects 
 # ======================
+@login_required(login_url="signin")
 def my_projects(request):
     # owned_projects = Project.objects.all().filter(owner_name = request.user) 
     # joined_projects = Project.objects.filter()
