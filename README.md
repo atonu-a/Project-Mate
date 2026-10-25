@@ -1,7 +1,7 @@
 
-# TeamNest
+# Project-Mate (TeamNest)
 
-TeamNest is a web platform that helps people find collaborators for their projects — regardless of field. Unlike typical "find a co-founder" tools that assume everyone is a developer, TeamNest is built for developers, designers, marketers, writers, students, and anyone else who wants to build something with a team.
+Project-Mate is a Django web platform that helps people find collaborators for their projects — regardless of field. Instead of assuming everyone is a developer, it's built so developers, designers, marketers, writers, students, and anyone else can post a project, list the skills they need, and find teammates across every discipline.
 
 > Find your team. Build anything.
 
@@ -9,131 +9,139 @@ TeamNest is a web platform that helps people find collaborators for their projec
 
 ## ✨ Features
 
-- **Multi-field profiles** — users pick the field(s) they work in (Technology, Design, Marketing, Business, Writing, Education, Healthcare, Finance, Student, Other), not just developer tags.
-- **Project discovery feed** — a social-style feed of projects looking for collaborators, with likes, comments, and join requests.
-- **Create & manage projects** — post a project with required skills, team size, and category.
-- **Join requests** — apply to join a project, or review and accept/reject incoming requests.
-- **Direct messaging** — a two-pane inbox on desktop that collapses into a list → conversation mobile flow with a back button.
-- **Profiles** — includes headline, bio, location, organization, skills, and external links (portfolio, GitHub, LinkedIn), plus follow/message/share actions on other users' profiles.
-- **Search** — results split across All Results / Users / Projects tabs.
-- **Saved projects** — bookmark projects to revisit later.
-- **Notifications** — join request updates, new applicants, etc.
-- **Auth flow** — sign up, sign in, first-time profile onboarding, and a separate edit-profile flow.
-- **Landing & About pages** — public-facing marketing page plus an About page with a "How It Works" guide, team info, FAQ accordion, and a contact form.
-- **Dark/light theme** — toggle persisted via `localStorage`.
-- **Fully mobile responsive** — mobile-first CSS throughout, with a slide-out drawer nav, collapsing two-pane chat, and horizontally scrollable tab bars where needed.
+- **Profiles with multi-field tagging** — users pick the field(s) they work in and their skills, both stored as proper many-to-many relations (`Field`, `Skill`), not fixed dropdowns.
+- **Social-style discover feed** — projects shown with like/comment/save counts, an "All / Following / Recommended" filter, and skill-match–based recommendation sorting.
+- **Full-text search** — PostgreSQL `SearchVector`/`SearchRank` across both projects and people, split into project results and people results.
+- **Project lifecycle** — create, edit, delete projects with status (`Open`, `In Progress`, `Completed`, `Closed`), compensation type, deadline, required skills, and team size.
+- **Join requests** — apply to a project, project owners accept/reject from a dedicated requests inbox; accepted members become `ProjectMember` rows with a role.
+- **Team management** — owners can remove members, members can leave, with the owner protected from leaving/removing themselves.
+- **Follow system** — follow/unfollow other users, with follower/following counts shown on profiles.
+- **Likes, comments, saves** — AJAX-style (`JsonResponse`) endpoints for liking and saving projects and commenting on them.
+- **Own profile vs. public profile** — a single `profile` view renders either the editable `profile.html` (if you're viewing yourself) or `public-profile.html` (with Follow / Message / Share actions) for anyone else.
+- **Auth flow** — sign up, sign in, sign out, a first-time "complete profile" onboarding step, and a separate edit-profile flow.
+- **Image uploads via Cloudinary** — profile pictures, cover photos, and project images are stored on Cloudinary rather than local disk, with a default placeholder avatar/SVG.
+- **Landing & About pages** — a public marketing page plus an About page with FAQ.
+- **Dark/light theme**, persisted via `localStorage`.
+- **Mobile responsive** throughout, including a collapsing two-pane messages view.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Backend templating:** Django templates (`{% extends %}`, `{% block %}`, `{% url %}`, `{% for %}` / `{% empty %}`, `{% if %}`)
-- **Styling:** Hand-written semantic CSS (`style.css`) — **no Tailwind, no CSS framework**. Every element has a purpose-named class (`post__title`, `btn-primary`, `chat__sidebar`, etc.) instead of inline utility classes.
-- **Icons:** [Lucide](https://lucide.dev/) (`data-lucide="..."` + `lucide.createIcons()`)
+- **Backend:** Django (see `requirements.txt` for the pinned version), PostgreSQL (via `dj-database-url` + `psycopg2-binary`)
+- **Media storage:** Cloudinary (`django-cloudinary-storage`) for user-uploaded images
+- **Static files:** WhiteNoise (`CompressedStaticFilesStorage`) for serving static assets in production
+- **Search:** `django.contrib.postgres.search` (Postgres full-text search — **requires a PostgreSQL database**, won't work on SQLite)
+- **Dev tooling:** `django-debug-toolbar`
+- **Slugs:** `django-autoslug` for project URLs (`/<slug>/`)
+- **Env config:** `python-dotenv` (reads a local `.env` file)
+- **Frontend styling:** a hand-written semantic CSS design system (`static/css/style.css` — BEM-style classes, CSS custom-property design tokens, mobile-first responsive rules) **combined with Tailwind in places** (loaded via the Tailwind browser build CDN script in `base.html`) — so not a single consistent styling approach throughout; some templates mix both.
+- **Icons:** [Lucide](https://lucide.dev/) and Font Awesome (both loaded)
+- **Other front-end libs:** Cropper.js (profile/cover photo cropping)
 - **Fonts:** Plus Jakarta Sans (UI), JetBrains Mono (tags/skill pills)
-- **JavaScript:** Vanilla JS (`app.js`) — no framework, no build step
+- **Deployment:** configured for Vercel (`vercel.json`, `@vercel/python` builder against `ProjectMate/wsgi.py`), with Gunicorn also available for traditional hosting
 
 ---
 
 ## 📁 Project Structure
 
 ```
-
-teamnest/
-├── style.css              # entire design system — tokens, components, responsive rules
-├── js/
-│   └── app.js              # all interactivity (vanilla JS, no dependencies)
-├── landing.html             # public marketing / "intro" page
-├── signup.html               # create account
-├── signin.html                # sign in
-├── profile-setup.html          # first-time onboarding (after signup)
-├── edit-profile.html            # returning-user profile edit
-├── index.html                    # dashboard
-├── discover.html                  # social feed of projects
-├── create-project.html             # post a new project
-├── my-projects.html                 # owned + joined projects
-├── project-detail.html               # single project view
-├── requests.html                      # incoming/outgoing join requests
-├── messages.html                       # DM inbox (mobile list↔chat toggle)
-├── notifications.html                   # notifications list
-├── profile.html                          # logged-in user's own profile
-├── (public profile template)              # another user's profile — follow/message/share
-├── search-results.html                     # All Results / Users / Projects tabs
-├── saved-projects.html                      # bookmarked projects
-├── about.html                                # about, how-it-works, FAQ, contact form
-└── base.html                                  # shared layout (header + {% block main %} + footer)
-
+Project-Mate/
+├── ProjectMate/            # Django project root
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py / asgi.py
+├── accounts/                # Users, profiles, auth
+│   ├── models.py             # Skill, Field, Profile
+│   ├── views.py               # signup, signin, signout, profile, edit_profile, complete_profile
+│   ├── forms.py                 # RegistrationForm
+│   └── context_processors.py     # profile_context (injected into every template)
+├── home/                      # Landing, dashboard, feed, search
+│   └── views.py                 # landing_page, discover, home, search_results, about, dashboard, messages, notifications, get_posts()
+├── projects/                   # Project CRUD
+│   ├── models.py                 # Project, ProjectMember
+│   └── views.py                   # project_detail, create_project, edit_project, delete_project, my_projects
+├── interactions/                 # Social actions
+│   ├── models.py                   # JoinRequest, Follow, Like, Comment, Save
+│   └── views.py                     # send_request, join_requests, accept/reject_request, follow, like, save, comment, leave/remove member
+├── templates/
+│   ├── base.html                     # shared layout: header, sidebar block, {% block main %}, footer
+│   ├── landing.html, signup.html, signin.html
+│   ├── profile-setup.html, edit-profile.html
+│   ├── index.html, discover.html, posts.html (project card partial)
+│   ├── create-project.html, edit-project.html, project-detail.html
+│   ├── my-projects.html, requests.html, saved.html
+│   ├── profile.html, public-profile.html
+│   ├── messages.html, notifications.html, search-results.html
+│   ├── about.html, about/faq.html
+│   └── modals/                        # modal.html, teammate-remove-modal.html
+├── static/
+│   ├── css/style.css
+│   ├── js/app.js, js/modals.js
+│   └── images/
+├── media/                              # user uploads (local fallback; production uses Cloudinary)
+└── requirements.txt
 ```
 
 ---
 
-## 🎨 Design System
+## 🧩 Data Model (at a glance)
 
-All visual styling lives in `style.css`, organized into numbered sections:
+| App | Models | Notes |
+|---|---|---|
+| `accounts` | `Skill`, `Field`, `Profile` | `Profile` is 1-to-1 with Django's `User`; `skills`/`fields` are M2M |
+| `projects` | `Project`, `ProjectMember` | `Project.slug` auto-generated from title via `django-autoslug`; `ProjectMember` links a user to a project with a `role` |
+| `interactions` | `JoinRequest`, `Follow`, `Like`, `Comment`, `Save` | all are simple join tables between `User` and either another `User` (`Follow`) or a `Project` |
 
-| # | Section | # | Section |
-|---|---|---|---|
-| 1 | Design tokens | 13 | My projects |
-| 2 | Base / reset | 14 | Notifications |
-| 3 | Glass surfaces | 15 | Profile |
-| 4 | Page layout | 16 | Project detail |
-| 5 | Header | 17 | Join requests |
-| 6 | Buttons | 18 | Messages |
-| 7 | Mobile drawer | 19 | Toasts |
-| 8 | Sidebars | 20 | Motion |
-| 9 | Shared bits | 21 | Auth (sign in / sign up) |
-| 10 | Dashboard | 22 | Onboarding / edit profile |
-| 11 | Feed (discover) | 23 | Spinner |
-| 12 | Forms | | |
+---
 
-### Color tokens (CSS custom properties, theme-aware via `.dark`)
+## 🔗 URL Names
 
-```css
---color-primary: #FF5A36;    /* brand orange */
---color-secondary: #7C3AED;  /* purple */
---color-accent: #06B6D4;     /* cyan */
---color-success: #10B981;
---color-warning: #F59E0B;
---color-danger: #EF4444;
+For reference when linking with `{% url %}`:
+
+```
+home, overview, discover, dashboard, messages, notifications, search_results, about
+signup, signin, signout, profile, public_profile, complete_profile, edit_profile
+create, my_projects, edit_project, delete_project, project_detail
+send_request, requests, follow, leave, remove, save_project, saved, comment, like_project
 ```
 
-Light/dark mode is handled entirely by swapping these variables on `<html class="dark">` — toggled via `toggleTheme()` in `app.js` and persisted to `localStorage`.
-
-### Naming convention
-BEM-style: `.block`, `.block__element`, `.block--modifier`, `.is-state` (e.g. `.chat__item.is-active`, `.post__join`).
+> Note: `profile` and `public_profile` currently point to the same URL pattern and view — the view itself branches internally based on whether the viewer owns the profile.
 
 ---
 
 ## 🚀 Getting Started
 
-1. Clone the repo.
-2. Serve the templates through your Django project (`base.html` expects `{% static %}` for images and `{% url %}` for internal links — wire up the corresponding views/URLs).
-3. No build step, no `npm install` — `style.css` and `app.js` are plain files, loaded directly:
+1. Clone the repo and create a virtual environment.
+2. `pip install -r requirements.txt`
+3. Create a `.env` file in the project root with at least:
+   ```
+   SECRET_KEY=your-secret-key
+   DEBUG=True
+   DATABASE_URL=postgres://user:password@localhost:5432/projectmate
+   CLOUDINARY_CLOUD_NAME=...
+   CLOUDINARY_API_KEY=...
+   CLOUDINARY_API_SECRET=...
+   ```
+   A **PostgreSQL** database is required — search relies on Postgres-specific full-text search and won't work on SQLite.
+4. `python manage.py migrate`
+5. `python manage.py runserver`
 
-```html
-<link rel="stylesheet" href="style.css">
-<script src="https://unpkg.com/lucide@latest"></script>
-<script src="js/app.js"></script>
-```
+For static files in production: `python manage.py collectstatic` (served via WhiteNoise).
 
 ---
 
 ## 📱 Responsive Behavior
 
-- **< 1024px:** sidebar nav collapses into a hamburger drawer (`toggleMobileMenu()`).
-- **< 768px (Messages):** only one pane shown at a time — conversation list by default, tapping a chat opens it full-screen with a back button (`openConversation()` / `closeConversation()`).
-- **All forms:** inputs use `font-size: 1rem` to prevent iOS auto-zoom on focus.
-- **Tab bars** (search results, feed filters): horizontally scrollable on narrow screens with hidden scrollbars.
+- Sidebar/dashboard nav collapses into a mobile drawer below 1024px.
+- Messages view: one pane at a time on phones (list ↔ conversation, with a back button), two-pane side-by-side from 768px.
+- Forms use `font-size: 1rem` inputs to avoid iOS auto-zoom.
 
 ---
 
-## 🙋 Who This Is For
+## ⚠️ Known Issues / In Progress
 
-| | |
-|---|---|
-| **Developers** | find a designer/marketer/co-founder |
-| **Designers** | partner with developers to ship their work |
-| **Marketers & Writers** | join early-stage projects |
-| **Students** | get real project experience |
+A handful of backend issues are being worked through — see the project's issue tracker / commit history for current status. Notable areas still being hardened: a couple of interaction endpoints needed stricter `POST`-only enforcement, and one or two template field references didn't match the current model field names.
 
 ---
+
