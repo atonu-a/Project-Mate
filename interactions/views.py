@@ -301,6 +301,7 @@ def saved_page(request):
 #   Comment on a Post
 # ===========================
 
+@login_required(login_url="signin")
 def create_comment(request, slug):
     user = request.user if request.user.is_authenticated else None
     
@@ -311,6 +312,7 @@ def create_comment(request, slug):
             "login_url" : f"/signin/?next={request.path}"
         }, status=401)
         
+    project = get_object_or_404(Project, slug = slug)
     if request.method == "POST":
         project = get_object_or_404(Project, slug = slug)
         input_comment = request.POST.get("input_comment", "").strip()
