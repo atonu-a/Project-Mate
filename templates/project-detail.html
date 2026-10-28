@@ -91,7 +91,7 @@
                     <p class="member__role">{{ member.role }}</p>
                   </div>
                 </div>
-                {% if member.user != project.owner_name %}
+                {% if member.user != project.owner_name and request.user == project.owner_name %}
                   <button class="" onclick="openRemoveModal('{{ project.slug }}-{{ member.user.username }}')"><i data-lucide="circle-x" class="btn-icon btn-icon--danger"></i></button>
                 {% else %}
 
