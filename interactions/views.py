@@ -222,6 +222,7 @@ def like_project(request, slug):
             "login_url":f"/signin/?next={request.path}"
         }, status=401)
         
+    project = get_object_or_404(Project, slug = slug)    
     if request.method == "POST":
         project = get_object_or_404(Project, slug = slug)
         
