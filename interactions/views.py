@@ -127,8 +127,9 @@ def reject_request(request, request_id):
 #   Remove a Member
 # ===========================
 def remove_member(request, slug, username):
+    project = get_object_or_404(Project, slug=slug)
     if request.method == "POST":
-        project = get_object_or_404(Project, slug=slug)
+        
 
         member = get_object_or_404(ProjectMember, project=project, user__username = username)
 
@@ -255,8 +256,9 @@ def save_project(request, slug):
             "login_url":f"/signin/?next={request.path}"
         }, status = 401)
         
+    project = get_object_or_404(Project, slug = slug)    
     if request.method == "POST":
-        project = get_object_or_404(Project, slug = slug)
+        
         
         save, created = Save.objects.get_or_create(
             project = project,
