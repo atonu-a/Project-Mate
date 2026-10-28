@@ -72,19 +72,23 @@ def join_requests(request):
 # ===========================
 @login_required(login_url="signin")
 def accept_request(request, request_id):
+    
+    
     join_request = get_object_or_404(JoinRequest, id=request_id)
     member_count = ProjectMember.objects.filter(
         project=join_request.project
         ).count()
-
+    
+    if join_request.project.owner_name != request.user:
+            return redirect("requests")
+        
+        
     if member_count >= join_request.project.team_size:
         join_request.status = "Rejected"
         join_request.save()
         messages.error(request, "Team is already full. Request rejected")
         return redirect("requests")
     
-    if join_request.project.owner_name != request.user:
-        return redirect("requests")
     
     if request.method == "POST":
         ProjectMember.objects.create(
@@ -121,8 +125,6 @@ def reject_request(request, request_id):
     return redirect("requests")
 
 
-
-
 # ===========================
 #   Remove a Member
 # ===========================
@@ -152,6 +154,10 @@ def remove_member(request, slug, username):
     return redirect("project_detail", slug=project.slug)
 
 
+
+# ===========================
+#   Leave From a Project
+# ===========================
 @login_required(login_url="signin")
 def leave_project(request, slug):
     if request.method == "POST":
@@ -182,8 +188,7 @@ def leave_project(request, slug):
             messages.error(request,"You are not member of this project!")
         
     return redirect("project_detail", slug)
-
-    
+  
     
 # ===========================
 #   Following an User
