@@ -6,6 +6,7 @@ from home.views import get_posts
 from .models import JoinRequest, Follow, Like, Save, Comment
 from projects.views import project_detail
 from projects.models import Project, ProjectMember
+from realtime_actions.models import Notification
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -154,7 +155,6 @@ def remove_member(request, slug, username):
     return redirect("project_detail", slug=project.slug)
 
 
-
 # ===========================
 #   Leave From a Project
 # ===========================
@@ -209,6 +209,15 @@ def toggle_follow(request, username):
         )
         if created:
             messages.success(request, f"Followed {targeted_user.first_name} {targeted_user.last_name}")
+            
+            
+            Notification.objects.create(
+                recipient=targeted_user,
+                actor=request.user,
+                notification_type=Notification.NotificationType.NEW_FOLLOWER,
+                content="started following you.",
+                target_url=f"/profile/{request.user.username}/",
+            )
         
         if not created :
             follow.delete()
