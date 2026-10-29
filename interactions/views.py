@@ -215,8 +215,8 @@ def toggle_follow(request, username):
                 recipient=targeted_user,
                 actor=request.user,
                 notification_type=Notification.NotificationType.NEW_FOLLOWER,
-                content="started following you.",
-                target_url=f"/profile/{request.user.username}/",
+                content=f"{request.user} started following you.",
+                target_url=f"/profile/{request.user.username}",
             )
         
         if not created :

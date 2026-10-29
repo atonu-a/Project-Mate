@@ -9,20 +9,21 @@
         </div>
 
         <div class="notice-list">
-            <div class="notice">
+            {% for notice in notifications %}
+            <div class="notice cursor-pointer" onclick="window.location.href='{{ notice.target_url }}'">
                 <div class="notice__body">
                     <div class="notice__icon notice__icon--success">
                         <i data-lucide="check-circle-2" class="notice__glyph"></i>
                     </div>
                     <div>
-                        <h4 class="notice__title">Join Request Accepted</h4>
-                        <p class="notice__text">Dmitri Volkov accepted your request to join QuantumPay.</p>
+                        <h4 class="notice__title">{{ notice.get_notification_type_display }}</h4>
+                        <p class="notice__text">{{ notice.content }}</p>
                     </div>
                 </div>
                 <span class="notice__time">1 hour ago</span>
             </div>
-
-            <div class="notice">
+            {% endfor %}
+            <!-- <div class="notice">
                 <div class="notice__body">
                     <div class="notice__icon">
                         <i data-lucide="bell" class="notice__glyph"></i>
@@ -33,7 +34,7 @@
                     </div>
                 </div>
                 <span class="notice__time">3 hours ago</span>
-            </div>
+            </div> -->
         </div>
     </main>
 
