@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('interactions.urls')),
     path('', include('projects.urls')),
+    # path('', include('realtime_actions.urls')),
     
 ]
 urlpatterns += static(
