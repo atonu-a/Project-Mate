@@ -10,7 +10,11 @@
 
         <div class="notice-list">
             {% for notice in notifications %}
-            <div class="notice cursor-pointer" onclick="window.location.href='{{ notice.target_url }}'">
+            <a class="notice cursor-pointer {% if notice.is_read %}
+            
+            {% else %}
+            unread
+            {% endif %}" href="{% url 'read_notice' notice.pk %}">
                 <div class="notice__body">
                     {% if notice.notification_type == "follow" %}
                         <div class="notice__icon">
@@ -28,7 +32,7 @@
                     </div>
                 </div>
                 <span class="notice__time">{{ notice.created_at_ago }}</span>
-            </div>
+            </a>
             {% endfor %}
             <!-- <div class="notice">
                 <div class="notice__body">

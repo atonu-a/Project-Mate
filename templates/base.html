@@ -84,10 +84,11 @@
         </button>
 
 
-        <button onclick="window.location.href='{% url 'notifications' %}'" class="icon-button "
-          aria-label="Notifications">
+        <button onclick="window.location.href='{% url 'notifications' %}'" class="icon-button" aria-label="Notifications">
           <i data-lucide="bell" class="icon-button__icon"></i>
-          <span class="icon-button__dot icon-button__dot--accent"></span>
+          {% if unread_notification_count > 0 %}
+          <span class="icon-button__badge">{% if unread_notification_count > 99 %}99+{% else %}{{ unread_notification_count }}{% endif %}</span>
+          {% endif %}
         </button>
 
         <button onclick="window.location.href='{% url 'messages' %}'" class="icon-button " aria-label="Messages">
@@ -220,7 +221,7 @@
           {% endif %} ">
           <i data-lucide="bell" class="sidebar__link-icon"></i>
           <span>Notifications</span>
-          <span class="sidebar__count sidebar__count--alert">5</span>
+          <span class="sidebar__count sidebar__count--alert">{{ unread_notification_count }}</span>
         </a>
 
         <a href="{% url 'profile' request.user.username%}" class="sidebar__link 
