@@ -32,5 +32,4 @@ def read_notice(request, pk):
     )
     notification.is_read = True
     notification.save(update_fields=["is_read"])
-    
     return redirect(notification.target_url)

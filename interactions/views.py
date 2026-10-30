@@ -46,6 +46,14 @@ def send_request(request, slug):
             user = request.user,
             msg = request.POST.get("msg", "")
         )
+        Notification.objects.create(
+            recipient=project.owner_name,
+            actor=request.user,
+            project = project,
+            notification_type=Notification.NotificationType.NEW_JOIN_REQUEST,
+            content=f"{request.user} has request to join in {project}",
+            target_url=f"/requests",
+        )
         messages.success(request, "Join request sent!")
         
         
@@ -99,6 +107,14 @@ def accept_request(request, request_id):
         )
         
         join_request.status = "Accepted"
+        Notification.objects.create(
+            recipient=join_request.user,
+            actor=request.user,
+            project = join_request.project,
+            notification_type=Notification.NotificationType.REQUEST_ACCEPTED,
+            content=f"Your join request for {join_request.project} has been accepted",
+            target_url=f"/{join_request.project.slug}",
+        )
         messages.success(request, f"Accepted request from {join_request.user}")
         join_request.save()
         
