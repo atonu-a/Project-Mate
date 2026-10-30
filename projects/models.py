@@ -31,7 +31,7 @@ class Project(models.Model):
     team_size = models.PositiveBigIntegerField(default=1)
     deadline = models.DateField(null= True, blank=True)
     category = models.CharField(max_length=100)
-    create_at = models.DateField(auto_now_add=True)
+    create_at = models.DateTimeField(auto_now_add=True)
     img = models.ImageField(upload_to="images", blank=True, null=True)
     overview = models.TextField()
     

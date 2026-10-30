@@ -12,9 +12,16 @@
             {% for notice in notifications %}
             <div class="notice cursor-pointer" onclick="window.location.href='{{ notice.target_url }}'">
                 <div class="notice__body">
+                    {% if notice.notification_type == "follow" %}
+                        <div class="notice__icon">
+                        <i data-lucide="user-round-check" class="notice__glyph"></i>
+                    </div>
+                    {% else %}
                     <div class="notice__icon notice__icon--success">
                         <i data-lucide="check-circle-2" class="notice__glyph"></i>
                     </div>
+                    {% endif %}
+                    
                     <div>
                         <h4 class="notice__title">{{ notice.get_notification_type_display }}</h4>
                         <p class="notice__text">{{ notice.content }}</p>
@@ -23,7 +30,7 @@
                 <span class="notice__time">1 hour ago</span>
             </div>
             {% endfor %}
-            <!-- <div class="notice">
+            <div class="notice">
                 <div class="notice__body">
                     <div class="notice__icon">
                         <i data-lucide="bell" class="notice__glyph"></i>
@@ -34,7 +41,7 @@
                     </div>
                 </div>
                 <span class="notice__time">3 hours ago</span>
-            </div> -->
+            </div>
         </div>
     </main>
 

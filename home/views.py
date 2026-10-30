@@ -5,6 +5,7 @@ from interactions.models import JoinRequest, Follow, Like, Save, Comment
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.db.models import Exists, OuterRef, Q, Count, Value, BooleanField, Prefetch
+from .utils import time_ago
 
 
 # Landing Page
@@ -31,6 +32,9 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
         likes_count=Count("likes", distinct=True),
         comments_count=Count("comments", distinct=True)
     )
+    
+    
+    
     if user and exclude_own:
         projects = projects.exclude(owner_name=user)
     if owner_name:
@@ -85,6 +89,10 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
         projects.sort(
             key=lambda p:p.skill_match, reverse=True
         )
+    for project in projects:
+        project.created_at_ago = time_ago(project.create_at)
+        for comment in project.prefetched_comments:
+            comment.created_at_ago = time_ago(comment.created_at)
         
     return projects
 

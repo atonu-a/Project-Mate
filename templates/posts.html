@@ -27,7 +27,7 @@
 
                     {% comment %} <span class="role-badge">Owner</span> {% endcomment %}
                 </div>
-                <p class="post__meta">{{ project.category }} • {{ project.create_at }}</p>
+                <p class="post__meta">{{ project.category }} • {{ project.created_at_ago }}</p>
             </div>
         </div>
 
@@ -201,7 +201,7 @@
                         {% comment %} <button class="comment__action">Like</button>
                         <button class="comment__action">Reply</button> {% endcomment %}
                         <span class="comment__time">
-                            {{ comment.created_at }}
+                            {{ comment.created_at_ago }}
                         </span>
                     </div>
                 </div>
