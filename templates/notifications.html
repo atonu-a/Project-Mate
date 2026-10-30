@@ -27,10 +27,10 @@
                         <p class="notice__text">{{ notice.content }}</p>
                     </div>
                 </div>
-                <span class="notice__time">1 hour ago</span>
+                <span class="notice__time">{{ notice.created_at_ago }}</span>
             </div>
             {% endfor %}
-            <div class="notice">
+            <!-- <div class="notice">
                 <div class="notice__body">
                     <div class="notice__icon">
                         <i data-lucide="bell" class="notice__glyph"></i>
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <span class="notice__time">3 hours ago</span>
-            </div>
+            </div> -->
         </div>
     </main>
 
