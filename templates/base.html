@@ -25,11 +25,14 @@
     crossorigin="anonymous" referrerpolicy="no-referrer">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 <body>
-  <!-- <div id="preloader" class="w-screen h-screen fixed top-0 z-999 flex items-center justify-center">
-    <div class="spinner spinner--xl"></div>
-  </div> -->
+  <div id="preloader" class="w-screen h-screen fixed top-0 z-999 flex items-center justify-center">
+    <!-- <div class="spinner spinner--xl"></div> -->
+    <lottie-player src="{% static 'images/lottieflow-chat-17-4-ff5a36-linear.json' %}" background="transparent" speed="1"
+      style="width: 120px; height: 120px;" loop autoplay>
+    </lottie-player>
+  </div>
 
 
   <!-- Top navigation -->

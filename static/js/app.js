@@ -408,20 +408,32 @@ function toggleFieldChip(button) {
   document.getElementById("selectedFields").value = selectedFields.join(",");
 }
 
-// Preloader
-window.addEventListener("load", () => {
-  try {
-    const preloader = document.getElementById("preloader");
+// Opening Preloader
+// window.addEventListener("load", () => {
+//   try {
+//     const preloader = document.getElementById("preloader");
 
-    // Add the hidden class to trigger the smooth CSS transition
-    preloader.classList.add("preloader-hidden");
+//     // Add the hidden class to trigger the smooth CSS transition
+//     preloader.classList.add("preloader-hidden");
 
-    // Optional: Completely remove the element from the DOM after the animation finishes
+//     // Optional: Completely remove the element from the DOM after the animation finishes
+//     setTimeout(() => {
+//       preloader.remove();
+//     }, 500);
+//   } catch {}
+// });
+const preloader = document.getElementById("preloader");
+
+if (!sessionStorage.getItem("introShown")) {
+  window.addEventListener("load", function () {
     setTimeout(() => {
-      preloader.remove();
-    }, 500);
-  } catch {}
-});
+      preloader.classList.add("hide");
+      sessionStorage.setItem("introShown", "true");
+    }, 2000);
+  });
+} else {
+  preloader.classList.add("hide");
+}
 
 // Loading buttons
 document.addEventListener("DOMContentLoaded", function () {
