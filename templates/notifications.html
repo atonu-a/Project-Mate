@@ -8,12 +8,16 @@
             </div>
         </div>
 
+        <form method="post" class="text-center" action="{% url 'mark_as_read' %}">
+            {% csrf_token %}
+            <button class="public-profile__headline " type="submit">Mark all as read</button>
+        </form>
         <div class="notice-list">
             {% for notice in notifications %}
             <a class="notice cursor-pointer {% if notice.is_read %}
             
             {% else %}
-            unread
+            notice--unread
             {% endif %}" href="{% url 'read_notice' notice.pk %}">
                 <div class="notice__body">
                     {% if notice.notification_type == "follow" %}

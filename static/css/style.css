@@ -2822,14 +2822,36 @@ textarea::placeholder {
   padding: 16px;
   border-radius: 16px;
   border-color: var(--border-80);
+  position: relative;
 }
 .notice:hover{
   border-color: var(--color-primary);
 }
-.unread {
-  --tone: var(--color-primary);
-  background-color: color-mix(in srgb, var(--tone) 10%, transparent);
-} 
+
+.notice--unread {
+  background: var(--primary-10);
+  border-color: var(--primary-30);
+}
+
+.notice--unread::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+  width: 3px;
+  background: var(--color-primary);
+  border-radius: 0 3px 3px 0;
+}
+
+.notice--unread .notice__title {
+  font-weight: 800;
+}
+
+.notice--unread .notice__time {
+  font-weight: 600;
+  color: var(--color-primary);
+}
 
 .notice__body {
   display: flex;

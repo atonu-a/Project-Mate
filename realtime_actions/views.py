@@ -33,3 +33,18 @@ def read_notice(request, pk):
     notification.is_read = True
     notification.save(update_fields=["is_read"])
     return redirect(notification.target_url)
+
+
+
+# ==============================
+#    Mark all as read/unread
+# ==============================
+@login_required(login_url="signin")
+def mark_as_read(request):
+    if request.method == "POST":
+        Notification.objects.filter(
+            recipient = request.user,
+            is_read = False,
+        ).update(is_read=True)
+        
+    return redirect("notifications")
