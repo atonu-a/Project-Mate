@@ -239,7 +239,12 @@ def my_projects(request):
         "owner_name"
     ).prefetch_related(
         "members"
+    ).annotate(
+        members_count=Count("members", distinct=True),
+        likes_count=Count("likes", distinct=True),
+        comments_count = Count("comments", distinct=True)
     )
+    
     total_projects = projects.count()
 
     context= {

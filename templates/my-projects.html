@@ -24,15 +24,14 @@
                     {% endif %}
                     {% endfor %}
                     
-                    <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>Sprint 2
-                        Active</span>
+                    <span class="sprint-status"><i data-lucide="activity" class="sprint-status__icon"></i>{{ project.status }}</span>
                 </div>
                 <h3 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="project-card__title">
                     {{project.title}}</h3>
                 <p class="project-card__text">{{project.desc}}</p>
             </div>
             <div class="project-card__footer">
-                <span class="project-card__team"> Members in Team</span>
+                <span class="project-card__team"> {{ project.members_count }} Member(s) in Team</span>
                 <button onclick="window.location.href='{% url 'messages' %}'" class="btn-tonal">
                     <i data-lucide="message-square" class="btn-tonal__icon"></i>
                     <span>Team Chat</span>
