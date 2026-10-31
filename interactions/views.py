@@ -165,6 +165,14 @@ def remove_member(request, slug, username):
             user = member.user,
             status = "Accepted"
         ).update(status = "Cancelled")
+        Notification.objects.create(
+            recipient=member.user,
+            actor=request.user,
+            project = project,
+            notification_type=Notification.NotificationType.TEAM_REMOVED,
+            content=f"You have been removed from {project}",
+            target_url=f"/{project.slug}/",
+        )  
         
         messages.success(request, f"You have successfully removed {member.user.username}")
 
