@@ -422,6 +422,7 @@ function toggleFieldChip(button) {
 //     }, 500);
 //   } catch {}
 // });
+
 const preloader = document.getElementById("preloader");
 
 if (!sessionStorage.getItem("introShown")) {
