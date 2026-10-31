@@ -28,6 +28,14 @@
                     <div class="notice__icon">
                         <i data-lucide="folder-check" class="notice__glyph"></i>
                     </div>
+                    {% elif notice.notification_type == "like" %}
+                    <div class="notice__icon">
+                        <i data-lucide="heart" class="notice__glyph"></i>
+                    </div>
+                    {% elif notice.notification_type == "comment" %}
+                    <div class="notice__icon">
+                        <i data-lucide="message-circle-heart" class="notice__glyph"></i>
+                    </div>
                     {% else %}
                     <div class="notice__icon notice__icon--success">
                         <i data-lucide="check-circle-2" class="notice__glyph"></i>

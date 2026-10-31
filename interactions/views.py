@@ -261,6 +261,15 @@ def like_project(request, slug):
             project = project,
             user = request.user
         )
+        if created and request.user != project.owner_name:
+            Notification.objects.create(
+                recipient=project.owner_name,
+                actor=request.user,
+                project = project,
+                notification_type=Notification.NotificationType.PROJECT_LIKE,
+                content=f"{request.user} has reacted to your project.",
+                target_url=f"/{project.slug}/",
+            )   
         
         if not created:
             like.delete()
@@ -352,6 +361,15 @@ def create_comment(request, slug):
             project = project,
             commented_text = input_comment
         )
+        if request.user != project.owner_name:
+            Notification.objects.create(
+                recipient=project.owner_name,
+                actor=request.user,
+                project = project,
+                notification_type=Notification.NotificationType.PROJECT_COMMENT,
+                content=f"{request.user} has commented on {project}",
+                target_url=f"/{project.slug}/",
+            )
         
         return JsonResponse({
             "success" : True,

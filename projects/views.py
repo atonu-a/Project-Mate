@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Project, ProjectMember
 from accounts.models import Profile
 from accounts.views import signin
-from interactions.models import JoinRequest
+from interactions.models import JoinRequest, Comment
 from home.views import discover
-from django.db.models import Q, Exists, OuterRef, Count
+from home.utils import time_ago
+from django.db.models import Q, Exists, OuterRef, Count, Prefetch
 
 
 
@@ -26,7 +27,15 @@ def project_detail(request, slug):
     )
     project = get_object_or_404(
         (Project.objects.prefetch_related(
-            "members__user__profile", "required_skills"
+            "members__user__profile", "required_skills",
+            Prefetch(
+                "comments",
+                queryset=Comment.objects.select_related(
+                    "user",
+                    "user__profile"
+                ).order_by("-created_at"),
+                to_attr="prefetched_comments"
+            )
         ).annotate(
             has__join__request = Exists(join_request),
             is_member = Exists(membership),
@@ -44,7 +53,8 @@ def project_detail(request, slug):
             user=request.user
         ).order_by("-created_at").first()
 
-    
+    for comment in project.prefetched_comments:
+        comment.created_at_ago = time_ago(comment.created_at)
     context = {
         "members" : project.members.all(),
         "project" : project,

@@ -5388,6 +5388,21 @@ textarea::placeholder {
     color: var(--color-text-muted);
 }
 
+.comment-empty {
+  padding: 16px 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.comment ~ .comment-empty {
+  display: none;
+}
+
+.detail-card .comment-list {
+  max-height: 480px;
+}
+
 
 
 /* 29. About Page */

@@ -65,6 +65,45 @@
             {% endfor %}
           </div>
         </section>
+
+        <section class="detail-card detail-card--main" id="comments">
+          <h2 class="detail-card__title">
+            <i data-lucide="message-circle" class="detail-card__title-icon"></i>
+            <span>Comments (<span class="js-comment-count">{{ project.comments_count }}</span>)</span>
+          </h2>
+        
+          <form action="{% url 'comment' project.slug %}" method="post" class="comment-composer comment-form">
+            {% csrf_token %}
+            {% if request.user.is_authenticated %}
+            <img src="{{ request.user.profile.profile_pic_url }}" alt="You" class="comment-composer__avatar">
+            {% endif %}
+            <input type="text" name="input_comment" placeholder="Write a comment..." class="comment-composer__input" required>
+            <button type="submit" class="comment-composer__send" aria-label="Post comment">
+              <i data-lucide="send" class="comment-composer__send-icon"></i>
+            </button>
+          </form>
+        
+          <div class="comment-list">
+            {% for comment in project.prefetched_comments %}
+            <div class="comment">
+              <a href="{% url 'profile' comment.user.username %}">
+                <img src="{{ comment.user.profile.profile_pic_url }}" alt="{{ comment.user.first_name }}"
+                  class="comment__avatar">
+              </a>
+              <div class="comment__body">
+                <div class="comment__bubble">
+                  <h4 class="comment__name">{{ comment.user.get_full_name }}</h4>
+                  <p class="comment__text">{{ comment.commented_text }}</p>
+                </div>
+                <div class="comment__meta">
+                  <span class="comment__time">{{ comment.created_at_ago }}</span>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            <p class="comment-empty">No comments yet. Be the first to comment!</p>
+          </div>
+        </section>
       </div>
 
       <aside class="detail-side">
