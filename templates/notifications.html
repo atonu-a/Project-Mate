@@ -17,8 +17,16 @@
             {% endif %}" href="{% url 'read_notice' notice.pk %}">
                 <div class="notice__body">
                     {% if notice.notification_type == "follow" %}
-                        <div class="notice__icon">
+                    <div class="notice__icon">
                         <i data-lucide="user-round-check" class="notice__glyph"></i>
+                    </div>
+                    {% elif notice.notification_type == "join_request" %}
+                    <div class="notice__icon">
+                        <i data-lucide="git-pull-request" class="notice__glyph"></i>
+                    </div>
+                    {% elif notice.notification_type == "accepted" %}
+                    <div class="notice__icon">
+                        <i data-lucide="folder-check" class="notice__glyph"></i>
                     </div>
                     {% else %}
                     <div class="notice__icon notice__icon--success">
