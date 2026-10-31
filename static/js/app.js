@@ -449,7 +449,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         btn.innerHTML = `
                    <span class="spinner spinner--sm spinner--on-primary" role="status" aria-hidden="true"></span>
-                    ${btnTxt}
+
                 `;
         btn.disabled = true;
       });
