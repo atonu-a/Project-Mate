@@ -127,14 +127,6 @@ send_request, requests, follow, leave, remove, save_project, saved, comment, lik
 4. `python manage.py migrate`
 5. `python manage.py runserver`
 
-### Push notifications
-
-1. In Firebase, enable Cloud Messaging for the web app and generate a Web Push certificate key pair. Keep the web app config and VAPID public key in `static/js/pushNotifications.js` and `static/firebase-msg-sw.js` in sync. The service worker is served at `/firebase-messaging-sw.js` so it can register from the site root without relying on collected static files. These values are public client configuration, not private credentials; restrict the Firebase API key to the Firebase APIs and website origins the app needs.
-2. Create a Firebase service account with permission to send FCM messages. Set `FIREBASE_SERVICE_ACCOUNT_JSON` in the server's environment or deployment secret store to the service-account JSON. Never commit that JSON, a private key, or a populated `.env` file. Application Default Credentials are also supported when the hosting environment provides them.
-3. Run `python manage.py migrate`, deploy over HTTPS, and visit the Notifications page. Users must click **Enable push notifications** and allow notifications in their browser. Setup sends a test push through Firebase; a server-side configuration error is shown instead of treating token storage alone as successful.
-
-The Firebase Admin SDK runs only on the server. Browser registration tokens are stored per user and expired tokens are removed when Firebase reports them as unregistered. If a service-account key has ever been committed, revoke it in Google Cloud and issue a replacement.
-
 For static files in production: `python manage.py collectstatic` (served via WhiteNoise).
 
 ---

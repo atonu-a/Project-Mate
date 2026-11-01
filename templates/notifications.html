@@ -8,15 +8,6 @@
             </div>
         </div>
 
-        <div class="mb-4">
-            <button id="enable-push-notifications" class="btn-tonal" type="button" disabled
-                data-save-url="{% url 'save_firebase_token' %}">
-                Enable Notifications
-            </button>
-            <form id="push-notifications-csrf" hidden>{% csrf_token %}</form>
-            <p id="push-notifications-status" role="status" aria-live="polite"></p>
-        </div>
-
         <form method="post" class="text-center" action="{% url 'mark_as_read' %}">
             {% csrf_token %}
             <button class="public-profile__headline " type="submit">Mark all as read</button>
