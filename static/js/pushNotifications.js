@@ -24,6 +24,11 @@ if (button) {
   };
   const vapidKey =
     "BDhXbiLcNFEX7E3GAZFXDLT8A12kbVAjWjoc4O6bMWbVZsYrpQJaxKBi3Nj22Ks_pmrr7gidtxu9M3BH6ERUvCI";
+  const isIosDevice =
+    /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  let messaging;
+  let serviceWorkerRegistration;
 
   const setStatus = (message) => {
     status.textContent = message;
@@ -33,6 +38,65 @@ if (button) {
     const url = new URL(value || "/notifications/", window.location.origin);
     return url.origin === window.location.origin ? url.href : "/notifications/";
   };
+
+  button.disabled = true;
+  button.addEventListener("click", async () => {
+    if (!messaging || !serviceWorkerRegistration) {
+      setStatus("Push notifications are still getting ready. Please wait a moment.");
+      return;
+    }
+
+    button.disabled = true;
+    setStatus("Waiting for notification permission...");
+
+    try {
+      const permission =
+        Notification.permission === "granted"
+          ? "granted"
+          : await Notification.requestPermission();
+      if (permission !== "granted") {
+        setStatus("Allow notifications in your browser to enable push.");
+        return;
+      }
+
+      setStatus("Registering this browser for push notifications...");
+      const fcmToken = await getToken(messaging, {
+        vapidKey,
+        serviceWorkerRegistration,
+      });
+      if (!fcmToken) {
+        throw new Error("Firebase did not return a registration token.");
+      }
+
+      setStatus("Saving this browser's notification settings...");
+      const response = await fetch(button.dataset.saveUrl, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({ fcm_token: fcmToken }),
+      });
+      if (!response.ok || response.redirected) {
+        throw new Error(
+          response.redirected
+            ? "Your sign-in may have expired. Sign in again and retry."
+            : `The server could not save this browser (${response.status}).`,
+        );
+      }
+
+      button.textContent = "Push notifications enabled";
+      setStatus("This browser can now receive notifications.");
+    } catch (error) {
+      console.error("Could not enable push notifications:", error);
+      const errorCode = error?.code ? ` (${error.code})` : "";
+      const message = error?.message || "An unexpected error occurred.";
+      setStatus(`Could not enable push notifications${errorCode}: ${message}`);
+    } finally {
+      button.disabled = false;
+    }
+  });
 
   const setupPushNotifications = async () => {
     if (
@@ -46,16 +110,31 @@ if (button) {
       return;
     }
 
+    if (
+      isIosDevice &&
+      !window.matchMedia("(display-mode: standalone)").matches &&
+      !navigator.standalone
+    ) {
+      button.disabled = true;
+      setStatus(
+        "On iPhone or iPad, add this website to your Home Screen and open it there to enable push notifications.",
+      );
+      return;
+    }
+
     try {
+      setStatus("Preparing push notifications...");
       if (!(await isSupported())) {
         button.disabled = true;
-        setStatus("Push notifications are not supported by this browser.");
+        setStatus(
+          "Push notifications are not supported in this browser. Try a supported browser over HTTPS.",
+        );
         return;
       }
 
       const app = initializeApp(firebaseConfig);
-      const messaging = getMessaging(app);
-      const serviceWorkerRegistration = await navigator.serviceWorker.register(
+      messaging = getMessaging(app);
+      serviceWorkerRegistration = await navigator.serviceWorker.register(
         "/static/firebase-msg-sw.js",
       );
 
@@ -64,61 +143,27 @@ if (button) {
           return;
         }
 
-        const notification = new Notification(data.title, {
-          body: data.body || "",
-        });
-        notification.onclick = () => {
-          window.location.assign(safeNotificationUrl(data.url));
-        };
+        serviceWorkerRegistration
+          .showNotification(data.title, {
+            body: data.body || "",
+            data: { url: safeNotificationUrl(data.url) },
+          })
+          .catch((error) => {
+            console.error("Could not show foreground notification:", error);
+          });
       });
 
-      button.addEventListener("click", async () => {
-        button.disabled = true;
-        setStatus("");
-
-        try {
-          const permission =
-            Notification.permission === "granted"
-              ? "granted"
-              : await Notification.requestPermission();
-          if (permission !== "granted") {
-            setStatus("Allow notifications in your browser to enable push.");
-            return;
-          }
-
-          const fcmToken = await getToken(messaging, {
-            vapidKey,
-            serviceWorkerRegistration,
-          });
-          if (!fcmToken) {
-            throw new Error("Firebase did not return a registration token.");
-          }
-
-          const response = await fetch(button.dataset.saveUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": csrfToken,
-            },
-            body: JSON.stringify({ fcm_token: fcmToken }),
-          });
-          if (!response.ok || response.redirected) {
-            throw new Error(`Saving the push token failed (${response.status}).`);
-          }
-
-          button.textContent = "Push notifications enabled";
-          setStatus("This browser can now receive notifications.");
-        } catch (error) {
-          console.error("Could not enable push notifications:", error);
-          setStatus("Could not enable push notifications. Please try again.");
-        } finally {
-          button.disabled = false;
-        }
-      });
+      button.disabled = false;
+      setStatus("");
     } catch (error) {
       console.error("Could not initialize push notifications:", error);
       button.disabled = true;
-      setStatus("Push notifications could not be initialized.");
+      const errorCode = error?.code ? ` (${error.code})` : "";
+      const message =
+        error?.message || "Check that the push service worker is available.";
+      setStatus(
+        `Push notifications could not be initialized${errorCode}: ${message}`,
+      );
     }
   };
 
