@@ -66,3 +66,38 @@ def send_push_notification(notification):
                 notification.pk,
                 device.user.pk,
             )
+
+
+def send_test_push(token):
+    app = _firebase_app()
+    if app is None:
+        return (
+            "Push messaging is not configured on the server. "
+            "Set FIREBASE_SERVICE_ACCOUNT_JSON or provide Application "
+            "Default Credentials."
+        )
+
+    message = messaging.Message(
+        data={
+            "title": "ProjectMate test notification",
+            "body": "Push notifications are connected on this device.",
+            "url": "/notifications/",
+        },
+        token=token,
+    )
+    try:
+        messaging.send(message, app=app)
+    except messaging.UnregisteredError:
+        FirebaseInstallation.objects.filter(fcm_token=token).delete()
+        return (
+            "Firebase rejected this browser token. Re-enable push "
+            "notifications and try again."
+        )
+    except (DefaultCredentialsError, exceptions.FirebaseError, ValueError):
+        logger.exception("Could not send push setup test notification")
+        return (
+            "Firebase could not send a test notification. Check the server "
+            "credentials and Firebase Cloud Messaging configuration."
+        )
+
+    return None

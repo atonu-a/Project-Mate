@@ -7,7 +7,7 @@ from django.urls import reverse
 from firebase_admin import messaging
 
 from .models import FirebaseInstallation, Notification
-from .push import send_push_notification
+from .push import send_push_notification, send_test_push
 
 
 class FirebaseTokenTests(TestCase):
@@ -19,7 +19,8 @@ class FirebaseTokenTests(TestCase):
         self.client.force_login(self.user)
         self.url = reverse("save_firebase_token")
 
-    def test_saves_fcm_token_for_authenticated_user(self):
+    @patch("realtime_actions.views.send_test_push", return_value=None)
+    def test_saves_fcm_token_for_authenticated_user(self, send_test_push):
         response = self.client.post(
             self.url,
             data=json.dumps({"fcm_token": "browser-fcm-token"}),
@@ -27,6 +28,27 @@ class FirebaseTokenTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            FirebaseInstallation.objects.filter(
+                user=self.user,
+                fcm_token="browser-fcm-token",
+            ).exists()
+        )
+        send_test_push.assert_called_once_with("browser-fcm-token")
+
+    @patch(
+        "realtime_actions.views.send_test_push",
+        return_value="Push messaging is not configured on the server.",
+    )
+    def test_reports_when_push_delivery_is_not_configured(self, _send_test_push):
+        response = self.client.post(
+            self.url,
+            data=json.dumps({"fcm_token": "browser-fcm-token"}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 503)
+        self.assertIn("not configured", response.json()["error"])
         self.assertTrue(
             FirebaseInstallation.objects.filter(
                 user=self.user,
@@ -126,3 +148,23 @@ class PushDeliveryTests(TestCase):
                 fcm_token="browser-fcm-token"
             ).exists()
         )
+
+    @patch("realtime_actions.push.messaging.send", return_value="message-id")
+    @patch("realtime_actions.push._firebase_app", return_value=object())
+    def test_sends_test_notification_to_registered_browser(
+        self,
+        _firebase_app_mock,
+        send,
+    ):
+        result = send_test_push("browser-fcm-token")
+
+        self.assertIsNone(result)
+        message = send.call_args.args[0]
+        self.assertEqual(message.token, "browser-fcm-token")
+        self.assertEqual(message.data["title"], "ProjectMate test notification")
+
+    @patch("realtime_actions.push._firebase_app", return_value=None)
+    def test_reports_missing_firebase_server_credentials(self, _firebase_app_mock):
+        result = send_test_push("browser-fcm-token")
+
+        self.assertIn("FIREBASE_SERVICE_ACCOUNT_JSON", result)

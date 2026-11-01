@@ -78,16 +78,21 @@ if (button) {
         },
         body: JSON.stringify({ fcm_token: fcmToken }),
       });
-      if (!response.ok || response.redirected) {
+      if (response.redirected) {
+        throw new Error("Your sign-in may have expired. Sign in again and retry.");
+      }
+      const result = await response.json();
+      if (!response.ok) {
         throw new Error(
-          response.redirected
-            ? "Your sign-in may have expired. Sign in again and retry."
-            : `The server could not save this browser (${response.status}).`,
+          result.error ||
+            `The server could not verify push delivery (${response.status}).`,
         );
       }
 
       button.textContent = "Push notifications enabled";
-      setStatus("This browser can now receive notifications.");
+      setStatus(
+        `${result.message} Check that the test notification appeared; future notifications require the site to be allowed by your browser.`,
+      );
     } catch (error) {
       console.error("Could not enable push notifications:", error);
       const errorCode = error?.code ? ` (${error.code})` : "";

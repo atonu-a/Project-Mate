@@ -8,6 +8,7 @@ from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_protect
 
 from home.utils import time_ago
+from .push import send_test_push
 
 # ==============================
 #       Notification page
@@ -100,7 +101,11 @@ def save_firebase_token(request):
         }
     )
 
+    push_error = send_test_push(fcm_token)
+    if push_error:
+        return JsonResponse({"error": push_error}, status=503)
+
     return JsonResponse({
         "success": True,
-        "message": "Push token saved successfully"
+        "message": "Browser registered and Firebase accepted a test notification."
     })
