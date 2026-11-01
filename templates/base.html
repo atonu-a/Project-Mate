@@ -5,6 +5,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.svg' %}">
   <title>TeamNest</title>
   <script>
     document.documentElement.classList.toggle(
@@ -29,11 +30,13 @@
 <body>
   <div id="preloader" class="w-screen h-dvh fixed top-0 z-999 flex items-center justify-center">
     <!-- <div class="spinner spinner--xl"></div> -->
-     <div class="flex flex-col items-center justify-center">
+     <div class="flex flex-col items-center justify-center gap-10">
     <lottie-player class="" src="{% static 'images/lottieflow-chat-17-4-ff5a36-linear.json' %}" background="transparent" speed="1"
       style="width: 80px; height: 80px;" loop autoplay>
     </lottie-player>
-
+    <div class="text-center">
+      <h3 style="font-weight: 800;font-size: 24px; color: var(--color-primary);">TeamNest</h3>
+    </div>
     </div>
   </div>
 
@@ -158,13 +161,7 @@
           <span>Discover Feed</span>
         </a>
 
-        <a href="{% url 'about' %}" class="sidebar__link 
-          {% if request.path == '/about/' %}
-            is-active
-          {% endif %} ">
-          <i data-lucide="info" class="sidebar__link-icon"></i>
-          <span>About</span>
-        </a>
+        
         {% if request.user.is_authenticated %}
 
 
@@ -208,6 +205,13 @@
           Sign In
         </a>
         {% endif %}
+        <a href="{% url 'about' %}" class="sidebar__link 
+          {% if request.path == '/about/' %}
+            is-active
+          {% endif %} ">
+          <i data-lucide="info" class="sidebar__link-icon"></i>
+          <span>About</span>
+        </a>
 
         {% if request.user.is_authenticated %}
         <div class="sidebar__heading sidebar__heading--spaced">Collaboration</div>
