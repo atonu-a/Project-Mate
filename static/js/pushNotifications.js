@@ -91,7 +91,11 @@ if (button) {
     } catch (error) {
       console.error("Could not enable push notifications:", error);
       const errorCode = error?.code ? ` (${error.code})` : "";
-      const message = error?.message || "An unexpected error occurred.";
+      const isPushServiceError =
+        error?.name === "AbortError" || error?.code === 20;
+      const message = isPushServiceError
+        ? "The browser push service rejected the subscription. In Brave, enable Settings > Privacy and security > Use Google Services for Push Messaging, then reload and retry. A VPN, firewall, or content blocker may also be blocking push."
+        : error?.message || "An unexpected error occurred.";
       setStatus(`Could not enable push notifications${errorCode}: ${message}`);
     } finally {
       button.disabled = false;
