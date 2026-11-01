@@ -11,7 +11,7 @@
         <div class="mb-4">
             <button id="enable-push-notifications" class="btn-tonal" type="button" disabled
                 data-save-url="{% url 'save_firebase_token' %}">
-                Preparing push notifications...
+                Enable Notifications
             </button>
             <form id="push-notifications-csrf" hidden>{% csrf_token %}</form>
             <p id="push-notifications-status" role="status" aria-live="polite"></p>
