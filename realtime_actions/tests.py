@@ -44,6 +44,19 @@ class FirebaseTokenTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(FirebaseInstallation.objects.count(), 0)
 
+    def test_serves_firebase_service_worker_from_site_root(self):
+        response = self.client.get(
+            reverse("firebase_messaging_service_worker")
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/javascript")
+        self.assertEqual(response["Cache-Control"], "no-cache")
+        self.assertIn(
+            b"firebase.messaging()",
+            b"".join(response.streaming_content),
+        )
+
 
 class NotificationPushSignalTests(TransactionTestCase):
     def setUp(self):

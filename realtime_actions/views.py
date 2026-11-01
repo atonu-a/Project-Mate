@@ -1,12 +1,13 @@
 import json
+from django.conf import settings
+from django.http import FileResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Notification, FirebaseInstallation
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_protect
 
 from home.utils import time_ago
-from django.http import JsonResponse
 
 # ==============================
 #       Notification page
@@ -51,6 +52,17 @@ def mark_as_read(request):
         ).update(is_read=True)
         
     return redirect("notifications")
+
+
+@require_GET
+def firebase_messaging_service_worker(request):
+    worker_path = settings.BASE_DIR / "static" / "firebase-msg-sw.js"
+    response = FileResponse(
+        worker_path.open("rb"),
+        content_type="application/javascript",
+    )
+    response["Cache-Control"] = "no-cache"
+    return response
 
 
 

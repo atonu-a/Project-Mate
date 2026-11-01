@@ -135,7 +135,7 @@ if (button) {
       const app = initializeApp(firebaseConfig);
       messaging = getMessaging(app);
       serviceWorkerRegistration = await navigator.serviceWorker.register(
-        "/static/firebase-msg-sw.js",
+        "/firebase-messaging-sw.js",
       );
 
       onMessage(messaging, ({ data = {} }) => {
