@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'accounts',
     'projects',
     'interactions',
-    'realtime_actions'
+    'realtime_actions.apps.RealtimeActionsConfig'
 ]
 
 MIDDLEWARE = [
@@ -109,6 +109,8 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
 }
+
+FIREBASE_SERVICE_ACCOUNT_JSON = os.environ.get('FIREBASE_SERVICE_ACCOUNT_JSON')
 
 
 

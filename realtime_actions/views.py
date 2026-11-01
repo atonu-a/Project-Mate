@@ -1,9 +1,12 @@
+import json
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Notification
+from .models import Notification, FirebaseInstallation
 from django.contrib.auth.decorators import login_required
-from home.utils import time_ago
-# Create your views here.
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_protect
 
+from home.utils import time_ago
+from django.http import JsonResponse
 
 # ==============================
 #       Notification page
@@ -48,3 +51,44 @@ def mark_as_read(request):
         ).update(is_read=True)
         
     return redirect("notifications")
+
+
+
+@login_required(login_url="signin")
+@require_POST
+@csrf_protect
+def save_firebase_token(request):
+
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse(
+            {"error": "Invalid JSON"},
+            status=400
+        )
+
+    if not isinstance(data, dict):
+        return JsonResponse({"error": "A JSON object is required"}, status=400)
+
+    fcm_token = data.get("fcm_token")
+    if (
+        not isinstance(fcm_token, str)
+        or not fcm_token.strip()
+        or len(fcm_token) > 4096
+    ):
+        return JsonResponse(
+            {"error": "A valid FCM token is required"},
+            status=400
+        )
+
+    FirebaseInstallation.objects.update_or_create(
+        fcm_token=fcm_token,
+        defaults={
+            "user": request.user
+        }
+    )
+
+    return JsonResponse({
+        "success": True,
+        "message": "Push token saved successfully"
+    })

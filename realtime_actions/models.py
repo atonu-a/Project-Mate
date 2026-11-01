@@ -30,4 +30,25 @@ class Notification(models.Model):
 
     def __str__(self) -> str:
         return f"{self.recipient} - {self.notification_type}"
-    
+
+
+class FirebaseInstallation(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="firebase_installations"
+    )
+
+    fcm_token = models.CharField(
+        max_length=4096,
+        unique=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )

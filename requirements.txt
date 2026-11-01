@@ -15,6 +15,7 @@ django-languages-plus==2.1.1
 django-phonenumber-field==8.4.0
 django-tinymce==5.0.0
 filelock==3.25.0
+firebase-admin==7.7.0
 fs==2.4.16
 gunicorn==25.3.0
 idna==3.13
