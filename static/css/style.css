@@ -32,6 +32,7 @@
                                  27 Saved Page
                                  28 Comments Page
                                  29 About Page
+											30 Connections Page
    ========================================================================== */
 
 /* 1. Design tokens ------------------------------------------------------- */
@@ -5691,4 +5692,78 @@ textarea::placeholder {
     .footer__right {
         align-items: flex-end;
     }
+}
+
+
+
+
+
+/* 30 Connections Page */
+.people-list {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.person-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  transition: background 0.15s;
+}
+
+.person-row + .person-row {
+  border-top: 1px solid var(--border-60);
+}
+
+.person-row:hover {
+  background: var(--elevated-40);
+}
+
+.person-row__avatar {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.person-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.person-row__name {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.person-row__name:hover {
+  text-decoration: underline;
+}
+
+.person-row__headline {
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.person-row__action {
+  flex-shrink: 0;
+}
+
+.people-list__empty {
+  padding: 48px 16px;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
 }
