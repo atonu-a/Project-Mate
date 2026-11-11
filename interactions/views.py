@@ -250,7 +250,7 @@ def toggle_follow(request, username):
 
 
 def connections(request) :
-    return render(request, "connections.html)
+    return render(request, "connections.html")
 
 # ===========================
 #   Like/Dislike to a post
