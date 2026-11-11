@@ -249,6 +249,9 @@ def toggle_follow(request, username):
     return redirect(redirect_url, username=username)
 
 
+def connections(request) :
+    return render(request, "connections.html)
+
 # ===========================
 #   Like/Dislike to a post
 # ===========================
