@@ -697,3 +697,17 @@ function toggleFaq(btn) {
   const item = btn.closest(".faq-item");
   if (item) item.classList.toggle("is-open");
 }
+
+
+
+// Connections Page
+function switchSearchTab(tabBtn, panelId) {
+  if (!tabBtn) return;
+  const tabsWrap = tabBtn.closest('.search-tabs');
+  const panelsWrap = tabsWrap ? tabsWrap.parentElement : document;
+  if (tabsWrap) tabsWrap.querySelectorAll('.search-tab').forEach((t) => t.classList.remove('is-active'));
+  tabBtn.classList.add('is-active');
+  panelsWrap.querySelectorAll('.search-panel').forEach((p) => p.classList.remove('is-active'));
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.add('is-active');
+}
