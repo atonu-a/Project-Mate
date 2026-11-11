@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block main %}
+<main class="page-main page-main--narrow">
+
+  <a href="{% url 'profile' profile_user.username %}" class="back-link">
+    <i data-lucide="arrow-left" class="back-link__icon"></i>
+    <span>{{ profile_user.get_full_name }}</span>
+  </a>
+
+  <div class="search-tabs">
+    <button onclick="switchSearchTab(this, 'followersPanel')" class="search-tab is-active" data-tab="followersPanel">
+      Followers <span class="search-tab__count">{{ followers|length }}</span>
+    </button>
+    <button onclick="switchSearchTab(this, 'followingPanel')" class="search-tab" data-tab="followingPanel">
+      Following <span class="search-tab__count">{{ following|length }}</span>
+    </button>
+  </div>
+
+  <!-- Followers -->
+  <div id="followersPanel" class="search-panel is-active">
+    <div class="people-list">
+      {% for person in followers %}
+      <div class="person-row">
+        <a href="{% url 'profile' person.username %}">
+          <img src="{{ person.profile.profile_pic_url }}" alt="{{ person.get_full_name }}" class="person-row__avatar">
+        </a>
+        <div class="person-row__body">
+          <a href="{% url 'profile' person.username %}" class="person-row__name">{{ person.get_full_name }}</a>
+          <p class="person-row__headline">{{ person.profile.headline }}</p>
+        </div>
+        <button onclick="window.location.href='{% url 'profile' person.username %}'" class="btn-tonal person-row__action">View Profile</button>
+      </div>
+      {% empty %}
+      <p class="people-list__empty">No followers yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Following -->
+  <div id="followingPanel" class="search-panel">
+    <div class="people-list">
+      {% for person in following %}
+      <div class="person-row">
+        <a href="{% url 'profile' person.username %}">
+          <img src="{{ person.profile.profile_pic_url }}" alt="{{ person.get_full_name }}" class="person-row__avatar">
+        </a>
+        <div class="person-row__body">
+          <a href="{% url 'profile' person.username %}" class="person-row__name">{{ person.get_full_name }}</a>
+          <p class="person-row__headline">{{ person.profile.headline }}</p>
+        </div>
+        <button onclick="window.location.href='{% url 'profile' person.username %}'" class="btn-tonal person-row__action">View Profile</button>
+      </div>
+      {% empty %}
+      <p class="people-list__empty">Not following anyone yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // প্রোফাইল থেকে .../connections/#following লিংকে এলে সরাসরি Following ট্যাব খুলবে
+  document.addEventListener('DOMContentLoaded', function () {
+    if (location.hash === '#following') {
+      switchSearchTab(document.querySelector('[data-tab="followingPanel"]'), 'followingPanel');
+    }
+  });
+</script>
+{% endblock main %}
