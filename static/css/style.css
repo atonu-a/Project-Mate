@@ -311,6 +311,17 @@ textarea::placeholder {
   /* padding: 24px 16px; */
 }
 
+.app-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content__back {
+  margin: 24px 16px 0;
+}
+
 .page-title {
   font-size: 1.5rem;
   line-height: 2rem;

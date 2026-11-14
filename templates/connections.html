@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% block main %}
 <main class="page-main page-main--narrow">
-
-  <a href="{% url 'profile' profile.user.username %}" class="back-link">
-    <i data-lucide="arrow-left" class="back-link__icon"></i>
-    <span>{{ profile.user.get_full_name }}</span>
-  </a>
-
   <div class="search-tabs">
     <button onclick="switchSearchTab(this, 'followersPanel')" class="search-tab is-active" data-tab="followersPanel">
       Followers <span class="search-tab__count">{{ followers|length }}</span>

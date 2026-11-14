@@ -251,10 +251,19 @@
     </aside>
     {% endblock sidebar %}
 
-    <!-- Dashboard content -->
-    {% block main %}
+      {% if request.resolver_match.url_name != 'discover' %}
+      <div class="app-content">
+      <button onclick="window.history.back()" class="back-link app-content__back">
+        <i data-lucide="arrow-left" class="back-link__icon"></i>
+        <span>Back</span>
+      </button>
+      {% endif %}
+      {% block main %}
 
-    {% endblock main %}
+      {% endblock main %}
+      {% if request.resolver_match.url_name != 'discover' %}
+      </div>
+      {% endif %}
   </div>
 
   <!-- Mobile drawer navigation -->
