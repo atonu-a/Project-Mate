@@ -2044,6 +2044,47 @@ textarea::placeholder {
   border-radius: 16px;
   border-color: var(--border-80);
   transition: border-color 0.2s;
+  position: relative;
+}
+
+.trend-rank {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #fff;
+  background: var(--gradient-cta);
+  border-radius: 999px;
+  box-shadow: var(--shadow-primary-lg);
+}
+
+.like-rank{
+  position: absolute;
+  top: -12px;
+  left: 70px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #fff;
+  background: var(--gradient-cta);
+  border-radius: 999px;
+  box-shadow: var(--shadow-primary-lg);
+}
+.trend-rank--2 {
+  background: linear-gradient(to right, var(--color-warning), #f97316);
+  box-shadow: var(--shadow-md);
 }
 
 .spotlight-card:hover {
@@ -4423,10 +4464,14 @@ textarea::placeholder {
   color: var(--pp-muted);
   font-size: 0.82rem;
 }
+
 .public-profile__stat strong {
   color: var(--color-text, #111827);
   font-size: 1rem;
 }
+.public-profile__stat:hover{
+  color: var(--color-primary);
+}       
 .public-profile__bio {
   color: var(--color-text, #334155);
   line-height: 1.65;
