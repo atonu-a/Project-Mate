@@ -2,9 +2,9 @@
 {% block main %}
 <main class="page-main page-main--narrow">
 
-  <a href="{% url 'profile' profile_user.username %}" class="back-link">
+  <a href="{% url 'profile' request.user.username %}" class="back-link">
     <i data-lucide="arrow-left" class="back-link__icon"></i>
-    <span>{{ profile_user.get_full_name }}</span>
+    <span>{{ request.user.get_full_name }}</span>
   </a>
 
   <div class="search-tabs">
@@ -59,7 +59,7 @@
 </main>
 
 <script>
-  // প্রোফাইল থেকে .../connections/#following লিংকে এলে সরাসরি Following ট্যাব খুলবে
+
   document.addEventListener('DOMContentLoaded', function () {
     if (location.hash === '#following') {
       switchSearchTab(document.querySelector('[data-tab="followingPanel"]'), 'followingPanel');
