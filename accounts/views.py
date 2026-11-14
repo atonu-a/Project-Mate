@@ -10,7 +10,10 @@ from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest
 from home.views import get_posts
 from interactions.models import Follow
-# Create your views here.
+from django.db.models import Count, Q
+
+
+
 # ======================
 #       Registration
 # ======================
@@ -277,3 +280,40 @@ def edit_profile(request):
         "selected_fields": selected_fields,
     })       
     
+    
+# ======================
+#    Dashboard
+# ======================
+
+@login_required(login_url="signin")
+def dashboard(request):
+    top_projects = projects = Project.objects.select_related(
+            "owner_name", "owner_name__profile"
+        ).prefetch_related(
+            "required_skills"
+        ).annotate(
+            members_count=Count("members", distinct=True),
+            likes_count=Count("likes", distinct=True),
+            comments_count=Count("comments", distinct=True)
+        ).order_by("-likes_count", "-id")[:2]
+    
+    # projects = Project.objects.filter(
+    #             Q(owner_name = request.user) |
+    #             Q(members__user = request.user)
+    #         ).distinct().select_related(
+    #                 "owner_name"
+    #             ).prefetch_related(
+    #                 "members"
+    #             ).annotate(
+    #                 members_count=Count("members", distinct=True),
+    #                 likes_count=Count("likes", distinct=True),
+    #                 comments_count = Count("comments", distinct=True)
+    #             )
+                
+    total_projects = projects.count()
+
+    context = {
+        'total_projects' : total_projects,
+        'top_projects' : top_projects
+    }
+    return render(request, "dashboard.html", context)

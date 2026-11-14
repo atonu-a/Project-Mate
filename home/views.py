@@ -248,10 +248,6 @@ def search_results(request):
 def about(request):
     return render(request, "about.html")
 
-#Dashboard Page
-def dashboard(request):
-    return render(request, "index.html")
-
 
 def messages(request):
     return render(request, "messages.html")

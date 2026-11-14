@@ -34,7 +34,7 @@
                 <span class="stat-card__label">Active Projects</span>
                 <div class="stat-card__icon"><i data-lucide="folder-kanban" class="stat-card__glyph"></i></div>
             </div>
-            <div class="stat-card__value">3</div>
+            <div class="stat-card__value">{{ total_projects }}</div>
             <div class="stat-card__note"><i data-lucide="trending-up" class="stat-card__note-icon"></i>+1 this month
             </div>
         </div>
@@ -53,8 +53,12 @@
                 <div class="stat-card__icon stat-card__icon--warning"><i data-lucide="git-pull-request"
                         class="stat-card__glyph"></i></div>
             </div>
-            <div class="stat-card__value">2</div>
+            <div class="stat-card__value">{{ request_count }}</div>
+            {% if request_count > 0 %}
             <div class="stat-card__note stat-card__note--warning">Action required</div>
+            {% else %}
+            {% endif %}
+            
         </div>
         <div class="stat-card">
             <div class="stat-card__head">
@@ -79,63 +83,39 @@
             </div>
 
             <div class="spotlight-grid">
+                {% for project in top_projects %}
+                            
                 <article class="spotlight-card">
+                     <span class="trend-rank trend-rank--{{ forloop.counter }}" aria-label="Trending rank {{ forloop.counter }}">#{{ forloop.counter }}</span>
+                     <span class="like-rank trend-rank--{{ forloop.counter }}" aria-label="Trending rank {{ forloop.counter }}"><i class="fa-solid fa-heart"></i> {{ project.likes_count }} likes</span>
                     <div class="spotlight-card__body">
                         <div class="spotlight-card__meta">
-                            <span class="category-badge">AI &amp; Machine Learning</span>
-                            <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Oct 15,
-                                2026</span>
+                            <span class="category-badge">{{ project.category }}</span>
+                            <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{ project.deadline }}</span>
                         </div>
-                        <h3 onclick="window.location.href='{% url 'project_detail' 'p1' %}'"
+                        <h3 onclick="window.location.href='{% url 'project_detail' project.slug %}'"
                             class="spotlight-card__title">
-                            NeuralSync - AI Brainstorming Canvas</h3>
-                        <p class="spotlight-card__text">Real-time collaborative mind mapping powered by local LLMs and
-                            vector embeddings.</p>
+                            {{project.title}}</h3>
+                        <p class="spotlight-card__text">{{ project.desc|truncatechars:70 }}</p>
                         <div class="chips">
-                            <span class="chip">Python</span>
-                            <span class="chip">React</span>
-                            <span class="chip">LangChain</span>
+                            {% for skill in project.required_skills.all %}
+                            <span class="chip">{{skill.name}}</span>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="spotlight-card__footer">
-                        <div class="author">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
-                                alt="Elena Rostova" class="author__avatar">
-                            <span class="author__name">Elena Rostova</span>
+                        <div class="author cursor-pointer" onclick="window.location.href='{% url 'profile' project.owner_name.username %}'">
+                            <img src="{{ project.owner_name.profile.profile_pic_url }}"
+                                alt="{{project.owner_name.get_full_name}}" class="author__avatar">
+                            <span class="author__name">{{project.owner_name.get_full_name|truncatechars:10}}</span>
                         </div>
-                        <button onclick="window.location.href='{% url 'project_detail' 'p1' %}'" class="btn-tonal">View
+                        <button onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="btn-tonal">View
                             Project</button>
                     </div>
                 </article>
 
-                <article class="spotlight-card">
-                    <div class="spotlight-card__body">
-                        <div class="spotlight-card__meta">
-                            <span class="category-badge category-badge--secondary">CleanTech &amp; Mobile</span>
-                            <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Nov 01,
-                                2026</span>
-                        </div>
-                        <h3 onclick="window.location.href='{% url 'project_detail' 'p2' %}'"
-                            class="spotlight-card__title">
-                            EcoRoute - Carbon Optimizer</h3>
-                        <p class="spotlight-card__text">Smart transit routing application calculating real-time carbon
-                            offsets for urban commuters.</p>
-                        <div class="chips">
-                            <span class="chip">React Native</span>
-                            <span class="chip">Node.js</span>
-                            <span class="chip">PostGIS</span>
-                        </div>
-                    </div>
-                    <div class="spotlight-card__footer">
-                        <div class="author">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
-                                alt="Julian Vance" class="author__avatar">
-                            <span class="author__name">Julian Vance</span>
-                        </div>
-                        <button onclick="window.location.href='{% url 'project_detail' 'p2' %}'" class="btn-tonal">View
-                            Project</button>
-                    </div>
-                </article>
+                {% endfor %}
+
             </div>
         </section>
 

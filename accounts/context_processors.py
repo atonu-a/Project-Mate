@@ -1,6 +1,8 @@
 from .models import Profile
 from interactions.models import JoinRequest
 from realtime_actions.models import Notification
+from projects.models import Project
+from django.db.models import Q
 
 
 def profile_context(request):
