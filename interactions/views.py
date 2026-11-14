@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.db.models import Exists
+from accounts.models import Profile
 from accounts.views import signin
 from home.views import get_posts
 from .models import JoinRequest, Follow, Like, Save, Comment
@@ -249,8 +250,23 @@ def toggle_follow(request, username):
     return redirect(redirect_url, username=username)
 
 
-def connections(request) :
-    return render(request, "connections.html")
+
+# ===========================
+#   Showing Connections
+# ===========================
+@login_required(login_url="signin")
+def connections(request, username) :
+    profile = get_object_or_404(Profile.objects.select_related('user'), user__username = username)
+    user = profile.user
+    followers = user.followers.select_related('follower__profile').all()
+    following = user.following.select_related('following__profile').all()
+    
+    context = {
+        "profile":profile,
+        "followers" : followers,
+        "following" : following
+    }
+    return render(request, "connections.html", context)
 
 # ===========================
 #   Like/Dislike to a post

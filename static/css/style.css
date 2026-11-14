@@ -5746,6 +5746,7 @@ textarea::placeholder {
 
 .person-row__name:hover {
   text-decoration: underline;
+  color: var(--color-primary);
 }
 
 .person-row__headline {

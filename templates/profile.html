@@ -23,12 +23,12 @@
                 <a class="" href="{% url 'edit_profile' %}" style="margin-top: 4px; color: var(--text-primary);"><i data-lucide="pencil" style="color: #ff5a36"></i></a>
               </div>
               <p class="public-profile__stat">@{{ request.user.username }}</p>
-              <div class="public-profile__stats">
-                <div class="public-profile__stat">
+              <div  class="public-profile__stats ">
+                <div onclick="window.location.href='{% url 'connections' request.user %}'" class="public-profile__stat cursor-pointer">
                   <span>Followers</span>
                   <strong>{{ followers_count|default:'0' }}</strong>
                 </div>
-                <div class="public-profile__stat">
+                <div onclick="window.location.href='{% url 'connections' request.user %}#following'" class="public-profile__stat cursor-pointer">
                   <span>Following</span>
                   <strong>{{ following_count|default:'0' }}</strong>
                 </div>

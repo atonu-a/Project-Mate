@@ -2,9 +2,9 @@
 {% block main %}
 <main class="page-main page-main--narrow">
 
-  <a href="{% url 'profile' request.user.username %}" class="back-link">
+  <a href="{% url 'profile' profile.user.username %}" class="back-link">
     <i data-lucide="arrow-left" class="back-link__icon"></i>
-    <span>{{ request.user.get_full_name }}</span>
+    <span>{{ profile.user.get_full_name }}</span>
   </a>
 
   <div class="search-tabs">
@@ -21,14 +21,14 @@
     <div class="people-list">
       {% for person in followers %}
       <div class="person-row">
-        <a href="{% url 'profile' person.username %}">
-          <img src="{{ person.profile.profile_pic_url }}" alt="{{ person.get_full_name }}" class="person-row__avatar">
+        <a href="{% url 'profile' person.follower.username %}">
+          <img src="{{ person.follower.profile.profile_pic_url }}" alt="{{ person.user.get_full_name }}" class="person-row__avatar">
         </a>
         <div class="person-row__body">
-          <a href="{% url 'profile' person.username %}" class="person-row__name">{{ person.get_full_name }}</a>
-          <p class="person-row__headline">{{ person.profile.headline }}</p>
+          <a href="{% url 'profile' person.follower.username %}" class="person-row__name">{{ person.follower.get_full_name }}</a>
+          <p class="person-row__headline">{{ person.follower.profile.headline }}</p>
         </div>
-        <button onclick="window.location.href='{% url 'profile' person.username %}'" class="btn-tonal person-row__action">View Profile</button>
+        <button onclick="window.location.href='{% url 'profile' person.follower.username %}'" class="btn-tonal person-row__action">View Profile</button>
       </div>
       {% empty %}
       <p class="people-list__empty">No followers yet.</p>
@@ -41,14 +41,14 @@
     <div class="people-list">
       {% for person in following %}
       <div class="person-row">
-        <a href="{% url 'profile' person.username %}">
-          <img src="{{ person.profile.profile_pic_url }}" alt="{{ person.get_full_name }}" class="person-row__avatar">
+        <a href="{% url 'profile' person.following.username %}">
+          <img src="{{ person.following.profile.profile_pic_url }}" alt="{{ person.following.get_full_name }}" class="person-row__avatar">
         </a>
         <div class="person-row__body">
-          <a href="{% url 'profile' person.username %}" class="person-row__name">{{ person.get_full_name }}</a>
-          <p class="person-row__headline">{{ person.profile.headline }}</p>
+          <a href="{% url 'profile' person.following.username %}" class="person-row__name">{{ person.following.get_full_name }}</a>
+          <p class="person-row__headline">{{ person.following.profile.headline }}</p>
         </div>
-        <button onclick="window.location.href='{% url 'profile' person.username %}'" class="btn-tonal person-row__action">View Profile</button>
+        <button onclick="window.location.href='{% url 'profile' person.following.username %}'" class="btn-tonal person-row__action">View Profile</button>
       </div>
       {% empty %}
       <p class="people-list__empty">Not following anyone yet.</p>
