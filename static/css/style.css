@@ -187,6 +187,11 @@ img {
   max-width: 100%;
   height: auto;
 }
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .lucide {
   flex-shrink: 0;
@@ -2300,6 +2305,21 @@ textarea::placeholder {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+}
+
+.post__author > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.post__author-row > .flex {
+  flex: 1;
+  min-width: 0;
+}
+
+.post__author-name.ellipsis {
+  display: block;
   min-width: 0;
 }
 
