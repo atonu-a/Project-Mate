@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 DEFAULT_PROFILE_PIC_URL = (
     "https://res.cloudinary.com/ddrochzoq/image/upload/default_mdzqdy.svg"
@@ -56,6 +57,14 @@ class Profile(models.Model):
         return self.user.username
     
 
+
+class ProfileView(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="views")
+    viewer = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    viewed_at = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self) -> str:
+        return f"{self.viewer} viewed {self.profile}'s profile"
     
     
 
