@@ -11,6 +11,8 @@ from interactions.models import JoinRequest
 from home.views import get_posts
 from interactions.models import Follow
 from django.db.models import Count, Q
+from datetime import timedelta
+
 
 
 
@@ -301,6 +303,13 @@ def edit_profile(request):
 
 @login_required(login_url="signin")
 def dashboard(request):
+    user = request.user
+    profile = user.profile
+    now = timezone.now()
+    
+    
+    
+    # Trending projects/posts
     top_projects = projects = Project.objects.select_related(
             "owner_name", "owner_name__profile"
         ).prefetch_related(
@@ -311,23 +320,26 @@ def dashboard(request):
             comments_count=Count("comments", distinct=True)
         ).order_by("-likes_count", "-id")[:2]
     
-    # projects = Project.objects.filter(
-    #             Q(owner_name = request.user) |
-    #             Q(members__user = request.user)
-    #         ).distinct().select_related(
-    #                 "owner_name"
-    #             ).prefetch_related(
-    #                 "members"
-    #             ).annotate(
-    #                 members_count=Count("members", distinct=True),
-    #                 likes_count=Count("likes", distinct=True),
-    #                 comments_count = Count("comments", distinct=True)
-    #             )
-                
+    # Total Projects of user
     total_projects = projects.count()
+    
+    
+    # Profile Views Count
+    views = ProfileView.objects.filter(profile=profile)
+    
+    week_ago, two_weeks_ago = now - timedelta(days=7), now - timedelta(days=14)
+    
+    views_this_week = views.filter(viewed_at__gte = week_ago).count()
+    views_last_week = views.filter(viewed_at__gte = two_weeks_ago,viewed_at__lt=week_ago).count()
+    views_change = (round((views_this_week - views_last_week) / views_last_week * 100)
+        if views_last_week else None)
+    
 
     context = {
         'total_projects' : total_projects,
-        'top_projects' : top_projects
+        'top_projects' : top_projects,
+        "total_views" : views.count(),
+        "views_this_week" : views_this_week,
+        "views_change": views_change,
     }
     return render(request, "dashboard.html", context)

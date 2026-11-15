@@ -41,7 +41,7 @@
         <div class="stat-card">
             <div class="stat-card__head">
                 <span class="stat-card__label">Skill Matches</span>
-                <div class="stat-card__icon stat-card__icon--secondary"><i data-lucide="cpu"
+                <div class="stat-card__icon"><i data-lucide="cpu"
                         class="stat-card__glyph"></i></div>
             </div>
             <div class="stat-card__value">24</div>
@@ -50,24 +50,31 @@
         <div class="stat-card">
             <div class="stat-card__head">
                 <span class="stat-card__label">Join Requests</span>
-                <div class="stat-card__icon stat-card__icon--warning"><i data-lucide="git-pull-request"
+                <div class="stat-card__icon"><i data-lucide="git-pull-request"
                         class="stat-card__glyph"></i></div>
             </div>
             <div class="stat-card__value">{{ request_count }}</div>
             {% if request_count > 0 %}
             <div class="stat-card__note stat-card__note--warning">Action required</div>
             {% else %}
+            <div class="stat-card__note">No Action required</div>
             {% endif %}
             
         </div>
         <div class="stat-card">
             <div class="stat-card__head">
                 <span class="stat-card__label">Profile Views</span>
-                <div class="stat-card__icon stat-card__icon--success"><i data-lucide="eye" class="stat-card__glyph"></i>
+                <div class="stat-card__icon "><i data-lucide="eye" class="stat-card__glyph"></i>
                 </div>
             </div>
-            <div class="stat-card__value">142</div>
-            <div class="stat-card__note">+18% this week</div>
+            <div class="stat-card__value">{{ total_views }}</div>
+            <div class="stat-card__note{% if views_change is not None and views_change < 0 %} stat-card__note--down{% endif %}">
+                {% if views_change is not None %}
+                {% if views_change >= 0 %}+{% endif %}{{ views_change }}% this week
+                {% else %}
+                {{ views_this_week }}% this week
+                {% endif %}
+            </div>
         </div>
     </section>
 
@@ -122,7 +129,7 @@
         <section class="dashboard-split__side">
             <div class="section-head">
                 <h2 class="section-title">
-                    <i data-lucide="users" class="section-title__icon section-title__icon--secondary"></i>
+                    <i data-lucide="users" class="section-title__icon"></i>
                     <span>Suggested Teammates</span>
                 </h2>
                 <span class="section-note">AI Matched</span>
