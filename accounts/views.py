@@ -183,6 +183,14 @@ def profile(request, username ):
             project.is_member = (project.id in member_ids)
             project.join_request = (join_requests.get(project.id))
         
+        
+        if request.user !=user:
+            today = timezone.now().date()
+            already = ProfileView.objects.filter(profile = user.profile, viewer = request.user, viewed_at = today).exists()
+            
+            if not already:
+                ProfileView.objects.create(profile=user.profile, viewer=request.user)
+        
     context = {
         "projects": projects,
         "project_count": projects.count(),
