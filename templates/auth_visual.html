@@ -1,0 +1,8 @@
+{% load static %}
+<aside class="auth-visual" aria-hidden="true">
+    <div class="auth-visual__inner">
+        <img src="{% static image|default:'images/hero-image.svg' %}" alt="" class="auth-visual__image">
+        <h2 class="auth-visual__title">{{ title }}</h2>
+        <p class="auth-visual__text">{{ text }}</p>
+    </div>
+</aside>
