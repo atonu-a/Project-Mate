@@ -251,7 +251,7 @@
     </aside>
     {% endblock sidebar %}
 
-      {% if request.resolver_match.url_name != 'discover' %}
+      {% if request.resolver_match.url_name not in 'discover,signin,signup' %}
       <div class="app-content">
       <button onclick="window.history.back()" class="back-link app-content__back">
         <i data-lucide="arrow-left" class="back-link__icon"></i>

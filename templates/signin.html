@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %}
+
 
 {% block header %}
   <header class="site-header">
@@ -27,6 +28,15 @@
 {% endblock %}
 
 {% block main %}
+<div class="auth-split">
+    <aside class="auth-visual" aria-hidden="true">
+    <div class="auth-visual__inner">
+      <img src="{% static 'images/hero-image.svg' %}" alt="" class="auth-visual__image">
+      <h2 class="auth-visual__title">Welcome back</h2>
+      <p class="auth-visual__text">Pick up where you left off — your projects and teammates are waiting.</p>
+    </div>
+  </aside>
+
   <main class="auth-main">
     <div class="auth-wrap">
       <div class="auth-card">
@@ -75,4 +85,5 @@
       </p>
     </div>
   </main>
+</div>
 {% endblock %}

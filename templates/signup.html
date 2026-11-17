@@ -1,35 +1,45 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block header %}
-  <header class="site-header">
-    <div class="site-header__inner">
-      <div class="brand" onclick="window.location.href='{% url 'discover' %}'">
-        <div class="brand__logo">
-          <i class="fa-solid fa-users brand__logo-icon"></i>
-        </div>
-        <div class="brand__text">
-          <span class="brand__name">TeamNest</span>
-          <span class="brand__version">v2.5 Pro</span>
-        </div>
+<header class="site-header">
+  <div class="site-header__inner">
+    <div class="brand" onclick="window.location.href='{% url 'discover' %}'">
+      <div class="brand__logo">
+        <i class="fa-solid fa-users brand__logo-icon"></i>
       </div>
-  
-  
-      <div class="header-actions">
-        <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button" title="Toggle Theme"
-          aria-label="Toggle theme">
-          <i data-lucide="sun" class="theme-icon-sun"></i>
-          <i data-lucide="moon" class="theme-icon-moon"></i>
-        </button>
-
-  
+      <div class="brand__text">
+        <span class="brand__name">TeamNest</span>
+        <span class="brand__version">v2.5 Pro</span>
       </div>
     </div>
-  </header>
+
+
+    <div class="header-actions">
+      <button onclick="toggleTheme()" id="themeToggleBtn" class="icon-button" title="Toggle Theme"
+        aria-label="Toggle theme">
+        <i data-lucide="sun" class="theme-icon-sun"></i>
+        <i data-lucide="moon" class="theme-icon-moon"></i>
+      </button>
+
+
+    </div>
+  </div>
+</header>
 {% endblock %}
 {% block sidebar %}
 
 {% endblock %}
 {% block main %}
+<div class="auth-split">
+  <aside class="auth-visual" aria-hidden="true">
+    <div class="auth-visual__inner">
+      <img src="{% static 'images/signup.svg' %}" alt="" class="auth-visual__image">
+      <h2 class="auth-visual__title">Find your team. Build anything.</h2>
+      <p class="auth-visual__text">Join people from every field — developers, designers, marketers, writers — and start
+        building together.</p>
+    </div>
+  </aside>
   <main class="auth-main">
     <div class="auth-wrap">
       <div class="auth-card">
@@ -46,7 +56,7 @@
             <label for="{{ user_form.first_name.id_for_label }}" class="form-label">First Name</label>
             {{ user_form.first_name }}
             {% if user_form.first_name.errors %}
-              <span class="text-danger">{{ user_form.first_name.errors.0 }}</span>
+            <span class="text-danger">{{ user_form.first_name.errors.0 }}</span>
             {% endif %}
           </div>
 
@@ -55,7 +65,7 @@
             <label for="{{ user_form.last_name.id_for_label }}" class="form-label">Last Name</label>
             {{ user_form.last_name }}
             {% if user_form.last_name.errors %}
-              <span class="text-danger">{{ user_form.last_name.errors.0 }}</span>
+            <span class="text-danger">{{ user_form.last_name.errors.0 }}</span>
             {% endif %}
           </div>
 
@@ -64,7 +74,7 @@
             <label for="{{ user_form.username.id_for_label }}" class="form-label">Username</label>
             {{ user_form.username }}
             {% if user_form.username.errors %}
-              <span class="text-danger">{{ user_form.username.errors.0 }}</span>
+            <span class="text-danger">{{ user_form.username.errors.0 }}</span>
             {% endif %}
           </div>
 
@@ -73,7 +83,7 @@
             <label for="{{ user_form.email.id_for_label }}" class="form-label">Email</label>
             {{ user_form.email }}
             {% if user_form.email.errors %}
-              <span class="text-danger">{{ user_form.email.errors.0 }}</span>
+            <span class="text-danger">{{ user_form.email.errors.0 }}</span>
             {% endif %}
           </div>
 
@@ -82,10 +92,11 @@
             <label for="{{ user_form.password1.id_for_label }}" class="form-label">Password</label>
             <div class="form-input-group">
               {{ user_form.password1 }}
-              <button type="button" onclick="togglePasswordVisibility(this)" class="form-input-group__toggle" aria-label="Show password"><i data-lucide="eye" class="form-input-group__toggle-icon"></i></button>
+              <button type="button" onclick="togglePasswordVisibility(this)" class="form-input-group__toggle"
+                aria-label="Show password"><i data-lucide="eye" class="form-input-group__toggle-icon"></i></button>
             </div>
             {% if user_form.password1.errors %}
-              <span class="text-danger">{{ user_form.password1.errors.0 }}</span>
+            <span class="text-danger">{{ user_form.password1.errors.0 }}</span>
             {% endif %}
           </div>
 
@@ -94,10 +105,11 @@
             <label for="{{ user_form.password2.id_for_label }}" class="form-label">Confirm Password</label>
             <div class="form-input-group">
               {{ user_form.password2 }}
-              <button type="button" onclick="togglePasswordVisibility(this)" class="form-input-group__toggle" aria-label="Show password"><i data-lucide="eye" class="form-input-group__toggle-icon"></i></button>
+              <button type="button" onclick="togglePasswordVisibility(this)" class="form-input-group__toggle"
+                aria-label="Show password"><i data-lucide="eye" class="form-input-group__toggle-icon"></i></button>
             </div>
             {% if user_form.password2.errors %}
-              <span class="text-danger">{{ user_form.password2.errors.0 }}</span>
+            <span class="text-danger">{{ user_form.password2.errors.0 }}</span>
             {% endif %}
           </div>
 
@@ -117,4 +129,5 @@
       </p>
     </div>
   </main>
+</div>
 {% endblock %}
