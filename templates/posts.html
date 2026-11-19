@@ -64,7 +64,11 @@
     <div class="post__body">
         <div>
             <div class="badges flex flex-wrap gap-1">
-
+                <span class="{% if project.status == "Closed" %}
+                category-badge--secondary
+                {% else %}
+                status-badge
+                {% endif %} ">{{ project.status }}</span>
                 <span class="category-badge"><i class="fa-solid fa-business-time"></i> {{ project.deadline }}</span>
                 <span class=" {% if project.compensation_type == "Unpaid" %} category-badge--secondary 
                 {% elif project.compensation_type == "Negotiable" %} nego-tag {% else %} status-badge {% endif %} ">{{ project.compensation_type.upper }}</span>
