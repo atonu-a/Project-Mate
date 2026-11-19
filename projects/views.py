@@ -236,13 +236,11 @@ def my_projects(request):
         Q(owner_name = request.user) |
         Q(members__user = request.user)
     ).distinct().select_related(
-        "owner_name"
+        "owner_name", "owner_name__profile"
     ).prefetch_related(
-        "members"
+        "members__user", "members__user__profile"
     ).annotate(
         members_count=Count("members", distinct=True),
-        likes_count=Count("likes", distinct=True),
-        comments_count = Count("comments", distinct=True)
     )
     
     total_projects = projects.count()
