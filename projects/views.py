@@ -195,7 +195,7 @@ def edit_project(request, slug):
         project.save()
         
         messages.success(request, "Project edited successfully!")
-        return redirect("my_projects")
+        return redirect("project_detail", slug=slug)
         
     context = {
         "project":project,
