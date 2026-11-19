@@ -35,7 +35,7 @@
           {% endif %}
 
           <button onclick="window.location.href='{% url 'messages' %}'" class="btn-secondary">
-            <i data-lucide="message-square" class="btn-icon btn-icon--accent"></i>
+            <i data-lucide="message-square" class="btn-icon"></i>
             <span>Message</span>
           </button>
         </div>
@@ -44,6 +44,28 @@
 
     <div class="detail-layout">
       <div class="detail-main">
+        {% if project.owner_name == request.user %}
+        
+        
+        <section class="detail-card detail-card--main">
+          <h2 class="detail-card__title">
+            <i data-lucide="database-cog" class="detail-card__title-icon"></i>
+            <span>Project Actions</span>
+
+          </h2>
+          <div class="flex gap-2">
+          <a href="{% url 'edit_project' project.slug %}"  class="btn-secondary">
+            <i data-lucide="square-pen" class="btn-icon"></i>
+            <span>Edit</span>
+          </a>
+          <a onclick="openModal('{{ project.slug }}')" class="btn-danger">
+            <i data-lucide="trash" class="btn-icon"></i>
+            <span>Delete</span>
+          </a>
+          </div>
+        </section>
+        {% else %}
+        {% endif %}
         <section class="detail-card detail-card--main">
           <h2 class="detail-card__title">
             <i data-lucide="file-text" class="detail-card__title-icon"></i>
@@ -54,7 +76,7 @@
 
         <section class="detail-card detail-card--main">
           <h2 class="detail-card__title">
-            <i data-lucide="cpu" class="detail-card__title-icon detail-card__title-icon--secondary"></i>
+            <i data-lucide="cpu" class="detail-card__title-icon"></i>
             <span>Required Tech Stack</span>
           </h2>
           <div class="skill-list">

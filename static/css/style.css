@@ -177,6 +177,9 @@ button {
   border: 0;
   cursor: pointer;
 }
+button:active{
+  transform: scale(0.95);
+}
 
 img,
 svg {
