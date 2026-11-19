@@ -181,6 +181,8 @@ def search_results(request):
             "owner_name__username",
             "owner_name__first_name",
             "owner_name__last_name",
+            "compensation_type",
+            "status",
         ) 
         user_vector = SearchVector(
             "username", 
