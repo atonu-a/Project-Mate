@@ -1,180 +1,164 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block main %}
-<main class="dashboard">
+  <main class="dashboard">
     <!-- Welcome banner -->
     <section class="welcome">
-        <div class="welcome__glow"></div>
-        <div class="welcome__body">
-            <div class="welcome__text">
-                <div class="welcome__badge">
-                    <i data-lucide="sparkles" class="welcome__badge-icon"></i>
-                    <span>Welcome back, Alex</span>
-                </div>
-                <h1 class="welcome__title">Find people. Find projects. Build together.</h1>
-                <p class="welcome__subtitle">You have 2 active team requests and 1 upcoming sprint milestone due this
-                    week. Explore new AI &amp; Web3 collaborations matched to your skill profile.</p>
-            </div>
-            <div class="welcome__actions">
-                <button onclick="window.location.href='{% url 'create' %}'" class="btn-primary">
-                    <i data-lucide="plus" class="btn-icon"></i>
-                    <span>Post a Project</span>
-                </button>
-                <button onclick="window.location.href='{% url 'home' %}'" class="btn-secondary">
-                    <i data-lucide="compass" class="btn-icon btn-icon--accent"></i>
-                    <span>Explore Feed</span>
-                </button>
-            </div>
+      <div class="welcome__glow"></div>
+      <div class="welcome__body">
+        <div class="welcome__text">
+          <div class="welcome__badge">
+            <i data-lucide="sparkles" class="welcome__badge-icon"></i>
+            <span>Welcome back, Alex</span>
+          </div>
+          <h1 class="welcome__title">Find people. Find projects. Build together.</h1>
+          <p class="welcome__subtitle">You have 2 active team requests and 1 upcoming sprint milestone due this week. Explore new AI &amp; Web3 collaborations matched to your skill profile.</p>
         </div>
+        <div class="welcome__actions">
+          <button onclick="window.location.href='{% url 'create' %}'" class="btn-primary">
+            <i data-lucide="plus" class="btn-icon"></i>
+            <span>Post a Project</span>
+          </button>
+          <button onclick="window.location.href='{% url 'home' %}'" class="btn-secondary">
+            <i data-lucide="compass" class="btn-icon btn-icon--accent"></i>
+            <span>Explore Feed</span>
+          </button>
+        </div>
+      </div>
     </section>
 
     <!-- Quick stats -->
     <section class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-card__head">
-                <span class="stat-card__label">Active Projects</span>
-                <div class="stat-card__icon"><i data-lucide="folder-kanban" class="stat-card__glyph"></i></div>
-            </div>
-            <div class="stat-card__value">{{ total_projects }}</div>
-            <div class="stat-card__note"><i data-lucide="trending-up" class="stat-card__note-icon"></i>+1 this month
-            </div>
+      <div class="stat-card">
+        <div class="stat-card__head">
+          <span class="stat-card__label">Active Projects</span>
+          <div class="stat-card__icon">
+            <i data-lucide="folder-kanban" class="stat-card__glyph"></i>
+          </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-card__head">
-                <span class="stat-card__label">Skill Matches</span>
-                <div class="stat-card__icon"><i data-lucide="cpu"
-                        class="stat-card__glyph"></i></div>
-            </div>
-            <div class="stat-card__value">24</div>
-            <div class="stat-card__note stat-card__note--accent">98% top match score</div>
+        <div class="stat-card__value">{{ total_projects }}</div>
+        <div class="stat-card__note">
+          <i data-lucide="trending-up" class="stat-card__note-icon"></i>+1 this month
         </div>
-        <div class="stat-card">
-            <div class="stat-card__head">
-                <span class="stat-card__label">Join Requests</span>
-                <div class="stat-card__icon"><i data-lucide="git-pull-request"
-                        class="stat-card__glyph"></i></div>
-            </div>
-            <div class="stat-card__value">{{ request_count }}</div>
-            {% if request_count > 0 %}
-            <div class="stat-card__note stat-card__note--warning">Action required</div>
-            {% else %}
-            <div class="stat-card__note">No Action required</div>
-            {% endif %}
-            
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__head">
+          <span class="stat-card__label">Skill Matches</span>
+          <div class="stat-card__icon">
+            <i data-lucide="cpu" class="stat-card__glyph"></i>
+          </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-card__head">
-                <span class="stat-card__label">Profile Views</span>
-                <div class="stat-card__icon "><i data-lucide="eye" class="stat-card__glyph"></i>
-                </div>
-            </div>
-            <div class="stat-card__value">{{ total_views }}</div>
-            <div class="stat-card__note{% if views_change is not None and views_change < 0 %} stat-card__note--down{% endif %}">
-                {% if views_change is not None %}
-                {% if views_change >= 0 %}+{% endif %}{{ views_change }}% this week
-                {% else %}
-                {{ views_this_week }}% this week
-                {% endif %}
-            </div>
+        <div class="stat-card__value">24</div>
+        <div class="stat-card__note stat-card__note--accent">98% top match score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__head">
+          <span class="stat-card__label">Join Requests</span>
+          <div class="stat-card__icon">
+            <i data-lucide="git-pull-request" class="stat-card__glyph"></i>
+          </div>
         </div>
+        <div class="stat-card__value">{{ request_count }}</div>
+        {% if request_count > 0 %}
+          <div class="stat-card__note stat-card__note--warning">Action required</div>
+        {% else %}
+          <div class="stat-card__note">No Action required</div>
+        {% endif %}
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__head">
+          <span class="stat-card__label">Profile Views</span>
+          <div class="stat-card__icon">
+            <i data-lucide="eye" class="stat-card__glyph"></i>
+          </div>
+        </div>
+        <div class="stat-card__value">{{ total_views }}</div>
+        <div class="stat-card__note{% if views_change is not None and views_change < 0 %} stat-card__note--down{% endif %}">
+          {% if views_change is not None %}
+            {% if views_change >= 0 %}+{% endif %}{{ views_change }}% this week
+          {% else %}
+            {{ views_this_week }}% this week
+          {% endif %}
+        </div>
+      </div>
     </section>
 
     <!-- Spotlights and suggested teammates -->
     <div class="dashboard-split">
-        <section class="dashboard-split__main">
-            <div class="section-head">
-                <h2 class="section-title">
-                    <i data-lucide="flame" class="section-title__icon"></i>
-                    <span>Featured Project Spotlights</span>
-                </h2>
-                <a href="{% url 'home' %}" class="section-link">View feed →</a>
-            </div>
+      <section class="dashboard-split__main">
+        <div class="section-head">
+          <h2 class="section-title">
+            <i data-lucide="flame" class="section-title__icon"></i>
+            <span>Featured Project Spotlights</span>
+          </h2>
+          <a href="{% url 'home' %}" class="section-link">View feed →</a>
+        </div>
 
-            <div class="spotlight-grid">
-                {% for project in top_projects %}
-                            
-                <article class="spotlight-card">
-                     <span class="trend-rank trend-rank--{{ forloop.counter }}" aria-label="Trending rank {{ forloop.counter }}">#{{ forloop.counter }}</span>
-                     <span class="like-rank trend-rank--{{ forloop.counter }}" aria-label="Trending rank {{ forloop.counter }}"><i class="fa-solid fa-heart"></i> {{ project.likes_count }} likes</span>
-                    <div class="spotlight-card__body">
-                        <div class="spotlight-card__meta">
-                            <span class="category-badge">{{ project.category }}</span>
-                            <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{ project.deadline }}</span>
-                        </div>
-                        <h3 onclick="window.location.href='{% url 'project_detail' project.slug %}'"
-                            class="spotlight-card__title">
-                            {{project.title}}</h3>
-                        <p class="spotlight-card__text">{{ project.desc|truncatechars:70 }}</p>
-                        <div class="chips">
-                            {% for skill in project.required_skills.all %}
-                            <span class="chip">{{skill.name}}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="spotlight-card__footer">
-                        <div class="author cursor-pointer" onclick="window.location.href='{% url 'profile' project.owner_name.username %}'">
-                            <img src="{{ project.owner_name.profile.profile_pic_url }}"
-                                alt="{{project.owner_name.get_full_name}}" class="author__avatar">
-                            <span class="author__name">{{project.owner_name.get_full_name|truncatechars:10}}</span>
-                        </div>
-                        <button onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="btn-tonal">View
-                            Project</button>
-                    </div>
-                </article>
-
-                {% endfor %}
-
-            </div>
-        </section>
-
-        <section class="dashboard-split__side">
-            <div class="section-head">
-                <h2 class="section-title">
-                    <i data-lucide="users" class="section-title__icon"></i>
-                    <span>Suggested Teammates</span>
-                </h2>
-                <span class="section-note">AI Matched</span>
-            </div>
-
-            <div class="suggest-list">
-                <div class="suggest-item">
-                    <div class="suggest-item__person">
-                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
-                            alt="Kaito Tanaka" class="suggest-item__avatar">
-                        <div>
-                            <h4 class="suggest-item__name">Kaito Tanaka</h4>
-                            <p class="suggest-item__role">Rust &amp; Systems Engineer</p>
-                            <div class="suggest-item__skills">
-                                <span class="skill-mini">Rust</span>
-                                <span class="skill-mini">WASM</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="showToast('Connection request sent!')" class="suggest-item__add"
-                        aria-label="Send connection request">
-                        <i data-lucide="user-round-plus" class="suggest-item__add-icon"></i>
-                    </button>
+        <div class="spotlight-grid">
+          {% for project in top_projects %}
+            <article class="spotlight-card">
+              <span class="trend-rank trend-rank--{{ forloop.counter }}" aria-label="Trending rank {{ forloop.counter }}">#{{ forloop.counter }}</span>
+              <span class="like-rank trend-rank--{{ forloop.counter }}" aria-label="Trending rank {{ forloop.counter }}"><i class="fa-solid fa-heart"></i> {{ project.likes_count }} likes</span>
+              <div class="spotlight-card__body">
+                <div class="spotlight-card__meta">
+                  <span class="category-badge">{{ project.category }}</span>
+                  <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{ project.deadline }}</span>
                 </div>
-                <div class="suggest-item">
-                    <div class="suggest-item__person">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
-                            alt="Sophia Sterling" class="suggest-item__avatar">
-                        <div>
-                            <h4 class="suggest-item__name">Sophia Sterling</h4>
-                            <p class="suggest-item__role">Product Designer &amp; UX</p>
-                            <div class="suggest-item__skills">
-                                <span class="skill-mini">Figma</span>
-                                <span class="skill-mini">Tailwind</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="showToast('Connection request sent!')" class="suggest-item__add"
-                        aria-label="Send connection request">
-                        <i data-lucide="user-round-plus" class="suggest-item__add-icon"></i>
-                    </button>
+                <h3 onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="spotlight-card__title">{{ project.title }}</h3>
+                <p class="spotlight-card__text">{{ project.desc|truncatechars:70 }}</p>
+                <div class="chips">
+                  {% for skill in project.required_skills.all %}
+                    <span class="chip">{{ skill.name }}</span>
+                  {% endfor %}
                 </div>
+              </div>
+              <div class="spotlight-card__footer">
+                <div class="author cursor-pointer" onclick="window.location.href='{% url 'profile' project.owner_name.username %}'">
+                  <img src="{{ project.owner_name.profile.profile_pic_url }}" alt="{{ project.owner_name.get_full_name }}" class="author__avatar" />
+                  <span class="author__name">{{ project.owner_name.get_full_name|truncatechars:10 }}</span>
+                </div>
+                <button onclick="window.location.href='{% url 'project_detail' project.slug %}'" class="btn-tonal">View Project</button>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="dashboard-split__side">
+        <div class="section-head">
+          <h2 class="section-title">
+            <i data-lucide="users" class="section-title__icon"></i>
+            <span>Suggested Teammates</span>
+          </h2>
+          <span class="section-note">AI Matched</span>
+        </div>
+
+        <div class="suggest-list">
+          {% for teammate in suggested_users|slice:":2" %}
+            <div class="suggest-item cursor-pointer" onclick="window.location.href='{% url 'profile' teammate.username %}'">
+              <div class="suggest-item__person">
+                <img src="{{ teammate.profile.profile_pic_url }}" alt="{{ teammate.get_full_name }}" class="suggest-item__avatar" />
+                <div>
+                  <h4 class="suggest-item__name">{{ teammate.get_full_name }}</h4>
+                  <p class="suggest-item__role">{{ teammate.profile.headline }}</p>
+                  <div class="suggest-item__skills">
+                    {% for skill in teammate.profile.skills.all  %}
+                        <span class="skill-mini">{{skill.name}}</span>
+                    {% endfor %}
+
+                  </div>
+                </div>
+              </div>
+              <form method="post" action="{% url 'follow' teammate.username %}">
+          {% csrf_token %}
+          <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i
+              data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>
+        </form>
             </div>
-        </section>
+            {% empty %}
+            <strong class="text-[var(--color-primary)] text-center">No recommendations yet</strong>
+          {% endfor %}
+        </div>
+      </section>
     </div>
-</main>
-
-{% endblock main %}
+  </main>
+{% endblock %}

@@ -11,7 +11,7 @@
         {% endif %} ">All</a>
 
 
-      {% if request.user.is_authenticated %}
+      {% if user %}
       <a href="?feed=recommended" class="field-chip {% if feed == 'recommended' %}
                 is-selected
                 {% else %}
@@ -53,20 +53,20 @@
       </button>
     </div>
     <div class="suggest-panel__list">
-      {% for teammates in suggested_users %}
+      {% for teammate in suggested_users %}
 
 
       <div class="suggest-row">
         <div class="suggest-row__person cursor-pointer"
-          onclick="location.href='{% url 'profile' teammates.username %}'">
-          <img src="{{ teammates.profile.profile_pic_url }}" alt="{{ teammates.username }}"
+          onclick="location.href='{% url 'profile' teammate.username %}'">
+          <img src="{{ teammate.profile.profile_pic_url }}" alt="{{ teammate.username }}"
             class="suggest-row__avatar" />
           <div>
-            <h4 class="suggest-row__name">{{ teammates.first_name }} {{ teammates.last_name }}</h4>
-            <p class="suggest-row__role">{{ teammates.profile.headline }}</p>
+            <h4 class="suggest-row__name">{{ teammate.get_full_name }}</h4>
+            <p class="suggest-row__role">{{ teammate.profile.headline }}</p>
           </div>
         </div>
-        <form method="post" action="{% url 'follow' teammates.username %}">
+        <form method="post" action="{% url 'follow' teammate.username %}">
           {% csrf_token %}
           <button type="submit" class="suggest-row__add" aria-label="Send connection request"><i
               data-lucide="user-round-plus" class="suggest-row__add-icon"></i></button>

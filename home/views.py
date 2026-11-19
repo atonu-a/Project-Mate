@@ -108,8 +108,6 @@ def discover(request):
         profile, _ = Profile.objects.get_or_create(user=user)
         request.profile = profile
 
-    suggested_users = User.objects.exclude(username = user)
-
     feed = request.GET.get("feed", "all")
     
     if feed == "following":
@@ -122,9 +120,7 @@ def discover(request):
     
     if user:
         following_users = Follow.objects.filter(follower = user).values_list("following_id", flat=True)
-        suggested_users = User.objects.exclude(id__in = following_users).exclude(username = user).select_related("profile")
-        
-        
+      
         project_ids = [project.id for project in projects]
         member_project_ids = set(ProjectMember.objects.filter(
             project_id__in = project_ids,
@@ -145,8 +141,7 @@ def discover(request):
        
     context = {
         "projects": projects,
-        "feed" : feed,
-        "suggested_users" : suggested_users,
+        "feed" : feed, 
     }
     
     return render(request, "discover.html", context)
