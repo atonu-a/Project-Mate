@@ -19,9 +19,7 @@ def profile_context(request):
         )
         following_users = Follow.objects.filter(follower = user).values_list("following_id", flat=True)
         suggested_users = User.objects.exclude(id__in = following_users).exclude(username = user).select_related("profile").prefetch_related("profile__skills")[:3]
-        for teammate in suggested_users:
-            print(teammate.username,list(teammate.profile.skills.values_list("name", flat=True))
-    )
+
         if profile is None:
             profile, _ = Profile.objects.get_or_create(user = request.user)
         request_count = JoinRequest.objects.filter(
