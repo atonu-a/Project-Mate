@@ -14,7 +14,7 @@ def landing_page(request):
 
 
 # get posts
-def get_posts(owner_name = None, following = None, recommended = None, limit = None, user = None,exclude_own=False,):
+def get_posts(owner_name = None, following = None, recommended = None, limit = None, user = None, profile=None,exclude_own=False,):
     projects = Project.objects.select_related(
         "owner_name", "owner_name__profile"
     ).prefetch_related(
@@ -63,7 +63,8 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
         projects = projects.annotate(is_saved = Exists(saved_projects)).order_by("-id")
         
     if recommended and user:
-        user_skill_ids = user.profile.skills.values_list(
+
+        user_skill_ids = profile.skills.values_list(
             "id", flat = True
         )
         projects = projects.annotate(
@@ -99,20 +100,25 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
 
 # feed Page
 def discover(request):  
+
     user  = request.user if request.user.is_authenticated else None
-    recommended = True if request.user.is_authenticated else None
+    recommended = bool(user)
+    profile = None
+    if user :
+        profile, _ = Profile.objects.get_or_create(user=user)
+        request.profile = profile
 
     suggested_users = User.objects.exclude(username = user)
 
     feed = request.GET.get("feed", "all")
     
     if feed == "following":
-        projects = get_posts(following=user, user=user, recommended=recommended)
+        projects = get_posts(following=user, user=user, recommended=recommended, profile=profile)
     
     elif feed == "recommended":
-        projects = get_posts(user=user, recommended=recommended, exclude_own=True)
+        projects = get_posts(user=user, recommended=recommended, exclude_own=True, profile=profile)
     else:
-        projects = get_posts(user=user, recommended=recommended)
+        projects = get_posts(user=user, recommended=recommended, profile=profile)
     
     if user:
         following_users = Follow.objects.filter(follower = user).values_list("following_id", flat=True)

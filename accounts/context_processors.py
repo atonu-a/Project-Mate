@@ -6,13 +6,16 @@ from django.db.models import Q
 
 
 def profile_context(request):
+
     request_count = 0
     unread_notification_count = 0
+    profile = None
     
     if request.user.is_authenticated:
-        profile, _ = Profile.objects.get_or_create(
-            user=request.user
+        profile = getattr(request, "profile", None
         )
+        if profile is None:
+            profile, _ = Profile.objects.get_or_create(user = request.user)
         request_count = JoinRequest.objects.filter(
             project__owner_name=request.user,
             status="Pending"
