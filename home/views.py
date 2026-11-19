@@ -103,7 +103,7 @@ def discover(request):
     recommended = True if request.user.is_authenticated else None
 
     suggested_users = User.objects.exclude(username = user)
-    request_count = 0
+
     feed = request.GET.get("feed", "all")
     
     if feed == "following":
@@ -136,13 +136,9 @@ def discover(request):
             project.is_member = (project.id in member_project_ids)
 
             project.join_request = (join_requests.get(project.id))
-        request_count = JoinRequest.objects.filter(
-            project__owner_name=user,
-            status="Pending"
-        ).count()        
+       
     context = {
         "projects": projects,
-        "request_count" : request_count,
         "feed" : feed,
         "suggested_users" : suggested_users,
     }
