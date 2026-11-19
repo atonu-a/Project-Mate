@@ -90,7 +90,7 @@
         </button>
 
 
-        {% if request.user.is_authenticated %}
+        {% if user %}
         <button onclick="window.location.href='{% url 'create' %}'" class="icon-create-button icon-button"
           aria-label="Create Project">
           <i data-lucide="plus" class="icon-button__icon"></i>
@@ -112,15 +112,15 @@
         <div class="user-menu">
           <button onclick="toggleUserMenu()" class="user-menu__trigger" aria-label="Account menu">
             <img src="{{ profile.profile_pic_url }}" alt="Alex Rivera" class="user-menu__avatar" />
-            <span class="user-menu__name">{{ request.user.username }}</span>
+            <span class="user-menu__name">{{ user.username }}</span>
             <i data-lucide="chevron-down" class="user-menu__chevron"></i>
           </button>
           <div id="userDropdown" class="user-menu__dropdown">
             <div class="user-menu__info">
               <p class="user-menu__info-label">Signed in as</p>
-              <p class="user-menu__info-email">{{ request.user.email }}</p>
+              <p class="user-menu__info-email">{{ user.email }}</p>
             </div>
-            <a href="{% url 'profile' request.user.username %}" class="user-menu__link">
+            <a href="{% url 'profile' user.username %}" class="user-menu__link">
               <i data-lucide="user-circle" class="user-menu__link-icon user-menu__link-icon--secondary"></i>
               <span>My Profile</span>
             </a>
@@ -166,7 +166,7 @@
         </a>
 
         
-        {% if request.user.is_authenticated %}
+        {% if user %}
 
 
         <a href="{% url 'dashboard' %}" class="sidebar__link 
@@ -217,7 +217,7 @@
           <span>About</span>
         </a>
 
-        {% if request.user.is_authenticated %}
+        {% if user %}
         <div class="sidebar__heading sidebar__heading--spaced">Collaboration</div>
 
         <a href="{% url 'messages' %}" class="sidebar__link 
@@ -238,7 +238,7 @@
           <span class="sidebar__count sidebar__count--alert">{{ unread_notification_count }}</span>
         </a>
 
-        <a href="{% url 'profile' request.user.username%}" class="sidebar__link 
+        <a href="{% url 'profile' user.username%}" class="sidebar__link 
           {% if request.path == '/profile/' %}
             is-active
           {% endif %} ">
@@ -284,7 +284,7 @@
         <i data-lucide="compass" class="mobile-menu__link-icon"></i>
         <span>Discover Feed</span>
       </a>
-      {% if request.user.is_authenticated %}
+      {% if user %}
 
 
       <a href="{% url 'dashboard' %}" class="mobile-menu__link">
@@ -315,7 +315,7 @@
         <i data-lucide="bell" class="mobile-menu__link-icon"></i>
         <span>Notifications</span>
       </a> -->
-      <a href="{% url 'profile' request.user.username %}" class="mobile-menu__link">
+      <a href="{% url 'profile' user.username %}" class="mobile-menu__link">
         <i data-lucide="user-circle" class="mobile-menu__link-icon"></i>
         <span>My Profile</span>
       </a>
