@@ -1,0 +1,34 @@
+<div class="comment">
+  <img onclick="window.location.href='{% url 'profile' comment.user.username %}'" src="{{ comment.user.profile.profile_pic_url }}" alt="Kaito Tanaka" class="comment__avatar cursor-pointer" />
+  <div class="comment__body">
+    <div class="comment__bubble">
+      <h4 class="comment__name">{{ comment.user.first_name }} {{ comment.user.last_name }}</h4>
+      <p class="comment__text">{{ comment.commented_text }}</p>
+    </div>
+    <div class="comment__meta">
+      {% comment %} <button class="comment__action">Like</button> {% endcomment %}
+      <div class="comment__meta">
+        <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
+
+        <span class="comment__time">{{ comment.created_at_ago }}</span>
+      </div>
+
+
+
+    </div>
+          <form method="POST" action="{% url 'comment' comment.id %}" class="comment-composer reply-composer" hidden>
+        {% csrf_token %}
+        <img src="{{ request.user.profile.profile_pic_url }}" alt="You" class="comment-composer__avatar">
+        <input type="text" name="commented_text" class="comment-composer__input" placeholder="Reply to {{ comment.user.first_name }}..." required />
+
+        <button type="submit" class="comment-composer__send"><i data-lucide="send" class="comment-composer__send-icon"></i></button>
+      </form>
+    {% if comment.replies.exists %}
+      {% for reply in comment.replies.all %}
+        {% include 'comments.html' with comment=reply %}
+      {% endfor %}
+    {% else %}
+
+    {% endif %}
+  </div>
+</div>

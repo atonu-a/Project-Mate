@@ -195,7 +195,9 @@
         <div class="comment-list">
             {% for comment in project.prefetched_comments %}
 
-            <div class="comment">
+            {% include "comments.html" with comment=comment %}
+
+            <!-- <div class="comment">
                 <img onclick="window.location.href='{% url 'profile' comment.user.username  %}'"
                     src="{{comment.user.profile.profile_pic_url}}" alt="Kaito Tanaka"
                     class="comment__avatar cursor-pointer">
@@ -256,7 +258,7 @@
 
 
                 </div>
-            </div>
+            </div> -->
             {% endfor %}
         </div>
 
