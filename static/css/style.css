@@ -5575,6 +5575,94 @@ textarea::placeholder {
 }
 
 
+.comment__replies {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  padding-left: 8px;
+  border-left: 2px solid var(--color-border);
+}
+
+.comment__replies.is-collapsed {
+  display: none;
+}
+
+/* রিপ্লাই একটু ছোট দেখাবে */
+.comment--reply .comment__avatar {
+  width: 26px;
+  height: 26px;
+}
+
+.comment--reply .comment__bubble {
+  padding: 6px 12px;
+}
+
+/* ৪র্থ স্তরের পর আর ভেতরে ঢুকবে না, না হলে মোবাইলে জায়গা শেষ হয়ে যাবে */
+.comment__replies .comment__replies .comment__replies .comment__replies {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.comment__mention {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.comment__mention:hover {
+  text-decoration: underline;
+}
+
+.comment__toggle-replies {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.comment__toggle-replies::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.comment__toggle-replies:hover {
+  color: var(--color-text);
+}
+
+/* Reply বাটনে চাপলে যে ইনপুট বক্স আসে */
+.reply-composer {
+  margin-top: 8px;
+}
+
+.reply-composer .comment-composer__avatar {
+  width: 26px;
+  height: 26px;
+}
+
+.reply-composer .comment-composer__input {
+  padding: 8px 14px;
+}
+
+.reply-composer .comment-composer__send {
+  width: 30px;
+  height: 30px;
+}
+
+@media (min-width: 480px) {
+  .comment__replies {
+    padding-left: 16px;
+  }
+}
+
+
+
+
+
 
 /* 29. About Page */
 .about-hero {

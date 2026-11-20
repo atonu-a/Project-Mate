@@ -659,7 +659,6 @@ try {
   });
 } catch (error) {}
 
-
 function removeFromSaved(btn) {
   const card = btn.closest(".spotlight-card");
   if (!card) return;
@@ -698,16 +697,107 @@ function toggleFaq(btn) {
   if (item) item.classList.toggle("is-open");
 }
 
-
-
 // Connections Page
 function switchSearchTab(tabBtn, panelId) {
   if (!tabBtn) return;
-  const tabsWrap = tabBtn.closest('.search-tabs');
+  const tabsWrap = tabBtn.closest(".search-tabs");
   const panelsWrap = tabsWrap ? tabsWrap.parentElement : document;
-  if (tabsWrap) tabsWrap.querySelectorAll('.search-tab').forEach((t) => t.classList.remove('is-active'));
-  tabBtn.classList.add('is-active');
-  panelsWrap.querySelectorAll('.search-panel').forEach((p) => p.classList.remove('is-active'));
+  if (tabsWrap)
+    tabsWrap
+      .querySelectorAll(".search-tab")
+      .forEach((t) => t.classList.remove("is-active"));
+  tabBtn.classList.add("is-active");
+  panelsWrap
+    .querySelectorAll(".search-panel")
+    .forEach((p) => p.classList.remove("is-active"));
   const panel = document.getElementById(panelId);
-  if (panel) panel.classList.add('is-active');
+  if (panel) panel.classList.add("is-active");
+}
+
+const REPLY_AVATAR =
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80";
+
+// Reply বাটনে চাপলে ওই কমেন্টের নিচে ইনপুট বক্স খুলবে, আবার চাপলে বন্ধ হবে
+function toggleReplyBox(btn) {
+  const body = btn.closest(".comment__body");
+  if (!body) return;
+
+  const existing = body.querySelector(":scope > .reply-composer");
+  if (existing) {
+    existing.remove();
+    return;
+  }
+
+  const name = body
+    .querySelector(":scope > .comment__bubble .comment__name")
+    .textContent.trim();
+  const isReply = body.closest(".comment").classList.contains("comment--reply");
+
+  const form = document.createElement("form");
+  form.className = "comment-composer reply-composer";
+  form.setAttribute("onsubmit", "submitReply(event, this)");
+  form.innerHTML = `
+    <img src="${REPLY_AVATAR}" alt="You" class="comment-composer__avatar">
+    <input type="text" class="comment-composer__input" required>
+    <button type="submit" class="comment-composer__send" aria-label="Send reply">
+      <i data-lucide="send" class="comment-composer__send-icon"></i>
+    </button>`;
+
+  const input = form.querySelector("input");
+  input.placeholder = `Reply to ${name}...`;
+  // রিপ্লাইয়ের রিপ্লাই হলে নাম আগে থেকেই মেনশন করা থাকবে
+  if (isReply) input.value = `@${name} `;
+
+  body.querySelector(":scope > .comment__meta").after(form);
+  if (typeof lucide !== "undefined") lucide.createIcons();
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+}
+
+function submitReply(event, form) {
+  event.preventDefault();
+  const text = form.querySelector("input").value.trim();
+  if (!text) return;
+
+  const body = form.closest(".comment__body");
+  let replies = body.querySelector(":scope > .comment__replies");
+  if (!replies) {
+    replies = document.createElement("div");
+    replies.className = "comment__replies";
+    body.appendChild(replies);
+  }
+  replies.classList.remove("is-collapsed");
+
+  const toggle = body.querySelector(":scope > .comment__toggle-replies");
+  if (toggle) toggle.textContent = "Hide replies";
+
+  const reply = document.createElement("div");
+  reply.className = "comment comment--reply";
+  reply.innerHTML = `
+    <img src="${REPLY_AVATAR}" alt="You" class="comment__avatar">
+    <div class="comment__body">
+      <div class="comment__bubble">
+        <h4 class="comment__name">You</h4>
+        <p class="comment__text"></p>
+      </div>
+      <div class="comment__meta">
+        <button class="comment__action">Like</button>
+        <button onclick="toggleReplyBox(this)" class="comment__action">Reply</button>
+        <span class="comment__time">Just now</span>
+      </div>
+    </div>`;
+  reply.querySelector(".comment__text").textContent = text;
+  replies.appendChild(reply);
+
+  form.remove();
+}
+
+// "View 2 replies" / "Hide replies"
+function toggleReplies(btn) {
+  const replies = btn.parentElement.querySelector(":scope > .comment__replies");
+  if (!replies) return;
+  const collapsed = replies.classList.toggle("is-collapsed");
+  btn.textContent = collapsed
+    ? `View ${btn.dataset.count} replies`
+    : "Hide replies";
 }
