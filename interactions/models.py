@@ -49,7 +49,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commented")
     created_at = models.DateTimeField(default=timezone.now)
     commented_text = models.TextField()
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="replies")
     
     def __str__(self) -> str:
         return f"{self.user.username} commented on {self.project.title}" 
