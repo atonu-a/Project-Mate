@@ -92,8 +92,6 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
         )
     for project in projects:
         project.created_at_ago = time_ago(project.create_at)
-        for comment in project.prefetched_comments:
-            comment.created_at_ago = time_ago(comment.created_at)
         
     return projects
 

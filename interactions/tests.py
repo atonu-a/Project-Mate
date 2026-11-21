@@ -1,8 +1,21 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
-from .models import Follow
+from .models import Comment, Follow
+
+
+class CommentTimestampTests(TestCase):
+    def test_reply_exposes_created_at_ago(self):
+        reply = Comment(
+            parent_id=1,
+            created_at=timezone.now() - timedelta(minutes=5),
+        )
+
+        self.assertEqual(reply.created_at_ago, "5m ago")
 
 
 class ToggleFollowTests(TestCase):

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from projects.models import Project
+from home.utils import time_ago
 
 # Create your models here.
 class JoinRequest(models.Model):
@@ -50,6 +51,10 @@ class Comment(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     commented_text = models.TextField()
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="replies")
+
+    @property
+    def created_at_ago(self):
+        return time_ago(self.created_at)
     
     def __str__(self) -> str:
         return f"{self.user.username} commented on {self.project.title}" 

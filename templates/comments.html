@@ -14,10 +14,10 @@
       <span class="comment__time">{{ comment.created_at_ago }}</span>
     </div>
 
-    <form method="POST" action="{% url 'comment' comment.id %}" class="comment-composer reply-composer" hidden>
+    <form method="POST" action="{% url 'reply' project.slug comment.id %}" class="comment-composer reply-composer reply-form" hidden>
       {% csrf_token %}
       <img src="{{ request.user.profile.profile_pic_url }}" alt="You" class="comment-composer__avatar">
-      <input type="text" name="commented_text" class="comment-composer__input"
+      <input type="text" name="input_comment" class="comment-composer__input"
              placeholder="Reply to {{ comment.user.first_name }}..."
              value="{% if is_reply %}@{{ comment.user.first_name }} {% endif %}" required />
       <button type="submit" class="comment-composer__send" aria-label="Send reply">
@@ -26,17 +26,20 @@
     </form>
 
     {% with replies=comment.replies.all %}
-      {% if replies %}
-        <button type="button" onclick="toggleReplies(this)" data-count="{{ replies|length }}" class="comment__toggle-replies">
-          View {{ replies|length }} repl{{ replies|length|pluralize:"y,ies" }}
-        </button>
+  {% if replies %}
+    <button type="button"
+            onclick="toggleReplies(this)"
+            data-count="{{ replies|length }}"
+            class="comment__toggle-replies">
+      View {{ replies|length }} repl{{ replies|length|pluralize:"y,ies" }}
+    </button>
+  {% endif %}
 
-        <div class="comment__replies is-collapsed">
-          {% for reply in replies %}
-            {% include 'comments.html' with comment=reply is_reply=True %}
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
+  <div class="comment__replies {% if not replies %}is-empty{% else %}is-collapsed{% endif %}">
+    {% for reply in replies %}
+      {% include 'comments.html' with comment=reply is_reply=True %}
+    {% endfor %}
+  </div>
+{% endwith %}
   </div>
 </div>

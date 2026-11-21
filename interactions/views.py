@@ -417,4 +417,52 @@ def create_comment(request, slug):
             }
         }, status=201)
         
+@login_required(login_url='signin')     
+def create_reply(request, id, slug):
+    user = request.user if request.user.is_authenticated else None
+    
+    if not user:
+        return JsonResponse({
+            "success":False,
+            "login_required":True,
+            "login_url" : f"/signin/?next={request.path}"
+        }, status = 401)
+        
+    comment = get_object_or_404(Comment, id = id)
+    project = get_object_or_404(Project, slug=slug)
+    if request.method == "POST":
+        input_comment = request.POST.get("input_comment", "").strip()
+        reply = Comment.objects.create(
+            user = user,
+            parent = comment,
+            commented_text = input_comment,
+            project=project
+            
+        )
+        if user != comment.user:
+            Notification.objects.create(
+                recipient=comment.user,
+                actor=user,
+                notification_type = Notification.NotificationType.PROJECT_COMMENT,
+                content = f"{user} has replied to your comment",
+                target_url=f"/{project.slug}#comments" 
+            )
+            
+        return JsonResponse({
+            "success":True,
+            "comment": {
+                "id" : reply.id,
+                "commented_text" : reply.commented_text,
+                "project": reply.project.slug,
+                "full_name": (
+                    f"{reply.user.first_name} "
+                    f"{reply.user.last_name}"
+                ).strip(),
+                "profile_pic" : (
+                    reply.user.profile.profile_pic_url
+                ),
+                
+                "created_at" : reply.created_at.isoformat()
+            }
+        }, status = 201)
         

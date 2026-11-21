@@ -132,6 +132,8 @@
 
             <form class="like-form" method="post" action="{% url 'like_project' project.slug %}">
                 {% csrf_token %}
+
+                
                 <button type="submit" class="reaction {% if project.is_liked %}
                     is-liked
                 {% else %}
