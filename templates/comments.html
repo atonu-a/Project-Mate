@@ -1,34 +1,42 @@
-<div class="comment">
-  <img onclick="window.location.href='{% url 'profile' comment.user.username %}'" src="{{ comment.user.profile.profile_pic_url }}" alt="Kaito Tanaka" class="comment__avatar cursor-pointer" />
+<div id="comment-{{ comment.id }}" class="comment{% if is_reply %} comment--reply{% endif %}">
+  <img onclick="window.location.href='{% url 'profile' comment.user.username %}'"
+       src="{{ comment.user.profile.profile_pic_url }}"
+       alt="{{ comment.user.get_full_name }}" class="comment__avatar cursor-pointer" />
+
   <div class="comment__body">
     <div class="comment__bubble">
       <h4 class="comment__name">{{ comment.user.first_name }} {{ comment.user.last_name }}</h4>
       <p class="comment__text">{{ comment.commented_text }}</p>
     </div>
+
     <div class="comment__meta">
-      {% comment %} <button class="comment__action">Like</button> {% endcomment %}
-      <div class="comment__meta">
-        <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
-
-        <span class="comment__time">{{ comment.created_at_ago }}</span>
-      </div>
-
-
-
+      <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
+      <span class="comment__time">{{ comment.created_at_ago }}</span>
     </div>
-          <form method="POST" action="{% url 'comment' comment.id %}" class="comment-composer reply-composer" hidden>
-        {% csrf_token %}
-        <img src="{{ request.user.profile.profile_pic_url }}" alt="You" class="comment-composer__avatar">
-        <input type="text" name="commented_text" class="comment-composer__input" placeholder="Reply to {{ comment.user.first_name }}..." required />
 
-        <button type="submit" class="comment-composer__send"><i data-lucide="send" class="comment-composer__send-icon"></i></button>
-      </form>
-    {% if comment.replies.exists %}
-      {% for reply in comment.replies.all %}
-        {% include 'comments.html' with comment=reply %}
-      {% endfor %}
-    {% else %}
+    <form method="POST" action="{% url 'comment' comment.id %}" class="comment-composer reply-composer" hidden>
+      {% csrf_token %}
+      <img src="{{ request.user.profile.profile_pic_url }}" alt="You" class="comment-composer__avatar">
+      <input type="text" name="commented_text" class="comment-composer__input"
+             placeholder="Reply to {{ comment.user.first_name }}..."
+             value="{% if is_reply %}@{{ comment.user.first_name }} {% endif %}" required />
+      <button type="submit" class="comment-composer__send" aria-label="Send reply">
+        <i data-lucide="send" class="comment-composer__send-icon"></i>
+      </button>
+    </form>
 
-    {% endif %}
+    {% with replies=comment.replies.all %}
+      {% if replies %}
+        <button type="button" onclick="toggleReplies(this)" data-count="{{ replies|length }}" class="comment__toggle-replies">
+          View {{ replies|length }} repl{{ replies|length|pluralize:"y,ies" }}
+        </button>
+
+        <div class="comment__replies is-collapsed">
+          {% for reply in replies %}
+            {% include 'comments.html' with comment=reply is_reply=True %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
   </div>
 </div>
