@@ -25,7 +25,7 @@
       </button>
     </form>
 
-    {% with replies=comment.replies.all %}
+    {% with replies=comment.prefeteched_replies %}
   {% if replies %}
     <button type="button"
             onclick="toggleReplies(this)"

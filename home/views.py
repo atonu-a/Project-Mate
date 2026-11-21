@@ -21,9 +21,19 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
         "required_skills",
         Prefetch(
             "comments",
-            queryset=Comment.objects.select_related(
+            queryset=Comment.objects.filter(
+                parent__isnull = True    
+            ).select_related(
                 "user",
                 "user__profile"
+            ).prefetch_related(
+                Prefetch(
+                    "replies",
+                    queryset = Comment.objects.select_related(
+                        "user", "user__profile"
+                    ).order_by("created_at"),
+                    to_attr="prefetched_replies"
+                )
             ).order_by("-created_at"),
             to_attr="prefetched_comments"
         )
