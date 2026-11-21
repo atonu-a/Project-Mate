@@ -11,7 +11,7 @@
             <span>Welcome back, Alex</span>
           </div>
           <h1 class="welcome__title">Find people. Find projects. Build together.</h1>
-          <p class="welcome__subtitle">You have 2 active team requests and 1 upcoming sprint milestone due this week. Explore new AI &amp; Web3 collaborations matched to your skill profile.</p>
+          {% comment %} <p class="welcome__subtitle">You have 2 active team requests and 1 upcoming sprint milestone due this week. Explore new AI &amp; Web3 collaborations matched to your skill profile.</p> {% endcomment %}
         </div>
         <div class="welcome__actions">
           <button onclick="window.location.href='{% url 'create' %}'" class="btn-primary">
@@ -36,9 +36,12 @@
           </div>
         </div>
         <div class="stat-card__value">{{ total_projects }}</div>
-        <div class="stat-card__note">
-          <i data-lucide="trending-up" class="stat-card__note-icon"></i>+1 this month
-        </div>
+        <!-- Active Projects: নোট -->
+{% if new_this_month %}
+<div class="stat-card__note"><i data-lucide="trending-up" class="stat-card__note-icon"></i>+{{ new_this_month }} this month</div>
+{% else %}
+<div class="stat-card__note">{{ new_this_month }} this month</div>
+{% endif %}
       </div>
       <div class="stat-card">
         <div class="stat-card__head">
@@ -47,8 +50,8 @@
             <i data-lucide="cpu" class="stat-card__glyph"></i>
           </div>
         </div>
-        <div class="stat-card__value">24</div>
-        <div class="stat-card__note stat-card__note--accent">98% top match score</div>
+        <div class="stat-card__value">{{ skill_matches }}</div>
+        <div class="stat-card__note stat-card__note--accent">{{ top_match }}% top match score</div>
       </div>
       <div class="stat-card">
         <div class="stat-card__head">

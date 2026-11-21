@@ -307,6 +307,25 @@ def dashboard(request):
     profile = user.profile
     now = timezone.now()
     
+    # Skill matches
+    my_ids = set(profile.skills.values_list("id", flat=True))
+    open_projects = (Project.objects.filter(status="Open").exclude(owner_name=user).prefetch_related("required_skills"))
+    scores = []
+    for p in open_projects:
+        req = {s.id for s in p.required_skills.all()}
+        
+        if req & my_ids:
+            scores.append(len(req & my_ids) / len(req))
+    skill_matches = len(scores)
+    top_match = round(max(scores)* 100) if scores else 0
+     
+    # +N this month
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    new_this_month = (
+        Project.objects.filter(owner_name=user, create_at__gte=month_start.date()).count()
+        + ProjectMember.objects.filter(user=user, joined_at__gte=month_start)
+            .exclude(project__owner_name=user).count()
+    )
     
     
     # Trending projects/posts
@@ -341,5 +360,8 @@ def dashboard(request):
         "total_views" : views.count(),
         "views_this_week" : views_this_week,
         "views_change": views_change,
+        "new_this_month": new_this_month,
+        "skill_matches": skill_matches,
+        "top_match": top_match
     }
     return render(request, "dashboard.html", context)
