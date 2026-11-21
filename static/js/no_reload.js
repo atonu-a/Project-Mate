@@ -180,14 +180,14 @@ document.addEventListener("submit", async (e) => {
       }
 
       const commentData = data.comment;
-      const list = form.nextElementSibling;
-      if (!list) {
-
+      const body = form.closest(".comment__body");
+      const list = body?.querySelector(":scope > .comment__replies");
+      if (!body || !list) {
         return;
       }
 
       const comment = document.createElement("div");
-      comment.className = "comment";
+      comment.className = "comment comment--reply";
 
       comment.innerHTML = `
       <img
@@ -214,8 +214,23 @@ document.addEventListener("submit", async (e) => {
         commentData.commented_text;
 
       list.prepend(comment);
+      list.classList.remove("is-empty", "is-collapsed");
+
+      let toggle = body.querySelector(":scope > .comment__toggle-replies");
+      if (!toggle) {
+        toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "comment__toggle-replies";
+        toggle.addEventListener("click", () => toggleReplies(toggle));
+        body.insertBefore(toggle, list);
+      }
+
+      const replyCount = Number(toggle.dataset.count || 0) + 1;
+      toggle.dataset.count = replyCount;
+      toggle.textContent = `Hide replies`;
 
       input.value = "";
+      form.hidden = true;
     } catch (error) {
       console.error("Comment submission failed:", error);
       showToast("Something went wrong. Please try again.");

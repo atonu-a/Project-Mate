@@ -29,9 +29,18 @@ def project_detail(request, slug):
             "members__user__profile", "required_skills",
             Prefetch(
                 "comments",
-                queryset=Comment.objects.select_related(
-                    "user",
-                    "user__profile"
+                queryset=Comment.objects.filter(
+                    parent__isnull=True
+                ).select_related(
+                    "user", "user__profile"
+                ).prefetch_related(
+                    Prefetch(
+                        "replies",
+                        queryset=Comment.objects.select_related(
+                            "user", "user__profile"
+                        ).order_by("created_at"),
+                        to_attr="prefetched_replies"
+                    )
                 ).order_by("-created_at"),
                 to_attr="prefetched_comments"
             )
