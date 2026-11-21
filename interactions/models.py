@@ -57,9 +57,18 @@ class Comment(models.Model):
         return time_ago(self.created_at)
     
     def __str__(self) -> str:
-        return f"{self.user.username} commented on {self.project.title}" 
+        return f"{self.commented_text}" 
     
     
+# Comment Like Model
+class CommentLike(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_comments")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    
+    def __str__(self) -> str:
+        return f"{self.user} liked {self.comment.commented_text}"
 
 # Post Bookmark Model  
 class Save(models.Model):

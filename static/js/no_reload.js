@@ -126,7 +126,7 @@ document.addEventListener("submit", async (e) => {
           <p class="comment__text"></p>
         </div>
         <div class="comment__meta">
-
+          <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
           <span class="comment__time">Just Now</span>
         </div>
       </div>
@@ -201,7 +201,7 @@ document.addEventListener("submit", async (e) => {
           <p class="comment__text"></p>
         </div>
         <div class="comment__meta">
-
+          <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
           <span class="comment__time">Just Now</span>
         </div>
       </div>

@@ -12,6 +12,7 @@ class Notification(models.Model):
         NEW_FOLLOWER = "follow", "New Follower"
         PROJECT_LIKE = "like", "Project Like"
         PROJECT_COMMENT = "comment", "Project Comment"
+        COMMENT_REPLY = "reply", "Comment Reply"
         TEAM_REMOVED = "team_removed", "Removed from Team"
         
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')

@@ -416,7 +416,12 @@ def create_comment(request, slug):
                 
             }
         }, status=201)
-        
+
+
+
+# ===========================
+#   Reply on a Comment
+# ===========================        
 @login_required(login_url='signin')     
 def create_reply(request, id, slug):
     user = request.user if request.user.is_authenticated else None
@@ -443,7 +448,7 @@ def create_reply(request, id, slug):
             Notification.objects.create(
                 recipient=comment.user,
                 actor=user,
-                notification_type = Notification.NotificationType.PROJECT_COMMENT,
+                notification_type = Notification.NotificationType.COMMENT_REPLY,
                 content = f"{user} has replied to your comment",
                 target_url=f"/{project.slug}#comments" 
             )
