@@ -5,7 +5,7 @@
                 class="fa-solid fa-xmark"></i></a>
 
         <h1 class="header">Confirmation</h1>
-        <p class="msg text-danger">Are you sure you want to remove this teammate?</p>
+        <p class="msg text-danger">Are you sure you want to remove {{ member.user.first_name }} from your project?</p>
         <div class="btns">
             <a class="btn-cancel" onclick="closeRemoveModal('{{ project.slug }}-{{ member.user.username }}')">Cancel</a>
             <form method="post" action="{% url 'remove' project.slug member.user.username %}">
