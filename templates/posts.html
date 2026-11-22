@@ -67,10 +67,14 @@
     <div class="post__body">
         <div>
             <div class="badges flex flex-wrap gap-1">
-                <span class="{% if project.status == " Closed" %} category-badge--secondary {% else %} status-badge {%
-                    endif %} ">{{ project.status }}</span>
+                <span class="
+                {% if project.status == "Closed" %} 
+                category-badge--secondary 
+                {% else %} 
+                status-badge 
+                {% endif %} ">{{ project.status }}</span>
                 <span class=" category-badge"><i class="fa-solid fa-business-time"></i> {{ project.deadline }}</span>
-                <span class=" {% if project.compensation_type == " Unpaid" %} category-badge--secondary {% elif
+                <span class=" {% if project.compensation_type == "Unpaid" %} category-badge--secondary {% elif
                     project.compensation_type=="Negotiable" %} nego-tag {% else %} status-badge {% endif %} ">{{ project.compensation_type.upper }}</span>
                 {% if project.compensation_type == " Paid" %} <span class="status-badge">{{ project.payment_amount }}
                     BDT</span>
@@ -90,7 +94,7 @@
                     </span>
                     {% endif %}
                     {% endif %}
-                    {% endif %}
+
 
             </div>
 
@@ -199,68 +203,6 @@
 
             {% include "comments.html" with comment=comment %}
 
-            <!-- <div class="comment">
-                <img onclick="window.location.href='{% url 'profile' comment.user.username  %}'"
-                    src="{{comment.user.profile.profile_pic_url}}" alt="Kaito Tanaka"
-                    class="comment__avatar cursor-pointer">
-                <div class="comment__body">
-                    <div class="comment__bubble">
-                        <h4 class="comment__name">{{comment.user.first_name}} {{ comment.user.last_name }}</h4>
-                        <p class="comment__text">{{ comment.commented_text }}</p>
-                    </div>
-                    <div class="comment__meta">
-                        {% comment %} <button class="comment__action">Like</button> {% endcomment %}
-                        <button onclick="toggleReplyBox(this)" class="comment__action">Reply</button>
-                        <span class="comment__time">
-                            {{ comment.created_at_ago }}
-                        </span>
-                    </div>
-
-
-                    <button onclick="toggleReplies(this)" data-count="2" class="comment__toggle-replies">View 2 replies</button>
-
-      <div class="comment__replies is-collapsed">
-
-        <div class="comment comment--reply">
-          <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" alt="Kaito Tanaka" class="comment__avatar">
-          <div class="comment__body">
-            <div class="comment__bubble">
-              <h4 class="comment__name">Kaito Tanaka</h4>
-              <p class="comment__text">Same, I'm curious about the latency numbers too.</p>
-            </div>
-            <div class="comment__meta">
-              <button class="comment__action">Like</button>
-              <button onclick="toggleReplyBox(this)" class="comment__action">Reply</button>
-              <span class="comment__time">3h</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="comment comment--reply">
-          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Elena Rostova" class="comment__avatar">
-          <div class="comment__body">
-            <div class="comment__bubble">
-              <h4 class="comment__name">Elena Rostova</h4>
-              <p class="comment__text"><a href="#" class="comment__mention">@Julian Vance</a> Happy to! DM me and we'll set something up.</p>
-            </div>
-            <div class="comment__meta">
-              <button class="comment__action">Like</button>
-              <button onclick="toggleReplyBox(this)" class="comment__action">Reply</button>
-              <span class="comment__time">2h</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-
-
-
-
-
-
-                </div>
-            </div> -->
             {% endfor %}
         </div>
 

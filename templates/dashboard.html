@@ -8,7 +8,7 @@
         <div class="welcome__text">
           <div class="welcome__badge">
             <i data-lucide="sparkles" class="welcome__badge-icon"></i>
-            <span>Welcome back, Alex</span>
+            <span>Welcome back, {{ user.first_name }}</span>
           </div>
           <h1 class="welcome__title">Find people. Find projects. Build together.</h1>
           {% comment %} <p class="welcome__subtitle">You have 2 active team requests and 1 upcoming sprint milestone due this week. Explore new AI &amp; Web3 collaborations matched to your skill profile.</p> {% endcomment %}
@@ -19,7 +19,7 @@
             <span>Post a Project</span>
           </button>
           <button onclick="window.location.href='{% url 'home' %}'" class="btn-secondary">
-            <i data-lucide="compass" class="btn-icon btn-icon--accent"></i>
+            <i data-lucide="compass" class="btn-icon "></i>
             <span>Explore Feed</span>
           </button>
         </div>
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="stat-card__value">{{ total_views }}</div>
-        <div class="stat-card__note{% if views_change is not None and views_change < 0 %} stat-card__note--down{% endif %}">
+        <div class="stat-card__note{% if views_change is not None and views_change < 0 %} stat-card__note--warning{% endif %}">
           {% if views_change is not None %}
             {% if views_change >= 0 %}+{% endif %}{{ views_change }}% this week
           {% else %}
