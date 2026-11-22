@@ -70,8 +70,9 @@ def cancel_request(request, id, slug):
     join_req = get_object_or_404(JoinRequest, id = id)
     if join_req.user == request.user:
         join_req.delete()
-    else:
         messages.success(request, "Request Cancelled")
+    else:
+        messages.error(request, "You're not authorized to cancel this request.")
     return redirect("project_detail", slug = join_req.project.slug)
 
 
