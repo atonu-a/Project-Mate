@@ -1,12 +1,9 @@
 // Project delete modal open
 function openModal(slug) {
   const modal = document.getElementById(`delete-modal-${slug}`);
-    console.log("got it");
   if (modal) {
     modal.style.display = "block";
-    console.log("modal opened");
   } else {
-    console.log("modal not found");
   }
 }
 // Project delete modal close
@@ -47,15 +44,27 @@ function openLeaveModal(slug) {
 // Project leave modal close
 function closeLeaveModal(slug) {
   const modal = document.getElementById(`leave-modal-${slug}`);
-    console.log("got it");
   if (modal) {
     modal.style.display = "none";
-        console.log("modal opened");
   } else {
-    console.log("modal not found");
   }
 }
 
+
+// Request Cancel Modal
+function openCancelReqModal(slug) {
+  const modal = document.getElementById(`cancel-req-modal-${slug}`);
+  if (modal) {
+    modal.style.display = "block";
+  }
+}
+
+function closeCancelReqModal(slug) {
+  const modal = document.getElementById(`cancel-req-modal-${slug}`);
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
 
 // Teammate remove modal open
 function openRemoveModal(slug) {
@@ -67,11 +76,8 @@ function openRemoveModal(slug) {
 // Teammate remove modal close
 function closeRemoveModal(slug) {
   const modal = document.getElementById(`remove-modal-${slug}`);
-    console.log("got it");
   if (modal) {
     modal.style.display = "none";
-        console.log("modal opened");
   } else {
-    console.log("modal not found");
   }
 }

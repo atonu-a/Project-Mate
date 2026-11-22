@@ -25,7 +25,7 @@
 
               {% if join_request.status == 'Pending' %}
                 
-                <button class="btn-secondary" disabled><i class="fa-solid fa-check"></i> Requested</button>
+                <button class="btn-secondary" onclick="openCancelReqModal('{{ project.slug }}')"><i data-lucide="x" class="btn-icon"></i> Cancel</button>
               {% else %}
                 <button class="post__join" onclick="openMsgModal('{{ project.slug }}')"><i class="fa-solid fa-arrow-rotate-left"></i> Request</button>
               {% endif %}
@@ -34,7 +34,7 @@
             {% endif %}
           {% endif %}
 
-          <button onclick="window.location.href='{% url 'messages' %}'" class="btn-secondary">
+          <button onclick="showToast('Comming Soon')" class="btn-secondary">
             <i data-lucide="message-square" class="btn-icon"></i>
             <span>Message</span>
           </button>

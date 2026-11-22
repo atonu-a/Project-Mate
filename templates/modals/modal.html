@@ -66,3 +66,29 @@
 </section>
 
 
+
+<!-- Request Cancel Modal -->
+ {% if join_request.status == 'Pending' %}
+
+<section id="cancel-req-modal-{{ project.slug }}" class="modal">
+    <div class="modal-content relative">
+        <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeCancelReqModal('{{ project.slug }}')"><i
+                class="fa-solid fa-xmark"></i></a>
+
+        <h1 class="header">Confirmation</h1>
+        <p class="msg text-danger">Are you sure you want to cancel the join request?</p>
+        <div class="btns">
+            <a class="btn-cancel" onclick="closeCancelReqModal('{{ project.slug }}')">No</a>
+            <form method="post" action="{% url 'cancel_request' project.slug join_request.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Yes</button>
+            </form>
+            
+        </div>
+    </div>
+</section>
+
+
+ 
+ {% else %}
+ {% endif %}

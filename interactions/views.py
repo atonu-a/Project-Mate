@@ -61,6 +61,20 @@ def send_request(request, slug):
         
     return redirect(next_url)
 
+
+# ===========================
+#   Join Request Sending
+# ===========================
+@login_required(login_url='signin')
+def cancel_request(request, id, slug):
+    join_req = get_object_or_404(JoinRequest, id = id)
+    if join_req.user == request.user:
+        join_req.delete()
+    else:
+        messages.success(request, "Request Cancelled")
+    return redirect("project_detail", slug = join_req.project.slug)
+
+
 # ===========================
 #   Join Request Checking
 # ===========================
