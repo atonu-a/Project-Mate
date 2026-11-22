@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.db.models import Exists
 from accounts.models import Profile
 from accounts.views import signin
@@ -400,6 +401,11 @@ def create_comment(request, slug):
         
         return JsonResponse({
             "success" : True,
+            "html": render_to_string(
+                "comments.html",
+                {"comment": comment, "project": project},
+                request=request,
+            ),
             "comment" : {
                 "id" : comment.id,
                 "commented_text" : comment.commented_text,
@@ -455,6 +461,11 @@ def create_reply(request, id, slug):
             
         return JsonResponse({
             "success":True,
+            "html": render_to_string(
+                "comments.html",
+                {"comment": reply, "project": project, "is_reply": True},
+                request=request,
+            ),
             "comment": {
                 "id" : reply.id,
                 "commented_text" : reply.commented_text,

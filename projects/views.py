@@ -6,6 +6,7 @@ from .models import Project, ProjectMember
 from accounts.models import Profile
 from accounts.views import signin
 from interactions.models import JoinRequest, Comment
+from interactions.utils import attach_comment_tree
 from home.views import discover
 from django.db.models import Q, Exists, OuterRef, Count, Prefetch
 
@@ -29,20 +30,10 @@ def project_detail(request, slug):
             "members__user__profile", "required_skills",
             Prefetch(
                 "comments",
-                queryset=Comment.objects.filter(
-                    parent__isnull=True
-                ).select_related(
+                queryset=Comment.objects.select_related(
                     "user", "user__profile"
-                ).prefetch_related(
-                    Prefetch(
-                        "replies",
-                        queryset=Comment.objects.select_related(
-                            "user", "user__profile"
-                        ).order_by("created_at"),
-                        to_attr="prefetched_replies"
-                    )
-                ).order_by("-created_at"),
-                to_attr="prefetched_comments"
+                ).order_by("created_at"),
+                to_attr="all_comments"
             )
         ).annotate(
             has__join__request = Exists(join_request),
@@ -52,6 +43,7 @@ def project_detail(request, slug):
             comments_count=Count("comments", distinct=True)
         )), slug=slug
     )
+    attach_comment_tree(project)
     
     latest_join_request = None
 

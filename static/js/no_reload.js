@@ -103,42 +103,13 @@ document.addEventListener("submit", async (e) => {
         return;
       }
 
-      const commentData = data.comment;
       const list = form.nextElementSibling;
 
       if (!list) {
-
         return;
       }
 
-      const comment = document.createElement("div");
-      comment.className = "comment";
-
-      comment.innerHTML = `
-      <img
-        src="${commentData.profile_pic || "/static/images/default-avatar.png"}"
-        alt="${commentData.full_name}"
-        class="comment__avatar"
-      >
-      <div class="comment__body">
-        <div class="comment__bubble">
-          <h4 class="comment__name"></h4>
-          <p class="comment__text"></p>
-        </div>
-        <div class="comment__meta">
-          <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
-          <span class="comment__time">Just Now</span>
-        </div>
-      </div>
-    `;
-
-      comment.querySelector(".comment__name").textContent =
-        commentData.full_name;
-
-      comment.querySelector(".comment__text").textContent =
-        commentData.commented_text;
-
-      list.prepend(comment);
+      list.prepend(document.createRange().createContextualFragment(data.html));
 
       input.value = "";
     } catch (error) {
@@ -179,41 +150,13 @@ document.addEventListener("submit", async (e) => {
         return;
       }
 
-      const commentData = data.comment;
       const body = form.closest(".comment__body");
       const list = body?.querySelector(":scope > .comment__replies");
       if (!body || !list) {
         return;
       }
 
-      const comment = document.createElement("div");
-      comment.className = "comment comment--reply";
-
-      comment.innerHTML = `
-      <img
-        src="${commentData.profile_pic || "/static/images/default-avatar.png"}"
-        alt="${commentData.full_name}"
-        class="comment__avatar"
-      >
-      <div class="comment__body">
-        <div class="comment__bubble">
-          <h4 class="comment__name"></h4>
-          <p class="comment__text"></p>
-        </div>
-        <div class="comment__meta">
-          <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
-          <span class="comment__time">Just Now</span>
-        </div>
-      </div>
-    `;
-
-      comment.querySelector(".comment__name").textContent =
-        commentData.full_name;
-
-      comment.querySelector(".comment__text").textContent =
-        commentData.commented_text;
-
-      list.prepend(comment);
+      list.prepend(document.createRange().createContextualFragment(data.html));
       list.classList.remove("is-empty", "is-collapsed");
 
       let toggle = body.querySelector(":scope > .comment__toggle-replies");

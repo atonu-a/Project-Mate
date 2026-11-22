@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from accounts.models import Profile
 from projects.models import Project, ProjectMember
 from interactions.models import JoinRequest, Follow, Like, Save, Comment
+from interactions.utils import attach_comment_tree
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.db.models import Exists, OuterRef, Q, Count, Value, BooleanField, Prefetch
@@ -21,21 +22,11 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
         "required_skills",
         Prefetch(
             "comments",
-            queryset=Comment.objects.filter(
-                parent__isnull = True    
-            ).select_related(
+            queryset=Comment.objects.select_related(
                 "user",
                 "user__profile"
-            ).prefetch_related(
-                Prefetch(
-                    "replies",
-                    queryset = Comment.objects.select_related(
-                        "user", "user__profile"
-                    ).order_by("created_at"),
-                    to_attr="prefetched_replies"
-                )
-            ).order_by("-created_at"),
-            to_attr="prefetched_comments"
+            ).order_by("created_at"),
+            to_attr="all_comments"
         )
     ).annotate(
         members_count=Count("members", distinct=True),
@@ -101,6 +92,7 @@ def get_posts(owner_name = None, following = None, recommended = None, limit = N
             key=lambda p:p.skill_match, reverse=True
         )
     for project in projects:
+        attach_comment_tree(project)
         project.created_at_ago = time_ago(project.create_at)
         
     return projects
