@@ -10,7 +10,15 @@
     </div>
 
     <div class="comment__meta">
+      <button onclick="" type="button" class="comment__action">Like</button>
       <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
+      {% if comment and comment.id %}
+        {% if request.user == comment.user %}
+          <a href="{% url 'delete_comment' project.slug comment.id %}" class="comment__action">Edit</a>
+          <a href="{% url 'delete_comment' project.slug comment.id %}" class="comment__action">Delete</a>
+        {% endif %}
+      {% endif %}
+      
       <span class="comment__time">{{ comment.created_at_ago }}</span>
     </div>
 

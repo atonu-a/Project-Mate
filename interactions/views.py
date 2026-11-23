@@ -500,7 +500,7 @@ def create_reply(request, id, slug):
 
 
 # ===========================
-#   Comment on a Post
+#   Delete a Comment
 # ===========================
 @login_required(login_url="signin")
 def delete_comment(request, id, slug):
@@ -508,4 +508,22 @@ def delete_comment(request, id, slug):
     project = get_object_or_404(Project , slug = slug)
     if comment.user == request.user:
         comment.delete()
-    return redirect("project_detail")
+        messages.success(request, "Comment Deleted Successfully.")
+    return redirect("project_detail", slug = slug)
+
+
+# ===========================
+#   Edit a Comment
+# ===========================
+# @login_required(login_url="signin")
+# def edit_comment(request, id, slug):
+#     project = get_object_or_404(Project, slug = slug)
+#     comment = get_object_or_404(Comment, id = id)
+    
+#     if request.method == "POST":
+#         if comment.user == request.user:
+#             comment = comment
+            
+    
+#     return redirect("project_detail" , slug = slug)
+    
