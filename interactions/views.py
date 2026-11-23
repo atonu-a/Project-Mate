@@ -497,3 +497,15 @@ def create_reply(request, id, slug):
             }
         }, status = 201)
         
+
+
+# ===========================
+#   Comment on a Post
+# ===========================
+@login_required(login_url="signin")
+def delete_comment(request, id, slug):
+    comment = get_object_or_404(Comment, id = id)
+    project = get_object_or_404(Project , slug = slug)
+    if comment.user == request.user:
+        comment.delete()
+    return redirect("project_detail")
