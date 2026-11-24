@@ -203,6 +203,13 @@
           <i data-lucide="bookmark" class="sidebar__link-icon"></i>
           <span>Saved Projects</span>
         </a>
+        <a href="{% url 'settings' %}" class="sidebar__link
+        {% if request.path == '/settings/' %}
+            is-active
+          {% endif %} ">
+          <i data-lucide="settings" class="sidebar__link-icon"></i>
+          <span>Settings</span>
+        </a>
         {% else %}
         <a href="{% url 'signin' %}" class=" sidebar__link">
           <i data-lucide="user-key" class="sidebar__link-icon"></i>
@@ -325,6 +332,10 @@
         <span>Sign In</span>
       </a>
       {% endif %}
+      <a href="{% url 'settings' %}" class="mobile-menu__link">
+        <i data-lucide="settings" class="mobile-menu__link-icon"></i>
+        <span>Settings</span>
+      </a>
       <a href="{% url 'about' %}" class="mobile-menu__link">
         <i data-lucide="info" class="mobile-menu__link-icon"></i>
         <span>About</span>
@@ -375,6 +386,8 @@
   <script src="{% static 'js/app.js' %}"></script>
   <script src="{% static 'js/modals.js' %}"></script>
   <script src="{% static 'js/no_reload.js' %}"></script>
+  <script src="{% static 'js/settings.js' %}"></script>
+
 </body>
 
 </html>

@@ -252,5 +252,8 @@ def messages(request):
     return render(request, "messages.html")
 
 
+def settings(request):
+    return render(request, 'settings.html')
+
 
 

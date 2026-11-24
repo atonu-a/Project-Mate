@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<main class="page-main page-main--narrow settings">
+
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Manage your account, appearance and chat preferences.</p>
+        </div>
+    </header>
+
+    <!-- Account & Security -->
+    <section class="settings-card">
+        <h2 class="settings-card__title">
+            <i data-lucide="shield" class="settings-card__icon"></i>
+            <span>Account & Security</span>
+        </h2>
+
+        <div class="settings-row">
+            <div class="settings-row__info">
+                <h3 class="settings-row__label">Email</h3>
+                <p class="settings-row__desc">{{ request.user.email|default:"No email added" }}</p>
+            </div>
+            <div class="settings-row__control">
+                <a href="{% url 'edit_profile' %}" class="btn-secondary btn-sm">Edit</a>
+            </div>
+        </div>
+
+        <div class="settings-row">
+            <div class="settings-row__info">
+                <h3 class="settings-row__label">Password</h3>
+                <p class="settings-row__desc">Change your password, or reset it if you've forgotten it.</p>
+            </div>
+            <div class="settings-row__control">
+                <a href="" class="btn-secondary btn-sm">Change password</a>
+                <a href="" class="settings-link">Forgot password?</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appearance -->
+    <section class="settings-card">
+        <h2 class="settings-card__title">
+            <i data-lucide="palette" class="settings-card__icon"></i>
+            <span>Appearance</span>
+        </h2>
+
+        <div class="settings-row settings-row--stack">
+            <div class="settings-row__info">
+                <h3 class="settings-row__label">App theme</h3>
+                <p class="settings-row__desc">Choose how TeamNest looks. "System" follows your device setting.</p>
+            </div>
+            <div class="theme-options" role="radiogroup" aria-label="App theme">
+                <button type="button" class="theme-option" data-theme-option="light" role="radio" aria-checked="false"
+                    onclick="setAppTheme('light')">
+                    <span class="theme-option__preview theme-option__preview--light"></span>
+                    <span>Light</span>
+                </button>
+                <button type="button" class="theme-option" data-theme-option="dark" role="radio" aria-checked="false"
+                    onclick="setAppTheme('dark')">
+                    <span class="theme-option__preview theme-option__preview--dark"></span>
+                    <span>Dark</span>
+                </button>
+                <button type="button" class="theme-option" data-theme-option="system" role="radio" aria-checked="false"
+                    onclick="setAppTheme('system')">
+                    <span class="theme-option__preview theme-option__preview--system"></span>
+                    <span>System</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat -->
+    <section class="settings-card">
+        <h2 class="settings-card__title">
+            <i data-lucide="message-square" class="settings-card__icon"></i>
+            <span>Chat</span>
+        </h2>
+
+        <div class="settings-row settings-row--stack">
+            <div class="settings-row__info">
+                <h3 class="settings-row__label">Your message bubble color</h3>
+                <p class="settings-row__desc">Only your own messages use this color. Others' messages keep the default
+                    look.</p>
+            </div>
+            <div class="swatches" role="radiogroup" aria-label="Chat bubble color">
+                <button type="button" class="swatch" style="--swatch:#FF5A36" data-bubble="orange" role="radio"
+                    aria-checked="false" aria-label="Orange" onclick="setBubbleColor('orange')"></button>
+                <button type="button" class="swatch" style="--swatch:#7C3AED" data-bubble="purple" role="radio"
+                    aria-checked="false" aria-label="Purple" onclick="setBubbleColor('purple')"></button>
+                <button type="button" class="swatch" style="--swatch:#06B6D4" data-bubble="cyan" role="radio"
+                    aria-checked="false" aria-label="Cyan" onclick="setBubbleColor('cyan')"></button>
+                <button type="button" class="swatch" style="--swatch:#10B981" data-bubble="green" role="radio"
+                    aria-checked="false" aria-label="Green" onclick="setBubbleColor('green')"></button>
+                <button type="button" class="swatch" style="--swatch:#EC4899" data-bubble="pink" role="radio"
+                    aria-checked="false" aria-label="Pink" onclick="setBubbleColor('pink')"></button>
+            </div>
+            <div class="bubble-preview">
+                <div class="bubble-preview__own">Happy to help! Let's sync tomorrow.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Danger zone -->
+    <section class="settings-card settings-card--danger">
+        <h2 class="settings-card__title">
+            <i data-lucide="triangle-alert" class="settings-card__icon"></i>
+            <span>Danger Zone</span>
+        </h2>
+
+        <div class="settings-row">
+            <div class="settings-row__info">
+                <h3 class="settings-row__label">Delete account</h3>
+                <p class="settings-row__desc">Permanently remove your profile, projects and messages. This cannot be
+                    undone.</p>
+            </div>
+            <div class="settings-row__control">
+                <button type="button" class="btn-danger" onclick="openDeleteModal()">Delete account</button>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Delete confirmation modal -->
+<div id="deleteModal" class="modal-backdrop" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+        <h3 id="deleteTitle">Delete your account?</h3>
+        <p>All your projects, messages and profile data will be removed permanently.</p>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <label for="deleteConfirmInput" class="form-label">Type DELETE to confirm</label>
+            <input id="deleteConfirmInput" type="text" autocomplete="off" class="form-input"
+                oninput="checkDeleteInput()">
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="submit" id="deleteConfirmBtn" class="btn-danger" disabled>Delete account</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock main %}

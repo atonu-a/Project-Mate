@@ -515,15 +515,15 @@ def delete_comment(request, id, slug):
 # ===========================
 #   Edit a Comment
 # ===========================
-# @login_required(login_url="signin")
-# def edit_comment(request, id, slug):
-#     project = get_object_or_404(Project, slug = slug)
-#     comment = get_object_or_404(Comment, id = id)
+@login_required(login_url="signin")
+def edit_comment(request, id, slug):
+    project = get_object_or_404(Project, slug = slug)
+    comment = get_object_or_404(Comment, id = id)
     
-#     if request.method == "POST":
-#         if comment.user == request.user:
-#             comment = comment
+    if request.method == "POST":
+        if comment.user == request.user:
+            comment = comment
             
     
-#     return redirect("project_detail" , slug = slug)
+    return redirect("project_detail" , slug = slug)
     
