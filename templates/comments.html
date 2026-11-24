@@ -1,53 +1,68 @@
-<div id="comment-{{ comment.id }}" class="comment{% if is_reply %} comment--reply{% endif %}">
-  <img onclick="window.location.href='{% url 'profile' comment.user.username %}'"
-       src="{{ comment.user.profile.profile_pic_url }}"
-       alt="{{ comment.user.get_full_name }}" class="comment__avatar cursor-pointer" />
+<div id="comment-{{ comment.id }}"
+  class="comment{% if is_reply %} comment--reply{% endif %} flex min-w-0 w-full max-w-full">
 
-  <div class="comment__body">
-    <div class="comment__bubble">
-      <h4 class="comment__name">{{ comment.user.first_name }} {{ comment.user.last_name }}</h4>
-      <p class="comment__text">{{ comment.commented_text }}</p>
+  <img onclick="window.location.href='{% url 'profile' comment.user.username %}'"
+    src="{{ comment.user.profile.profile_pic_url }}" alt="{{ comment.user.get_full_name }}"
+    class="comment__avatar cursor-pointer shrink-0" />
+
+  <div class="comment__body flex-1 min-w-0 max-w-full">
+
+    <div class="comment__bubble min-w-0 max-w-full">
+      <div class="flex items-center justify-between gap-1 min-w-0 relative">
+        <h4 class="comment__name min-w-0 break-words">{{ comment.user.first_name }} {{ comment.user.last_name }}</h4>
+        {% if request.user == comment.user %}
+        <div class="comment--more__container">
+          <button type="button" class="comment--more ">
+            <i data-lucide="ellipsis" class="h-4 w-4"></i>
+          </button>
+          <div class="comment--more__actions hide absolute">
+            <button class="comment__action">Edit</button>
+            <button onclick="window.location.href='{% url 'delete_comment' project.slug comment.id %}'" class="comment__action">Delete</button>
+          </div>
+        </div>
+        {% else %}
+        {% endif %}
+        
+      </div>
+
+      <p class="comment__text min-w-0 break-words [overflow-wrap:anywhere]">{{ comment.commented_text }}</p>
     </div>
 
-    <div class="comment__meta">
+    <div class="comment__meta flex flex-wrap items-center gap-x-3 gap-y-1 min-w-0">
       <button onclick="" type="button" class="comment__action">Like</button>
       <button onclick="toggleReplyBox(this)" type="button" class="comment__action">Reply</button>
-      {% if comment and comment.id %}
-        {% if request.user == comment.user %}
-          <a href="{% url 'delete_comment' project.slug comment.id %}" class="comment__action">Edit</a>
-          <a href="{% url 'delete_comment' project.slug comment.id %}" class="comment__action">Delete</a>
-        {% endif %}
-      {% endif %}
-      
-      <span class="comment__time">{{ comment.created_at_ago }}</span>
+      <span class="comment__time whitespace-nowrap">{{ comment.created_at_ago }}</span>
     </div>
 
-    <form method="POST" action="{% url 'reply' project.slug comment.id %}" class="comment-composer reply-composer reply-form" hidden>
+    <form method="POST" action="{% url 'reply' project.slug comment.id %}"
+      class="comment-composer reply-composer reply-form flex min-w-0 w-full" hidden>
       {% csrf_token %}
-      <img src="{{ request.user.profile.profile_pic_url }}" alt="You" class="comment-composer__avatar">
-      <input type="text" name="input_comment" class="comment-composer__input"
-             placeholder="Reply to {{ comment.user.first_name }}..."
-             value="{% if is_reply %}@{{ comment.user.first_name }} {% endif %}" required />
-      <button type="submit" class="comment-composer__send" aria-label="Send reply">
+      <img src="{{ request.user.profile.profile_pic_url }}" alt="You" class="comment-composer__avatar shrink-0">
+      <textarea name="input_comment" rows="1"
+        class="comment-composer__input min-w-0 flex-1 w-full resize-none break-words"
+        placeholder="Reply to {{ comment.user.first_name }}..."
+        required>{% if is_reply %}@{{ comment.user.first_name }} {% endif %}</textarea>
+      <button type="submit" class="comment-composer__send shrink-0" aria-label="Send reply">
         <i data-lucide="send" class="comment-composer__send-icon"></i>
       </button>
     </form>
 
     {% with replies=comment.prefetched_replies %}
-  {% if replies %}
-    <button type="button"
-            onclick="toggleReplies(this)"
-            data-count="{{ replies|length }}"
-            class="comment__toggle-replies">
+    {% if replies %}
+    <button type="button" onclick="toggleReplies(this)" data-count="{{ replies|length }}"
+      class="comment__toggle-replies">
       View {{ replies|length }} repl{{ replies|length|pluralize:"y,ies" }}
     </button>
-  {% endif %}
+    {% endif %}
 
-  <div class="comment__replies {% if not replies %}is-empty{% else %}is-collapsed{% endif %}">
-    {% for reply in replies %}
+    <div
+      class="comment__replies min-w-0 w-full max-w-full {% if not replies %}is-empty{% else %}is-collapsed{% endif %}">
+      {% for reply in replies %}
       {% include 'comments.html' with comment=reply is_reply=True %}
-    {% endfor %}
-  </div>
-{% endwith %}
+      {% endfor %}
+    </div>
+    {% endwith %}
+
   </div>
 </div>
+

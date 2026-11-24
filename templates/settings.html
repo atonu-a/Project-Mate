@@ -22,12 +22,12 @@
                 <h3 class="settings-row__label">Email</h3>
                 <p class="settings-row__desc">{{ request.user.email|default:"No email added" }}</p>
             </div>
-            <div class="settings-row__control">
+            <!-- <div class="settings-row__control">
                 <a href="{% url 'edit_profile' %}" class="btn-secondary btn-sm">Edit</a>
-            </div>
+            </div> -->
         </div>
 
-        <div class="settings-row">
+        <!-- <div class="settings-row">
             <div class="settings-row__info">
                 <h3 class="settings-row__label">Password</h3>
                 <p class="settings-row__desc">Change your password, or reset it if you've forgotten it.</p>
@@ -36,7 +36,7 @@
                 <a href="" class="btn-secondary btn-sm">Change password</a>
                 <a href="" class="settings-link">Forgot password?</a>
             </div>
-        </div>
+        </div> -->
     </section>
 
     <!-- Appearance -->
@@ -123,23 +123,7 @@
 
 </main>
 
-<!-- Delete confirmation modal -->
-<div id="deleteModal" class="modal-backdrop" hidden>
-    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
-        <h3 id="deleteTitle">Delete your account?</h3>
-        <p>All your projects, messages and profile data will be removed permanently.</p>
+{% include "modals/account-delete-modal.html" %}
 
-        <form method="post" action="">
-            {% csrf_token %}
-            <label for="deleteConfirmInput" class="form-label">Type DELETE to confirm</label>
-            <input id="deleteConfirmInput" type="text" autocomplete="off" class="form-input"
-                oninput="checkDeleteInput()">
 
-            <div class="modal-actions">
-                <button type="button" class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-                <button type="submit" id="deleteConfirmBtn" class="btn-danger" disabled>Delete account</button>
-            </div>
-        </form>
-    </div>
-</div>
 {% endblock main %}

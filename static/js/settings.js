@@ -48,7 +48,7 @@ function setBubbleColor(key) {
   applyBubbleColor(key);
 }
 
-// সব পেজে প্রথমেই সেভ করা পছন্দ প্রয়োগ হবে
+
 (function applyStoredPrefs() {
   const mode = localStorage.getItem(THEME_KEY) || "dark";
   document.documentElement.classList.toggle(
@@ -61,12 +61,12 @@ function setBubbleColor(key) {
   );
 })();
 
-// "System" বেছে রাখলে ডিভাইসের থিম বদলালে সাইটও বদলাবে
+
 systemDark.addEventListener("change", () => {
   if (localStorage.getItem(THEME_KEY) === "system") applyTheme("system");
 });
 
-// Settings পেজ খুললে বাটনগুলোর সিলেকশন ঠিক দেখাবে
+
 document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("[data-theme-option]")) {
     applyTheme(localStorage.getItem(THEME_KEY) || "dark");
@@ -76,34 +76,3 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/* Delete account modal */
-function openDeleteModal() {
-  const modal = document.getElementById("deleteModal");
-  if (!modal) return;
-  modal.hidden = false;
-  document.getElementById("deleteConfirmInput").focus();
-}
-
-function closeDeleteModal() {
-  const modal = document.getElementById("deleteModal");
-  if (!modal) return;
-  modal.hidden = true;
-  document.getElementById("deleteConfirmInput").value = "";
-  checkDeleteInput();
-}
-
-function checkDeleteInput() {
-  const input = document.getElementById("deleteConfirmInput");
-  const btn = document.getElementById("deleteConfirmBtn");
-  if (!input || !btn) return;
-  btn.disabled = input.value.trim() !== DELETE_WORD;
-}
-
-document.addEventListener("keydown", (e) => {
-  const modal = document.getElementById("deleteModal");
-  if (e.key === "Escape" && modal && !modal.hidden) closeDeleteModal();
-});
-
-document.addEventListener("click", (e) => {
-  if (e.target.id === "deleteModal") closeDeleteModal();
-});

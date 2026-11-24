@@ -521,6 +521,28 @@ function switchSearchTab(tabBtn, panelId) {
 }
 
 
+/* Comments more action toggle button */
+try{
+  const containers = document.querySelectorAll(".comment--more__container");
 
+  containers.forEach((container) =>{
+    const btn = container.querySelector("button")
+    const dropdown = container.querySelector(".comment--more__actions");
+    console.log(dropdown)
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle("hide");
+    });
+
+    document.addEventListener("click", () =>{
+      dropdown.classList.add("hide");
+    });
+  });
+
+}
+catch (error) {
+  console.error("something went's wrong")
+}
 
 

@@ -5541,6 +5541,7 @@ textarea::placeholder {
 
 .comment__meta {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 12px;
     margin-top: 4px;
@@ -5558,6 +5559,29 @@ textarea::placeholder {
     text-decoration: underline;
 }
 
+.comment--more{
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  padding: 4px;
+}
+.comment--more__actions{
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  top: 16px;
+  right: 4px;
+  width: 75px;
+  min-width: 50px;
+  align-items:start;
+  padding: 8px;
+  gap: 4px;
+}
+
+.comment--more__actions button:hover{
+  color: var(--color-primary);
+}
 .comment__time {
     font-size: 0.6875rem;
     color: var(--color-text-muted);
