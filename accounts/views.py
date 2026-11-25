@@ -304,17 +304,23 @@ def edit_profile(request):
 @login_required(login_url="signin")
 def change_privacy(request):
     profile=request.user.profile
+    privacy_list = ["Public", "Private"]
     if request.user == profile.user:
         if request.method == "POST":
             profile.privacy = request.POST.get('privacy')
             
             profile.save()
             messages.info(request,"Privacy settings has been changed.")
+            return redirect("settings") 
     
     else:
         messages.error(request, "You are not the authorized user.")
+        
+    context = {
+        "list": privacy_list
+    }
     
-    return redirect("settings")      
+    return render(request,"settings.html", context)      
             
 
 # ======================

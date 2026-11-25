@@ -101,3 +101,18 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("click", (e) => {
   if (e.target.id === "deleteModal") closeDeleteModal();
 });
+
+
+
+/* Account Privacy modal */
+function openPrivacyModal() {
+  const modal = document.getElementById("privacyModal");
+  if (!modal) return;
+  modal.hidden = false;
+
+}
+function closePrivacyModal() {
+  const modal = document.getElementById("privacyModal");
+  if (!modal) return;
+  modal.hidden = true;
+}

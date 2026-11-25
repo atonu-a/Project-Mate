@@ -32,9 +32,11 @@
                 <p class="settings-row__desc">{{ request.user.profile.privacy }}</p>
             </div>
             <div class="settings-row__control">
-                <button class="btn-secondary">Change <i data-lucide="chevron-right" class="btn-icon" ></i></button>
+                <button onclick="openPrivacyModal()" class="btn-secondary">Change <i data-lucide="chevron-right" class="btn-icon" ></i></button>
             </div>
+            
         </div>
+        {% include "modals/privacy-form.html" %}
 
         <!-- <div class="settings-row">
             <div class="settings-row__info">

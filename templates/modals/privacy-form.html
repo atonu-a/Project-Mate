@@ -1,0 +1,20 @@
+<!-- privacy confirmation modal -->
+<div id="privacyModal" class="modal-backdrop" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+        <h3 id="modalTitle">Warning</h3>
+        <p>All your projects will be still visible to other pages after selecting <strong>Pivate</strong>.</p>
+
+        <form method="post" action="{% url 'change_privacy' %}">
+            {% csrf_token %}
+            <select name="privacy" id="privacyType" class="form-input" required>
+                {% for status in list %}
+                <option value="{{ status }}" {% if status == request.user.profile.privacy %}selected{% endif %}>{{ status }}</option>
+                {% endfor %}
+            </select>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closePrivacyModal()">Cancel</button>
+                <button type="submit" id="privacyConfirmBtn" class="btn-primary loading" data-text="">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
