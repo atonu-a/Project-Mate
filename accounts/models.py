@@ -23,6 +23,10 @@ class Field(models.Model):
     
 class Profile(models.Model):
     
+    PRIVACY =(
+        ("Public", "Public"),
+        ("Private", "Private")
+    )
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     headline = models.CharField(max_length=255, blank=True)
@@ -36,6 +40,8 @@ class Profile(models.Model):
     whatsapp = models.CharField()
     linkedin = models.URLField(blank=True, null=True)
     
+    privacy = models.CharField(choices=PRIVACY, max_length=10, default="Public") 
+       
     profile_pic = models.ImageField(upload_to='images',blank=True, null=True,  default="default_mdzqdy.svg")
     cover_pic = models.ImageField(upload_to='images', blank=True, null=True)
     

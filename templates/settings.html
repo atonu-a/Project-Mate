@@ -14,7 +14,7 @@
     <section class="settings-card">
         <h2 class="settings-card__title">
             <i data-lucide="shield" class="settings-card__icon"></i>
-            <span>Account & Security</span>
+            <span>Account Privary & Security</span>
         </h2>
 
         <div class="settings-row">
@@ -25,6 +25,15 @@
             <!-- <div class="settings-row__control">
                 <a href="{% url 'edit_profile' %}" class="btn-secondary btn-sm">Edit</a>
             </div> -->
+        </div>
+        <div class="settings-row">
+            <div class="settings-row__info">
+                <h3 class="settings-row__label">Profile Content Visibility</h3>
+                <p class="settings-row__desc">{{ request.user.profile.privacy }}</p>
+            </div>
+            <div class="settings-row__control">
+                <button class="btn-secondary">Change <i data-lucide="chevron-right" class="btn-icon" ></i></button>
+            </div>
         </div>
 
         <!-- <div class="settings-row">
