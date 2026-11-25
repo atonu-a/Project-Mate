@@ -51,6 +51,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     commented_text = models.TextField()
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name="replies")
+    is_edited = models.BooleanField(default=False)
 
     @property
     def created_at_ago(self):

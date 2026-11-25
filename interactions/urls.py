@@ -16,6 +16,7 @@ urlpatterns = [
     path("profile/<str:username>/follow/", views.toggle_follow, name="follow"),
     path("project/<str:slug>/comment/", views.create_comment, name="comment"),
     path("project/<str:slug>/comment/<int:id>/delete", views.delete_comment, name="delete_comment"),
+    path("project/<str:slug>/comment/<int:id>/edit", views.edit_comment, name="edit_comment"),
     path("project/<str:slug>/comment/<int:id>/reply", views.create_reply, name="reply"),
     path("project/<str:slug>/like", views.like_project, name="like_project"),
     path("profile/<str:username>/connections/", views.connections, name="connections"),

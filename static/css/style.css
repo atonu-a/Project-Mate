@@ -5526,7 +5526,36 @@ textarea::placeholder {
     background: var(--color-elevated);
     border-radius: 16px;
 }
+.comment__edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
 
+.comment__edit-form[hidden] {
+  display: none;
+}
+
+.comment__edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+.comment__save {
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: 8px;
+}
+
+.comment__save:hover {
+  background: var(--color-primary-hover);
+}
 .comment__name {
     font-size: 0.75rem;
     font-weight: 700;

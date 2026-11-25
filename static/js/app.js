@@ -528,7 +528,6 @@ try{
   containers.forEach((container) =>{
     const btn = container.querySelector("button")
     const dropdown = container.querySelector(".comment--more__actions");
-    console.log(dropdown)
 
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -545,4 +544,29 @@ catch (error) {
   console.error("something went's wrong")
 }
 
+
+// Comments editing system
+
+function startEditComment(btn) {
+  console.log("function called")
+  const comment = btn.closest('.comment');
+  const bubble = comment.querySelector(':scope > .comment__body > .comment__bubble');
+  const text = bubble.querySelector('.comment__text');
+  const form = bubble.querySelector('.comment__edit-form');
+
+  // comment.querySelector('.comment__menu-list').hidden = true;
+  text.hidden = true;
+  form.hidden = false;
+  const input = form.querySelector('textarea');
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+}
+
+function cancelEditComment(btn) {
+  const bubble = btn.closest('.comment__bubble');
+  bubble.querySelector('.comment__text').hidden = false;
+  const form = bubble.querySelector('.comment__edit-form');
+  form.querySelector('textarea').value = bubble.querySelector('.comment__text').textContent.trim();
+  form.hidden = true;
+}
 

@@ -6,7 +6,8 @@ document.addEventListener("submit", async (e) => {
     !form.classList.contains("like-form") &&
     !form.classList.contains("save-form") &&
     !form.classList.contains("comment-form") &&
-    !form.classList.contains("reply-form")
+    !form.classList.contains("reply-form") &&
+    !form.classList.contains("comment__edit-form")
   ) {
     return;
   }
@@ -179,6 +180,46 @@ document.addEventListener("submit", async (e) => {
       showToast("Something went wrong. Please try again.");
     }
   }
+
+  // Comment/Reply Edit Logic
+  if (form.classList.contains("comment__edit-form")){
+    const input = form.querySelector(".comment-composer__input");
+    const text = input.value.trim();
+     
+    if (!text) return
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers : {
+          "X-CSRFToken" : form.querySelector("[name=csrfmiddlewaretoken]").value,
+        },
+        body : new FormData(form),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success){
+        showToast(data.error || "Comment could not be editted,");
+        return;
+      }
+
+      const oldComment = form.closest(".comment");
+      if (!oldComment) {
+        console.log("Old comment not found");
+        return;
+      }
+
+      const newComment = document.createRange().createContextualFragment(data.html);
+      oldComment.replaceWith(newComment);
+
+    }
+    catch (error){
+      console.error("something went wrong")
+      showToast("Something went wrong. Please try again.")
+    }
+  }
+
 });
 
 // Timestamp formatting for comments

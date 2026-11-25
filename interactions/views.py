@@ -522,8 +522,31 @@ def edit_comment(request, id, slug):
     
     if request.method == "POST":
         if comment.user == request.user:
-            comment = comment
+            comment.commented_text = request.POST.get('commented_text')
+            comment.is_edited = True
+            comment.save()
             
     
-    return redirect("project_detail" , slug = slug)
+        return JsonResponse({
+            "success":True,
+            "html": render_to_string(
+                "comments.html",
+                {"comment": comment, "project": project},
+                request=request,
+            ),
+            "comment": {
+                "id" : comment.id,
+                "commented_text" : comment.commented_text,
+                "project": comment.project.slug,
+                "full_name": (
+                    f"{comment.user.first_name} "
+                    f"{comment.user.last_name}"
+                ).strip(),
+                "profile_pic" : (
+                    comment.user.profile.profile_pic_url
+                ),
+
+                "created_at" : comment.created_at.isoformat()
+            }
+        }, status = 201)
     
