@@ -143,12 +143,12 @@
                 <div>
                   <h4 class="suggest-item__name">{{ teammate.get_full_name }}</h4>
                   <p class="suggest-item__role">{{ teammate.profile.headline }}</p>
-                  <div class="suggest-item__skills">
+                  <!-- <div class="suggest-item__skills">
                     {% for skill in teammate.profile.skills.all  %}
                         <span class="skill-mini">{{skill.name}}</span>
                     {% endfor %}
 
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <form method="post" action="{% url 'follow' teammate.username %}">
