@@ -4850,9 +4850,49 @@ textarea::placeholder {
   color: var(--color-text, #111827);
   font-size: 1.05rem;
 }
+
 .public-profile__community span {
   color: var(--pp-muted);
   font-size: 0.75rem;
+}
+
+.private-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 320px;
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--border-80);
+  border-radius: 20px;
+  margin-top: 16px;
+}
+
+.private-center__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 4px;
+  color: var(--color-text-muted);
+  background: var(--color-elevated);
+  border-radius: 50%;
+}
+
+.private-center__title {
+  font-size: 1.125rem;
+  font-weight: 800;
+}
+
+.private-center__text {
+  max-width: 24rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
 }
 @media (max-width: 768px) {
   .public-profile__layout {

@@ -296,7 +296,27 @@ def edit_profile(request):
         "selected_fields": selected_fields,
     })       
     
+
+# =================================
+#    Change Profile Privacy
+# =================================
+
+@login_required(login_url="signin")
+def change_privacy(request):
+    profile=request.user.profile
+    if request.user == profile.user:
+        if request.method == "POST":
+            profile.privacy = request.POST.get('privacy')
+            
+            profile.save()
+            messages.info(request,"Privacy settings has been changed.")
     
+    else:
+        messages.error(request, "You are not the authorized user.")
+    
+    return redirect("settings")      
+            
+
 # ======================
 #    Dashboard
 # ======================
