@@ -355,7 +355,7 @@ def dashboard(request):
     
     
     # Trending projects/posts
-    top_projects = projects = Project.objects.select_related(
+    projects = Project.objects.select_related(
             "owner_name", "owner_name__profile"
         ).prefetch_related(
             "required_skills"
@@ -363,10 +363,12 @@ def dashboard(request):
             members_count=Count("members", distinct=True),
             likes_count=Count("likes", distinct=True),
             comments_count=Count("comments", distinct=True)
-        ).order_by("-likes_count", "-id")[:2]
+        )
+    top_projects = projects.order_by("-likes_count", "-id")[:2]
+
     
     # Total Projects of user
-    total_projects = projects.count()
+    total_projects = projects.filter(owner_name = request.user).count()
     
     
     # Profile Views Count
