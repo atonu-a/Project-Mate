@@ -4559,6 +4559,7 @@ textarea::placeholder {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 .public-profile__stats {
   display: flex;
@@ -4583,6 +4584,7 @@ textarea::placeholder {
   color: var(--color-text, #334155);
   line-height: 1.65;
   white-space: pre-line;
+  margin: ;
 }
 .public-profile__contacts {
   display: flex;
@@ -4904,8 +4906,8 @@ textarea::placeholder {
   .public-profile__heading {
     flex-direction: column;
   }
-  .public-profile__name-block {
-    /* width: 100%; */
+  .public-profile__bio {
+    /* margin-top: 1rem; */
   }
 }
 @media (max-width: 640px) {
