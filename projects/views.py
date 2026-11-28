@@ -1,7 +1,11 @@
+from datetime import datetime, time
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.utils.dateparse import parse_date
 from .models import Project, ProjectMember, Task
 from accounts.models import Profile
 from accounts.views import signin
@@ -252,30 +256,54 @@ def my_projects(request):
 
 
 @login_required(login_url="signin")
-def task_assign(request, slug, username):
+def task_assign(request):
     if request.method == "POST":
-        project = request.POST.get("project")
-        assigned_to = request.POST.get("member")
-        title = request.POST.get("title")
-        desc = request.POST.get("desc")
-        deadline = request.POST.get("deadline")
-        
-        if request.user == project.owner_name:
-            task = Task.objects.create(
-                project = project,
-                assigned_to = assigned_to,
-                assigned_by = request.user,
-                title = title,
-                desc = desc,
-                deadline = deadline           
-            )
-            messages.success(request, "Task assigned to {assigned_to}")
-            return redirect("task_view")
-        else:
+        project = get_object_or_404(
+            Project.objects.prefetch_related("members"),
+            pk=request.POST.get("project"),
+        )
+
+        if request.user != project.owner_name:
             messages.error(request, "You are not authorized to assign tasks for this project.")
             return redirect("task_view")
-        
-    return render(request, "task-management.html")
+
+        assigned_to = get_object_or_404(
+            ProjectMember,
+            pk=request.POST.get("member"),
+            project=project,
+        )
+        assigned_by = get_object_or_404(
+            ProjectMember,
+            project=project,
+            user=request.user,
+        )
+
+        title = request.POST.get("title", "").strip()
+        desc = request.POST.get("desc", "").strip()
+        deadline = parse_date(request.POST.get("deadline", ""))
+        if not title or not deadline:
+            messages.error(request, "Project, member, title, and deadline are required.")
+            return redirect("task_view")
+        deadline = timezone.make_aware(
+            datetime.combine(deadline, time.min),
+            timezone.get_current_timezone(),
+        )
+
+        Task.objects.create(
+            project=project,
+            assigned_to=assigned_to,
+            assigned_by=assigned_by,
+            title=title,
+            desc=desc,
+            deadline=deadline,
+        )
+        messages.success(
+            request,
+            f"Task assigned to {assigned_to.user.get_full_name() or assigned_to.user.username}",
+        )
+        return redirect("task_view")
+
+    return redirect("task_view")
 
 
 
@@ -289,7 +317,24 @@ def task_view(request):
             "members__user"
         )
 
-    return render(request, "task-management.html", {"projects": projects})
+    project_members_json = {}
+    for project in projects:
+        project_members_json[str(project.pk)] = [
+            {
+                "id": member.pk,
+                "name": member.user.get_full_name() or member.user.username,
+            }
+            for member in project.members.select_related("user").all()
+        ]
+
+    return render(
+        request,
+        "task-management.html",
+        {
+            "projects": projects,
+            "project_members_json": project_members_json,
+        },
+    )
 
     
     
