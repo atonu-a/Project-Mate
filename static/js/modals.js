@@ -3,7 +3,6 @@ function openModal(slug) {
   const modal = document.getElementById(`delete-modal-${slug}`);
   if (!modal) return;
   modal.hidden = false;
-
 }
 // Project delete modal close
 function closeModal(slug) {
@@ -27,8 +26,6 @@ function closeMsgModal(slug) {
   modal.hidden = true;
 }
 
-
-
 // Project leave modal open
 function openLeaveModal(slug) {
   if (!modal) return;
@@ -40,7 +37,6 @@ function closeLeaveModal(slug) {
   if (!modal) return;
   modal.hidden = true;
 }
-
 
 // Request Cancel Modal
 function openCancelReqModal(slug) {
@@ -67,8 +63,6 @@ function closeRemoveModal(slug) {
   if (!modal) return;
   modal.hidden = true;
 }
-
-
 
 /* Delete account modal */
 function openDeleteModal() {
@@ -102,17 +96,23 @@ document.addEventListener("click", (e) => {
   if (e.target.id === "deleteModal") closeDeleteModal();
 });
 
-
-
 /* Account Privacy modal */
 function openPrivacyModal() {
   const modal = document.getElementById("privacyModal");
   if (!modal) return;
   modal.hidden = false;
-
 }
 function closePrivacyModal() {
   const modal = document.getElementById("privacyModal");
   if (!modal) return;
   modal.hidden = true;
+}
+
+// Task Create Modal
+
+function openTaskModal() {
+  document.getElementById("createTaskModal").style.display = "flex";
+}
+function closeTaskModal() {
+  document.getElementById("createTaskModal").style.display = "none";
 }

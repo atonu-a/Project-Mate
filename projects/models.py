@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from accounts.models import Skill
-from django_quill.fields import QuillField
+
 
 class Project(models.Model):
     
@@ -70,9 +70,10 @@ class Task(models.Model):
     
     
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
-    assigned_to = models.ForeignKey(ProjectMember, on_delete=models.CASCADE, related_name="tasks")
+    assigned_to = models.ForeignKey(ProjectMember, on_delete=models.SET_NULL, related_name="tasks", blank=True, null=True)
+    assigned_by = models.ForeignKey(ProjectMember, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    desc = QuillField()
+    desc = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField()
