@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'cloudinary_storage',
     'cloudinary',
+    'django_quill',
     'home',
     'accounts',
     'projects',

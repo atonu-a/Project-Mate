@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from accounts.models import Skill
+from django_quill.fields import QuillField
 
 class Project(models.Model):
     
@@ -58,5 +59,27 @@ class ProjectMember(models.Model):
     role = models.CharField(max_length=100)
         
     
+class Task(models.Model):
+    STATUS = (
+        ("Assigned", "Assigned"),
+        ("Submitted", "Submitted"),
+        ("Verified", "Verified"),
+        ("Rejected", "Rejected"),
+    )
     
-# Create your models here.
+    
+    
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
+    assigned_to = models.ForeignKey(ProjectMember, on_delete=models.CASCADE, related_name="tasks")
+    title = models.CharField(max_length=255)
+    desc = QuillField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    deadline = models.DateTimeField()
+    status = models.CharField(choices=STATUS, default="Assigned")
+    
+    def __str__(self):
+        return self.title
+    
+    
+    
