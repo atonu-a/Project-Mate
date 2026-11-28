@@ -307,15 +307,14 @@ def task_assign(request):
 
 
 
-
+@login_required(login_url="signin")
 def task_view(request):
-    projects = Project.objects.none()
-    if request.user.is_authenticated:
-        projects = Project.objects.filter(
-            owner_name=request.user
-        ).prefetch_related(
-            "members__user"
-        )
+    projects = Project.objects.filter(
+        owner_name=request.user
+    ).prefetch_related(
+        "members__user",
+        # "members__user__profile"
+    )
 
     project_members_json = {}
     for project in projects:
@@ -324,17 +323,21 @@ def task_view(request):
                 "id": member.pk,
                 "name": member.user.get_full_name() or member.user.username,
             }
-            for member in project.members.select_related("user").all()
+            for member in project.members.exclude(user = request.user).select_related("user")
         ]
-
-    return render(
-        request,
-        "task-management.html",
-        {
-            "projects": projects,
-            "project_members_json": project_members_json,
-        },
+    tasks = Task.objects.select_related(
+        "project",   
     )
+    tasks = tasks.filter(
+        assigned_by__user = request.user
+    )
+    
+    context ={
+        "projects": projects,
+        "project_members_json": project_members_json,
+        "tasks":tasks
+    }
+    return render(request,"task-management.html",context)
 
     
     

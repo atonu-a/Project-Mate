@@ -111,12 +111,14 @@ function closePrivacyModal() {
 // Task Create Modal
 
 function openTaskModal() {
-  document.getElementById("createTaskModal").style.display = "flex";
+  const modal =  document.getElementById("createTaskModal");
+  modal.hidden = false;
   const project = document.getElementById("taskProject");
   if (project) loadProjectMembers(project.value);
 }
 function closeTaskModal() {
-  document.getElementById("createTaskModal").style.display = "none";
+  const modal =  document.getElementById("createTaskModal");
+  modal.hidden = true;
 }
 
 function loadProjectMembers(projectId) {

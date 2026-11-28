@@ -6522,6 +6522,9 @@ textarea::placeholder {
 }
 
 /* Modal form */
+.task-form{
+  margin-top: 8px;
+}
 .task-form .btns {
   margin-top: 8px;
 }
