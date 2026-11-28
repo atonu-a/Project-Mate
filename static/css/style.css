@@ -34,6 +34,7 @@
                                  29 About Page
 											30 Connections Page
                       31 Settings Page
+                      32 Task Management Page
    ========================================================================== */
 
 /* 1. Design tokens ------------------------------------------------------- */
@@ -6350,4 +6351,203 @@ textarea::placeholder {
   justify-content: flex-end;
   gap: 10px;
   margin-top: 8px;
+}
+
+
+/* 32. Task management ---------------------------------------------------------- */
+.task-header {
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.task-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-toolbar__filter {
+  width: 100%;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--border-80);
+  border-left: 4px solid var(--color-border);
+  border-radius: 16px;
+  min-width: 0;
+}
+
+
+.task-row--attention {
+  border-left-color: var(--color-danger);
+}
+
+.task-row__main {
+  min-width: 0;
+}
+
+.task-row__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-row__title {
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.task-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.task-row__assignee {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-row__avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.task-row__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.task-row__actions form {
+  display: contents;
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.75rem;
+}
+
+/* Status indicators */
+.task-status,
+.task-priority,
+.task-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.task-status--todo        { --tone: var(--color-text-muted); }
+.task-status--in_progress { --tone: var(--color-accent); }
+.task-status--submitted   { --tone: var(--color-warning); }
+.task-status--revision    { --tone: var(--color-danger); }
+.task-status--done        { --tone: var(--color-success); }
+
+.task-status {
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 12%, transparent);
+  border-color: color-mix(in srgb, var(--tone) 30%, transparent);
+}
+
+.task-priority--high   { color: var(--color-danger); }
+.task-priority--medium { color: var(--color-warning); }
+.task-priority--low    { color: var(--color-text-muted); }
+
+.task-flag {
+  color: #fff;
+  background: var(--color-danger);
+}
+
+.task-flag__icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* Empty state */
+.task-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.task-empty__icon {
+  width: 36px;
+  height: 36px;
+  color: var(--color-primary);
+}
+
+.task-empty__title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.task-empty__text {
+  max-width: 22rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.task-empty .btn-primary {
+  margin-top: 8px;
+}
+
+/* Modal form */
+.task-form .btns {
+  margin-top: 8px;
+}
+
+.task-form textarea.form-input {
+  resize: vertical;
+  min-height: 96px;
+}
+
+/* Tablet ও desktop */
+@media (min-width: 640px) {
+  .task-toolbar {
+    flex-direction: row;
+  }
+  .task-toolbar__search {
+    flex: 1;
+  }
+  .task-toolbar__filter {
+    width: auto;
+  }
+  .task-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .task-row__actions {
+    flex-shrink: 0;
+  }
 }
