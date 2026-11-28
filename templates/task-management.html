@@ -30,7 +30,7 @@
 
     <!-- ===== Tab 1: Assigned by Me ===== -->
     <div id="tabAssignedByMe" class="search-panel is-active">
-
+<!-- 
         <form class="task-toolbar" role="search" onsubmit="return false;">
             <input type="search" placeholder="Search tasks..." class="form-input task-toolbar__search"
                 aria-label="Search tasks">
@@ -41,79 +41,32 @@
                 <option>Submitted</option>
                 <option>Done</option>
             </select>
-            <select class="form-input task-toolbar__filter" aria-label="Filter by priority">
-                <option>All priorities</option>
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-            </select>
-        </form>
+        </form> -->
 
         <div class="task-list">
-
+            {% for task in tasks %}
+            
+            
             <article class="task-row">
                 <div class="task-row__main">
                     <div class="task-row__title-row">
-                        <span class="task-status task-status--in_progress">In progress</span>
-                        <span class="task-priority task-priority--high">High</span>
+                        <span class="task-status task-status--done">{{task.status}}</span>
                     </div>
-                    <h3 class="task-row__title">Design the onboarding screens</h3>
+                    <h3 class="task-row__title">{{task.title}}</h3>
                     <p class="task-row__meta">
                         <span class="task-row__assignee">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
+                            <img src="{{task.assigned_to.user.profile.profile_pic_url}}"
                                 alt="" class="task-row__avatar">
-                            Sophia Sterling
+                            {{task.assigned_to.user.get_full_name}}
                         </span>
-                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Dec 05, 2026</span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>{{task.deadline}}</span>
                     </p>
                 </div>
-                <div class="task-row__actions">
+                {% comment %} <div class="task-row__actions">
                     <a href="#" class="btn-tonal">View details</a>
-                </div>
+                </div> {% endcomment %}
             </article>
-
-            <article class="task-row">
-                <div class="task-row__main">
-                    <div class="task-row__title-row">
-                        <span class="task-status task-status--todo">To do</span>
-                        <span class="task-priority task-priority--medium">Medium</span>
-                    </div>
-                    <h3 class="task-row__title">Write the landing page copy</h3>
-                    <p class="task-row__meta">
-                        <span class="task-row__assignee">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
-                                alt="" class="task-row__avatar">
-                            Elena Rostova
-                        </span>
-                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Dec 10, 2026</span>
-                    </p>
-                </div>
-                <div class="task-row__actions">
-                    <a href="#" class="btn-tonal">View details</a>
-                </div>
-            </article>
-
-            <article class="task-row">
-                <div class="task-row__main">
-                    <div class="task-row__title-row">
-                        <span class="task-status task-status--done">Done</span>
-                        <span class="task-priority task-priority--low">Low</span>
-                    </div>
-                    <h3 class="task-row__title">Set up the staging database</h3>
-                    <p class="task-row__meta">
-                        <span class="task-row__assignee">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
-                                alt="" class="task-row__avatar">
-                            Marcus Chen
-                        </span>
-                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Nov 20, 2026</span>
-                    </p>
-                </div>
-                <div class="task-row__actions">
-                    <a href="#" class="btn-tonal">View details</a>
-                </div>
-            </article>
-
+            {% endfor %}
         </div>
     </div>
 

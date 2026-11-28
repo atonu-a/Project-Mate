@@ -1,15 +1,16 @@
 <!-- ===== Create Task modal ===== -->
-<section id="createTaskModal" class="modal">
-  <div class="modal-content">
-    <button type="button" class="cross" onclick="closeTaskModal()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-
+<section id="createTaskModal" class="modal-backdrop" hidden>
+  <div class="modal-content relative">
+    <a class="cross absolute top-2 right-2 cursor-pointer" onclick="closeTaskModal()"><i
+                class="fa-solid fa-xmark"></i></a>
     <h1 class="header">Create Task</h1>
 
-    <form class="form task-form" onsubmit="event.preventDefault(); closeTaskModal();">
+    <form class="form task-form" action="{% url 'task_assign' %}" method="post">
+      {% csrf_token %}
       <div class="form-row">
         <div class="form-field">
           <label for="taskProject" class="form-label">Project</label>
-          <select id="taskProject" required class="form-input">
+          <select id="taskProject" name="project" required class="form-input" onchange="loadProjectMembers(this.value)">
             <option value="" disabled selected>Select a project</option>
             {% for project in projects %}
               <option value="{{ project.pk }}">{{ project.title }}</option>
@@ -18,45 +19,34 @@
         </div>
         <div class="form-field">
           <label for="taskAssignee" class="form-label">Assign to</label>
-          <select id="taskAssignee" required class="form-input">
-            <option value="" disabled selected>Select a member</option>
-            <option>Sophia Sterling</option>
-            <option>Elena Rostova</option>
-            <option>Marcus Chen</option>
-            <option>Kaito Tanaka</option>
+          <select id="taskAssignee" name="member" required class="form-input">
+            <option value="" disabled selected>Select a project first</option>
           </select>
         </div>
       </div>
 
       <div class="form-field">
         <label for="taskTitle" class="form-label">Task title</label>
-        <input id="taskTitle" type="text" required placeholder="e.g., Design the onboarding screens" class="form-input" />
+        <input id="taskTitle" name="title" type="text" required placeholder="e.g., Design the onboarding screens" class="form-input" />
       </div>
 
       <div class="form-field">
         <label for="taskDesc" class="form-label">Description</label>
-        <textarea id="taskDesc" rows="4" placeholder="What needs to be done, and what does 'done' look like?" class="form-input"></textarea>
+        <textarea id="taskDesc" name="desc" rows="4" placeholder="What needs to be done, and what does 'done' look like?" class="form-input"></textarea>
       </div>
 
       <div class="form-row">
         <div class="form-field">
           <label for="taskDeadline" class="form-label">Deadline</label>
-          <input id="taskDeadline" type="date" required class="form-input" />
-        </div>
-        <div class="form-field">
-          <label for="taskPriority" class="form-label">Priority</label>
-          <select id="taskPriority" class="form-input">
-            <option>Medium</option>
-            <option>High</option>
-            <option>Low</option>
-          </select>
+          <input id="taskDeadline" name="deadline" type="date" required class="form-input" />
         </div>
       </div>
 
-      <div class="btns">
-        <button type="button" class="btn-cancel" onclick="closeTaskModal()">Cancel</button>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeTaskModal()">Cancel</button>
         <button type="submit" class="btn-primary">Create Task</button>
       </div>
     </form>
   </div>
 </section>
+{{ project_members_json|json_script:"project-members" }}

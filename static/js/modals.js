@@ -111,8 +111,34 @@ function closePrivacyModal() {
 // Task Create Modal
 
 function openTaskModal() {
-  document.getElementById("createTaskModal").style.display = "flex";
+  const modal =  document.getElementById("createTaskModal");
+  modal.hidden = false;
+  const project = document.getElementById("taskProject");
+  if (project) loadProjectMembers(project.value);
 }
 function closeTaskModal() {
-  document.getElementById("createTaskModal").style.display = "none";
+  const modal =  document.getElementById("createTaskModal");
+  modal.hidden = true;
+}
+
+function loadProjectMembers(projectId) {
+  const assignee = document.getElementById("taskAssignee");
+  const dataElement = document.getElementById("project-members");
+  if (!assignee || !dataElement) return;
+
+  const projectMembers = JSON.parse(dataElement.textContent || "{}");
+  const members = projectMembers[String(projectId)] || [];
+
+  assignee.innerHTML = "";
+  if (members.length === 0) {
+    assignee.add(new Option("Select Project First", "", true, true));
+    assignee.disabled = true;
+    return;
+  }
+
+  assignee.disabled = false;
+  assignee.add(new Option("Select a member", "", true, true));
+  members.forEach((member) => {
+    assignee.add(new Option(member.name, String(member.id)));
+  });
 }

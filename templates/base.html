@@ -187,6 +187,16 @@
           <span class="sidebar__count">{{ total_projects }}</span>
         </a>
 
+        <a href="{% url 'task_view' %}" class="sidebar__link
+          
+          {% if request.path == '/task-management/' %}
+            is-active
+          {% endif %} ">
+          <i data-lucide="list-todo" class="sidebar__link-icon"></i>
+          <span>Tasks Management</span>
+          
+        </a>
+
         <a href="{% url 'requests' %}" class="sidebar__link
           {% if request.path == '/requests/' %}
             is-active
@@ -305,6 +315,10 @@
       <a href="{% url 'my_projects' %}" class="mobile-menu__link">
         <i data-lucide="folder-kanban" class="mobile-menu__link-icon"></i>
         <span>My Projects</span>
+      </a>
+      <a href="{% url 'task_view' %}" class="mobile-menu__link">
+        <i data-lucide="list-todo" class="mobile-menu__link-icon"></i>
+        <span>Tasks Management</span>
       </a>
       <a href="{% url 'requests' %}" class="mobile-menu__link">
         <i data-lucide="git-pull-request" class="mobile-menu__link-icon"></i>
