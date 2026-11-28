@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .models import Project, ProjectMember
+from .models import Project, ProjectMember, Task
 from accounts.models import Profile
 from accounts.views import signin
 from interactions.models import JoinRequest, Comment
@@ -21,7 +21,7 @@ def project_detail(request, slug):
         project=OuterRef("pk"),
         user = user
     ).order_by("-created_at") 
-    membership = ProjectMember.objects.filter(
+    membership = ProjectMember.objects.select_related("user", "user__profile").filter(
         project=OuterRef("pk"),
         user=user
     )
@@ -248,3 +248,50 @@ def my_projects(request):
         "total_projects" : total_projects
     }
     return render(request, 'my-projects.html', context)
+
+
+
+@login_required(login_url="signin")
+def task_assign(request, slug, username):
+    if request.method == "POST":
+        project = request.POST.get("project")
+        assigned_to = request.POST.get("member")
+        title = request.POST.get("title")
+        desc = request.POST.get("desc")
+        deadline = request.POST.get("deadline")
+        
+        if request.user == project.owner_name:
+            task = Task.objects.create(
+                project = project,
+                assigned_to = assigned_to,
+                assigned_by = request.user,
+                title = title,
+                desc = desc,
+                deadline = deadline           
+            )
+            messages.success(request, "Task assigned to {assigned_to}")
+            return redirect("task_view")
+        else:
+            messages.error(request, "You are not authorized to assign tasks for this project.")
+            return redirect("task_view")
+        
+    return render(request, "task-management.html")
+
+
+
+
+def task_view(request):
+    projects = Project.objects.none()
+    if request.user.is_authenticated:
+        projects = Project.objects.filter(
+            owner_name=request.user
+        ).prefetch_related(
+            "members__user"
+        )
+
+    return render(request, "task-management.html", {"projects": projects})
+
+    
+    
+
+    

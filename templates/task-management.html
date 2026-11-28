@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+{% block main %}
+<main class="page-main page-main--wide">
+
+    <!-- Header -->
+    <div class="page-header task-header">
+        <div>
+            <h1 class="page-title">Task Management</h1>
+            <p class="page-subtitle">Track what you've delegated, what's on your plate, and what's waiting for review.
+            </p>
+        </div>
+        <button type="button" class="btn-primary" onclick="openTaskModal()">
+            <i data-lucide="plus" class="btn-icon"></i>
+            <span>Create Task</span>
+        </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="search-tabs">
+        <button type="button" class="search-tab is-active" onclick="switchSearchTab(this, 'tabAssignedByMe')">
+            Assigned by Me <span class="search-tab__count">3</span>
+        </button>
+        <button type="button" class="search-tab" onclick="switchSearchTab(this, 'tabAssignedToMe')">
+            Assigned to Me <span class="search-tab__count">3</span>
+        </button>
+        <button type="button" class="search-tab" onclick="switchSearchTab(this, 'tabReview')">
+            Review <span class="search-tab__count">2</span>
+        </button>
+    </div>
+
+    <!-- ===== Tab 1: Assigned by Me ===== -->
+    <div id="tabAssignedByMe" class="search-panel is-active">
+
+        <form class="task-toolbar" role="search" onsubmit="return false;">
+            <input type="search" placeholder="Search tasks..." class="form-input task-toolbar__search"
+                aria-label="Search tasks">
+            <select class="form-input task-toolbar__filter" aria-label="Filter by status">
+                <option>All statuses</option>
+                <option>To do</option>
+                <option>In progress</option>
+                <option>Submitted</option>
+                <option>Done</option>
+            </select>
+            <select class="form-input task-toolbar__filter" aria-label="Filter by priority">
+                <option>All priorities</option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+            </select>
+        </form>
+
+        <div class="task-list">
+
+            <article class="task-row">
+                <div class="task-row__main">
+                    <div class="task-row__title-row">
+                        <span class="task-status task-status--in_progress">In progress</span>
+                        <span class="task-priority task-priority--high">High</span>
+                    </div>
+                    <h3 class="task-row__title">Design the onboarding screens</h3>
+                    <p class="task-row__meta">
+                        <span class="task-row__assignee">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
+                                alt="" class="task-row__avatar">
+                            Sophia Sterling
+                        </span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Dec 05, 2026</span>
+                    </p>
+                </div>
+                <div class="task-row__actions">
+                    <a href="#" class="btn-tonal">View details</a>
+                </div>
+            </article>
+
+            <article class="task-row">
+                <div class="task-row__main">
+                    <div class="task-row__title-row">
+                        <span class="task-status task-status--todo">To do</span>
+                        <span class="task-priority task-priority--medium">Medium</span>
+                    </div>
+                    <h3 class="task-row__title">Write the landing page copy</h3>
+                    <p class="task-row__meta">
+                        <span class="task-row__assignee">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                                alt="" class="task-row__avatar">
+                            Elena Rostova
+                        </span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Dec 10, 2026</span>
+                    </p>
+                </div>
+                <div class="task-row__actions">
+                    <a href="#" class="btn-tonal">View details</a>
+                </div>
+            </article>
+
+            <article class="task-row">
+                <div class="task-row__main">
+                    <div class="task-row__title-row">
+                        <span class="task-status task-status--done">Done</span>
+                        <span class="task-priority task-priority--low">Low</span>
+                    </div>
+                    <h3 class="task-row__title">Set up the staging database</h3>
+                    <p class="task-row__meta">
+                        <span class="task-row__assignee">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
+                                alt="" class="task-row__avatar">
+                            Marcus Chen
+                        </span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Nov 20, 2026</span>
+                    </p>
+                </div>
+                <div class="task-row__actions">
+                    <a href="#" class="btn-tonal">View details</a>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <!-- ===== Tab 2: Assigned to Me ===== -->
+    <div id="tabAssignedToMe" class="search-panel">
+
+        <form class="task-toolbar" role="search" onsubmit="return false;">
+            <input type="search" placeholder="Search your tasks..." class="form-input task-toolbar__search"
+                aria-label="Search your tasks">
+            <select class="form-input task-toolbar__filter" aria-label="Filter by status">
+                <option>All statuses</option>
+                <option>To do</option>
+                <option>In progress</option>
+                <option>Needs revision</option>
+                <option>Done</option>
+            </select>
+        </form>
+
+        <div class="task-list">
+
+            <!-- Overdue: লাল বর্ডার + Overdue ফ্ল্যাগ -->
+            <article class="task-row task-row--attention">
+                <div class="task-row__main">
+                    <div class="task-row__title-row">
+                        <span class="task-status task-status--in_progress">In progress</span>
+                        <span class="task-priority task-priority--high">High</span>
+                        <span class="task-flag"><i data-lucide="circle-alert" class="task-flag__icon"></i>Overdue</span>
+                    </div>
+                    <h3 class="task-row__title">Build the notification dropdown</h3>
+                    <p class="task-row__meta">
+                        <span class="chip">TeamNest Web</span>
+                        <span class="task-row__assignee">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                                alt="" class="task-row__avatar">
+                            From Alex Rivera
+                        </span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Nov 25, 2026</span>
+                    </p>
+                </div>
+                <div class="task-row__actions">
+                    <a href="#" class="btn-tonal">View details</a>
+                    <button type="button" class="btn-primary btn-sm">Submit work</button>
+                </div>
+            </article>
+
+            <article class="task-row">
+                <div class="task-row__main">
+                    <div class="task-row__title-row">
+                        <span class="task-status task-status--revision">Needs revision</span>
+                        <span class="task-priority task-priority--medium">Medium</span>
+                    </div>
+                    <h3 class="task-row__title">Fix mobile layout of the feed</h3>
+                    <p class="task-row__meta">
+                        <span class="chip">EcoRoute</span>
+                        <span class="task-row__assignee">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+                                alt="" class="task-row__avatar">
+                            From Julian Vance
+                        </span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Dec 02, 2026</span>
+                    </p>
+                </div>
+                <div class="task-row__actions">
+                    <a href="#" class="btn-tonal">View details</a>
+                    <button type="button" class="btn-primary btn-sm">Submit work</button>
+                </div>
+            </article>
+
+            <article class="task-row">
+                <div class="task-row__main">
+                    <div class="task-row__title-row">
+                        <span class="task-status task-status--todo">To do</span>
+                        <span class="task-priority task-priority--low">Low</span>
+                    </div>
+                    <h3 class="task-row__title">Draft the FAQ answers</h3>
+                    <p class="task-row__meta">
+                        <span class="chip">TeamNest Web</span>
+                        <span class="task-row__assignee">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                                alt="" class="task-row__avatar">
+                            From Elena Rostova
+                        </span>
+                        <span class="deadline"><i data-lucide="calendar" class="deadline__icon"></i>Dec 15, 2026</span>
+                    </p>
+                </div>
+                <div class="task-row__actions">
+                    <a href="#" class="btn-tonal">View details</a>
+                    <button type="button" class="btn-primary btn-sm">Submit work</button>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <!-- ===== Tab 3: Review ===== -->
+    <div id="tabReview" class="search-panel">
+
+        <form class="task-toolbar" role="search" onsubmit="return false;">
+            <input type="search" placeholder="Search submissions..." class="form-input task-toolbar__search"
+                aria-label="Search submissions">
+        </form>
+
+        <div class="task-list">
+
+            <article class="task-row">
+                <div class="task-row__main">
+                    <div class="task-row__title-row">
+                        <span class="task-status task-status--submitted">Submitted</span>
+                        <span class="task-priority task-priority--high">High</span>
+                    </div>
+                    <h3 class="task-row__title">Build the notification dropdown</h3>
+                    <p class="task-row__meta">
+                        <span class="task-row__assignee">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
+                                alt="" class="task-row__avatar">
+                            By Sophia Sterling
+                        </span>
+                        <span class="deadline"><i data-lucide="send" class="deadline__icon"></i>Nov 27, 2026</span>
+                    </p>
+                </div>
+                <div class="task-row__actions">
+                    <a href="#" class="btn-tonal">Review</a>
+                    <button type="button" class="btn-accept btn-sm">Approve</button>
+                    <button type="button" class="btn-reject btn-sm">Request revision</button>
+                </div>
+            </article>
+
+            <article class="task-row">
+                <div class="task-row__main">
+                    <div class="task-row__title-row">
+                        <span class="task-status task-status--submitted">Submitted</span>
+                        <span class="task-priority task-priority--medium">Medium</span>
+                    </div>
+                    <h3 class="task-row__title">Write the landing page copy</h3>
+                    <p class="task-row__meta">
+                        <span class="task-row__assignee">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+                                alt="" class="task-row__avatar">
+                            By Elena Rostova
+                        </span>
+                        <span class="deadline"><i data-lucide="send" class="deadline__icon"></i>Nov 28, 2026</span>
+                    </p>
+                </div>
+                <div class="task-row__actions">
+                    <a href="#" class="btn-tonal">Review</a>
+                    <button type="button" class="btn-accept btn-sm">Approve</button>
+                    <button type="button" class="btn-reject btn-sm">Request revision</button>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+</main>
+
+{% include "modals/create-task.html" %}
+
+
+{% endblock %}
