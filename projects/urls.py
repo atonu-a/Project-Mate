@@ -8,7 +8,7 @@ urlpatterns = [
     path('<str:slug>/edit', views.edit_project, name="edit_project"),
     path("<str:slug>/delete", views.delete_project, name="delete_project"),
     path('task-management/', views.task_view, name="task_view"),
-    path('<str:slug>/', views.project_detail, name='project_detail'),
-    
-    
+    path('task-management/create/', views.task_assign, name="task_assign"),
+    path('create-task/', views.task_assign, name="create_task"),
+    path('<str:slug>/', views.project_detail, name='project_detail'),   
 ]
